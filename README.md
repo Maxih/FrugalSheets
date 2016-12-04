@@ -1,4 +1,4 @@
-# FresherNote
+# FrugalSheets
 
 [Heroku link][heroku] **Note:** This should be a link to your production site
 
@@ -56,7 +56,7 @@ access the same Documents
 
 ### Phase 5: - Formulas (1 day)
 
-**objective:** Allow selected range to be used for executing formulas
+**Objective:** Allow selected range to be used for executing formulas
 
 ### Phase 6 Allow Complex Styling in Sheets (1 day)
 

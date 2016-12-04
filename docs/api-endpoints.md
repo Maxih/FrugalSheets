@@ -35,4 +35,5 @@
 - `GET /api/groups`
 - `POST /api/groups`
 - `GET /api/groups/:id`
+- `PATCH /api/groups/:id`
 - `DELETE /api/groups/:id`

@@ -1,15 +1,3 @@
-# FresherNote
-
-[FresherNote live][heroku] **NB:** This should be a link to your production site
-
-[heroku]: http://www.herokuapp.com
-
-FrugalSheets is a web application inspired by Google Sheets build using Ruby on Rails and React/Redux. By the end of Week 9, this app will, at a minimum, satisfy the following criteria with smooth, bug-free navigation, adequate seed data and sufficient CSS styling:
-
-## Features & Implementation
-
- **NB**: don't copy and paste any of this.  Many folks will implement similar features, and many employers will see the READMEs of a lot of a/A grads.  You must write in a way that distinguishes your README from that of other students', but use this as a guide for what topics to cover.  
-
 ### Document Editing and Rendering
 
   Documents are stored in one table in the database, which contains columns for `id`, `author_id`, `title`, `created_at` and `updated_at`. Each Document is joined by several Sheets, which contains columns for `id`, `document_id`, `name`, `content`. Upon login, an API call is made to the database which joins the users and documents table, filtering by the current user's `id`.
