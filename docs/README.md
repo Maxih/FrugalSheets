@@ -1,70 +1,19 @@
 # FresherNote
 
-[Heroku link][heroku] **Note:** This should be a link to your production site
-
-[Trello link][trello]
+[FresherNote live][heroku] **NB:** This should be a link to your production site
 
 [heroku]: http://www.herokuapp.com
-[trello]: https://trello.com/b/ALgfuX0Q/freshernote
 
-## Minimum Viable Product
+FrugalSheets is a web application inspired by Google Sheets build using Ruby on Rails and React/Redux. By the end of Week 9, this app will, at a minimum, satisfy the following criteria with smooth, bug-free navigation, adequate seed data and sufficient CSS styling:
 
-FrugalSheets is a web application inspired by Google Sheets build using Ruby on
-Rails and React/Redux. By the end of Week 9, this app will, at a minimum, satisfy the following criteria with smooth, bug-free navigation, adequate seed data and
-sufficient CSS styling:
+## Features & Implementation
 
-- [ ] Hosting on Heroku
-- [ ] New account creation, login, and guest/demo login
-- [ ] Documents
-- [ ] Multiple Sheets per Document
-- [ ] Document Sharing/Collaboration
-- [ ] Formulas
-- [ ] Rich Text Editing
-- [ ] Production README [sample](docs/production_readme.md)
+ **NB**: don't copy and paste any of this.  Many folks will implement similar features, and many employers will see the READMEs of a lot of a/A grads.  You must write in a way that distinguishes your README from that of other students', but use this as a guide for what topics to cover.  
 
-## Design Docs
-* [View Wireframes][wireframes]
-* [React Components][components]
-* [API endpoints][api-endpoints]
-* [DB schema][schema]
-* [Sample State][sample-state]
+### Document Editing and Rendering
 
-[wireframes]: docs/wireframes
-[components]: docs/component-hierarchy.md
-[sample-state]: docs/sample-state.md
-[api-endpoints]: docs/api-endpoints.md
-[schema]: docs/schema.md
+  Documents are stored in one table in the database, which contains columns for `id`, `author_id`, `title`, `created_at` and `updated_at`. Each Document is joined by several Sheets, which contains columns for `id`, `document_id`, `name`, `content`. Upon login, an API call is made to the database which joins the users and documents table, filtering by the current user's `id`.
 
-## Implementation Timeline
+  On selection of a document to be edited, the corresponding Sheets are fetched via an API call, filtering by `document_id`. The sheets are then stored in the `SheetStore`, and rendered in the `Doc` component. The `Doc` component houses a `ToolBar`, `Grid`, and `SheetNav`. The first Sheet is selected as the default Active Sheet and its data is rendered in the `Grid` component. The `Grid` component allows for selection of an `activeCell`, which is stored in the `SheetStore`s `workingArea`. The default `activeCell` is the cell at coordinates `0,0`. With selection of an `activeCell`, the `ToolBar` component becomes active and allows for alteration of the `activeCell`s content.
 
-### Phase 1: Backend setup and Front End User Authentication (1 day)
-
-**Objective:** Functioning rails project with front-end Authentication
-
-### Phase 2: Documents/Sheets Model, API (1 day)
-
-**Objective:** Documents can be created, viewed, edited, and destroyed through
-the API.
-
-### Phase 3: Documents Component (2 days)
-
-**Objective:** Documents loaded from the API can be edited with a Spreadsheet
-Component
-
-### Phase 4: Groups (1 day)
-
-**Objective:** Users can create Collaboration Groups who have permission to
-access the same Documents
-
-### Phase 5: - Formulas (1 day)
-
-**objective:** Allow selected range to be used for executing formulas
-
-### Phase 6 Allow Complex Styling in Sheets (1 day)
-
-**Objective:** Cells in sheets can contain Rich Text
-
-
-### Bonus Features (TBD)
-- [ ] Resizing Rows/Columns
-- [ ] Track changes by author
+  The UI of the `Doc` component and its subcomponents is taken directly from Google Sheets for a professional, recognizable, clean look.
