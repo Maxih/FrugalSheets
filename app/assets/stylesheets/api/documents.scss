@@ -1,0 +1,87 @@
+// Place all the styles related to the Documents controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  background: #eeeeee;
+}
+
+.document-list li {
+  display: block;
+  list-style-type: none;
+  border-bottom: 1px solid #d9d9d9;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  color: #444;
+  display: block;
+  padding: 15px;
+  padding-left: 47px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #FFF url("./spreadsheeticon.png") 15px center no-repeat;
+  background-size: 17px;
+
+}
+
+.document-list li:hover {
+  background-color: #f1faf6;
+  cursor: pointer;
+}
+
+
+ul.document-list {
+  display: block;
+  border: 1px solid #d9d9d9;
+  border-bottom: none;
+}
+
+
+.document-list span {
+  float: right;
+  font-weight: normal;
+  color: #999;
+  margin-right: 100px;
+}
+
+.document-picker {
+  background: #394242;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.doc-header {
+  height: 60px;
+  display: block;
+  background: #FFF;
+}
+
+.doc-home-link {
+  float: left;
+  height: 60px;
+  background: #0f9d58 url("./spreadsheeticon.png") center center no-repeat;
+  width: 40px;
+  display: block;
+}
+.doc-home-link a {
+  display: block;
+  height: 60px;
+}
+
+.document-picker {
+  max-width: 800px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 40px;
+}
+.document-picker li {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0;
+  width: 25%;
+  height: 150px;
+  background: #FFF;
+}
+
+.document-picker li:hover {
+  cursor: pointer;
+}

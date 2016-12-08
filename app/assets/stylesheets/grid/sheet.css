@@ -1,0 +1,257 @@
+.sheet-nav {
+  display: block;
+  height: 50px;
+  font-size: 0;
+  border-top: 1px solid #AAA;
+  background: #eee;
+}
+
+.sheet-nav ul {
+  margin: 0 0 0 50px;
+  padding: 0;
+}
+
+.sheet-nav li.active-sheet {
+  background: #fff;
+  color: #000;
+  border: 1px solid #AAA;
+  border-top: none;
+}
+
+.sheet-nav li {
+  display: inline-block;
+  font-size: 12px;
+  font-family: Arial;
+  border: 1px solid #CCC;
+  border-top: none;
+  padding: 0px 7px;
+  margin: -1px 0px 0px 0px;
+  list-style-type: none;
+  box-sizing: border-box;
+  height: 35px;
+  line-height: 35px;
+  float: left;
+  color: #AAA;
+}
+
+.sheet-nav li:hover {
+  cursor: pointer;
+}
+
+.sheet-nav li.sheet-nav-special {
+  background: transparent;
+  font-size: 22px;
+  color: #6a6a6a;
+  border: 1px solid transparent;
+  margin-top: 4px;
+  margin-right: 4px;
+  padding: 0px 7px;
+  height: 30px;
+  line-height: 29px;
+  font-weight: bold;
+}
+
+.sheet-nav li.sheet-nav-special:hover {
+  border: 1px solid #c6c6c6;
+  border-radius: 4px;
+  color: #000;
+}
+
+.formula-bar {
+  width: 100%;
+  border-bottom: 1px solid #AAA;
+  font-family: Arial;
+  font-size: 0;
+  display: flex;
+  height: 25px;
+  background: #FFF;
+}
+
+.formula-logo {
+  display: inline-block;
+  font-style: italic;
+  font-size: 0px;
+  width: 49px;
+  text-align: center;
+  background: url("./function.png") center center no-repeat;
+  background-size: 19px;
+}
+
+.formula {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.formula textarea {
+  border: none;
+  border-left: 1px solid #d9d9d9;
+  width: 100%;
+  height: 20px;
+  line-height: 15px;
+  margin-top: 2px;
+  box-sizing: border-box;
+  outline: none;
+  padding-left: 10px;
+}
+
+.cell-style {
+  display: block;
+  height: 35px;
+  background: linear-gradient(#f4f4f4, #eeeeee);
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.style-bar > ul {
+  margin: 0;
+  padding: 3px;
+  float: left;
+  border-right: 1px solid #d9d9d9;
+  height: 35px;
+  box-sizing: border-box;
+}
+
+.style-bar > ul > li {
+  list-style-type: none;
+  display: inline-block;
+  border: 1px solid transparent;
+  margin: 0;
+  padding: 0;
+  height: 26px;
+  width: 26px;
+  position: relative;
+}
+
+.style-bar > ul > li:first-child {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.style-bar > ul > li:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.style-bar > ul > li:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 1px #BBB;
+  border: 1px solid #ccc;
+}
+
+.style-bar > ul > li:hover .dropdown-arrow {
+  border-left: 1px solid #CCC;
+}
+
+.style-bar > ul > li.active-style {
+  background-color: #E4E4E4;
+  border-color: #CCC;
+  box-shadow: inset 0px 0px 2px #999;
+}
+.style-bar > ul > li.active-style .dropdown-arrow {
+  border-left: 1px solid #CCC;
+}
+
+.style-bar > ul > li.active-style:hover {
+  box-shadow: inset 0px 0px 2px #999;
+}
+
+
+
+.style-type-bold {
+  background: url("./bold.png") center center no-repeat;
+  background-size: auto 13px;
+}
+
+.style-type-italic {
+  background: url("./italic.png") center center no-repeat;
+  background-size: auto 12px;
+}
+
+.style-type-linethrough {
+  background: url("./strikethrough.png") center center no-repeat;
+  background-size: auto 14px;
+}
+.style-bar > ul > li.style-type-paintbucket {
+  background: url("./paintbucket.png") 5px center no-repeat;
+  background-size: auto 14px;
+  width: 35px;
+}
+.style-bar > ul > li.style-type-fontcolor {
+  background: url("./fontcolor.png") 5px center no-repeat;
+  background-size: auto 14px;
+  width: 35px;
+}
+
+.style-bar > ul > li.style-type-save {
+  background: url("./savebutton.png") 5px center no-repeat;
+  background-size: auto 14px;
+}
+
+.dropdown-arrow {
+  background: url("./dropdownarrow.png") center center no-repeat;
+  background-size: 7px;
+  display: block;
+  float: right;
+  width: 10px;
+  height: 28px;
+  border-left: 1px solid transparent;
+}
+
+.color-picker {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  top: 28px;
+}
+
+.paintbucket-swatch {
+  display: block;
+  width: 20px;
+  height: 4px;
+  margin-top: 21px;
+  margin-left: 2px;
+  float: left;
+}
+
+.style-bar > ul > li.style-type-fontsize {
+  font-family: Arial;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  line-height: 27px;
+  font-weight: bold;
+  width: 50px;
+
+}
+.style-bar > ul > li.style-type-fontfamily {
+  font-family: Arial;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  line-height: 27px;
+  font-weight: bold;
+  width: 90px;
+  white-space: nowrap;
+}
+
+.fontsize-dropdown {
+  left: 0px;
+  top: 28px;
+  position: absolute;
+  z-index: 20;
+  margin: 0;
+  padding: 0;
+  background: #FFF;
+  box-shadow: 0px 0px 10px #999;
+  text-align: left;
+}
+
+.fontsize-dropdown li {
+  list-style-type: none;
+  background: #FFF;
+  padding: 0px 30px 0px 10px;
+  font-weight: normal;
+}
+.fontsize-dropdown li:hover {
+  cursor: pointer;
+  background: #EEE;
+}

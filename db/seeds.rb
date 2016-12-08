@@ -5,3 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+User.delete_all
+
+user = User.create!(email: "test", password: "password", firstname: "Max", lastname: "Hempfling")
+
+Document.delete_all
+# doc1 = Document.create(name: "Test Document 1", author: user, content: "{}")
+# doc1 = Document.create(name: "Test Document 2", author: user, content: "{}")
+# doc1 = Document.create(name: "Test Document 3", author: user, content: "{}")
+# doc1 = Document.create(name: "Test Document 4", author: user, content: "{}")
