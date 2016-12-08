@@ -7,7 +7,6 @@ import DocContainer from './doc/doc_container';
 
 const Root = function({ store }) {
   const _ensureLoggedIn = (nextState, replace) => {
-    console.log("checking user" + currentUser)
     const currentUser = store.getState().session.currentUser;
     if (!currentUser) {
       replace('/login');

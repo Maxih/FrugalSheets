@@ -2,6 +2,7 @@ import * as Util from '../utils/document_api_util';
 
 
 export const RECEIVE_DOCUMENTS = "RECEIVE_DOCUMENTS";
+export const FILTER_DOCUMENTS = "";
 
 
 export const receiveDocuments = (documents) => ({

@@ -1,7 +1,7 @@
 class Api::DocumentsController < ApplicationController
   def show
     @document = Document.find(params[:id])
-    
+
     if logged_in? && current_user == @document.author
       render "api/documents/show"
     else
@@ -43,7 +43,7 @@ class Api::DocumentsController < ApplicationController
 
   def index
     if logged_in?
-      @documents = Document.where(author: current_user)
+      @documents = Document.select(:id, :name, :updated_at).where(author: current_user).order(updated_at: :desc)
 
       render "api/documents/index"
     else
