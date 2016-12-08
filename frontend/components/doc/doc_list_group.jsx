@@ -23,7 +23,7 @@ const DocListGroup = (props) => {
 
   const docList = doc.docs.map(curDoc => {
     return (
-      <li key={curDoc.id} onClick={onClick(curDoc.id)}>
+      <li key={curDoc.id} onClick={() => onClick(curDoc.id)}>
         {curDoc.name}
         <span>{formatDate(new Date(curDoc.updated_at))}</span>
       </li>

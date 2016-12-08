@@ -37,10 +37,12 @@
 .page-header {
   background: #0f9d58;
   height: 65px;
+  min-width: 400px;
 }
 
 .page-body {
   max-width: 800px;
+  min-width: 400px;
   padding: 40px;
   box-sizing: border-box;
   margin: 0 auto;

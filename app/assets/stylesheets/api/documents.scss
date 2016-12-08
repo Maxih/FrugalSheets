@@ -10,6 +10,7 @@ body {
 
 .document-search {
   max-width: 800px;
+  min-width: 400px;
   margin: 0 auto;
   box-sizing: border-box;
   padding: 5px 40px;
@@ -102,6 +103,7 @@ ul.document-list {
   background: #394242;
   margin-bottom: 20px;
   padding-bottom: 15px;
+  min-width: 400px;
 }
 
 .document-picker h2 {
@@ -113,6 +115,7 @@ ul.document-list {
 
 .document-picker article {
   max-width: 800px;
+  min-width: 400px;
   box-sizing: border-box;
   margin: 0 auto;
   padding: 15px 30px 15px 30px;

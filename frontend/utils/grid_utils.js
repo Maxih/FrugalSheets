@@ -15,9 +15,9 @@ export function blankState() {
     };
 
     const defaults = {
-        activeSheet: "1",
+        activeSheet: "Sheet1",
         sheets: {
-            "1": {
+            "Sheet1": {
                 name: "Sheet1",
                 workingArea: workingAreaDefaults,
                 data: blankSheet()

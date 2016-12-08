@@ -11,7 +11,14 @@ export default class SheetNav extends React.Component {
   addSheet() {
     const {addSheet} = this.props;
 
-    addSheet(newSheetName(this.props.sheetNames));
+    const names = this.props.sheetNames.map((sheet) => {
+      return sheet.id;
+    });
+
+
+    const newName = newSheetName(names);
+
+    addSheet(newName);
   }
 
   changeSheet(sheetName) {
@@ -23,7 +30,7 @@ export default class SheetNav extends React.Component {
     const sheets = this.props.sheetNames.map((sheet, idx) => {
       if(sheet.id === this.props.activeSheet) {
         return (
-          <li className="active-sheet" key={sheet.id}>{sheet.name}</li>
+          <li className="active-sheet" key={idx}>{sheet.name}</li>
         );
       }
 

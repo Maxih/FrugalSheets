@@ -11,7 +11,7 @@ export default class DocList extends React.Component {
   }
 
   onClick(id) {
-    return (id) => this.props.onClick(id);
+    this.props.onClick(id);
   }
 
   orderByDate() {

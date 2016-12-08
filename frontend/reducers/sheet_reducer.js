@@ -1,5 +1,5 @@
 import * as Action from '../actions/sheet_actions.js';
-import {blankState, blankSheet, getCellsBetween, getRowFromId, getColFromId, updateActiveRangeStyle, mapRangeToGrid} from '../utils/grid_utils';
+import {blankState, blankSheet, getCellsBetween, getRowFromId, getColFromId, updateActiveRangeStyle, mapRangeToGrid, newSheetName} from '../utils/grid_utils';
 import {merge} from 'lodash';
 
 
@@ -24,7 +24,8 @@ function SheetReducer(state = blankState(), action) {
       return newState;
 
     case Action.ADD_SHEET:
-      newState.sheets[action.name] = blankState().sheets["1"];
+      newState.sheets[action.name] = blankState().sheets["Sheet1"];
+      newState.sheets[action.name].name = action.name;
       newState.activeSheet = action.name;
       return newState;
 
