@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { receiveStartCoord, receiveEndCoord, tempEndCoord, updateCell } from '../../actions/sheet_actions';
+import { loadDocument } from '../../actions/sheet_actions';
 import Doc from './doc';
 
 const mapStateToProps = (state) => {
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-
+  loadDocument: (id) => dispatch(loadDocument(id))
 });
 
 export default connect(

@@ -117,3 +117,24 @@ ul.document-list {
   cursor: pointer;
   border: 2px solid #0f9d58;
 }
+
+.doc-title {
+  padding: 5px;
+  float: left;
+
+}
+
+.doc-title input {
+  font-size: 16px;
+  padding: 4px;
+  display: inline-block;
+  box-sizing: border-box;
+  border-radius: 2px;
+  outline: none;
+  border: 1px solid transparent;
+}
+
+.doc-title input:focus,
+.doc-title input:hover {
+  border-color: #D9D9D9;
+}

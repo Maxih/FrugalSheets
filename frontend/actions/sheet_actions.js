@@ -12,6 +12,7 @@ export const RESIZE_COL = "RESIZE_COL";
 export const SELECT_ROW = "SELECT_ROW";
 export const SELECT_COL = "SELECT_COL";
 export const RECEIVE_DOCUMENT = "RECEIVE_DOCUMENT";
+export const UPDATE_DOCUMENT_NAME = "UPDATE_DOCUMENT_NAME";
 
 export const updateCell = (cell) => ({
   type: UPDATE_CELL,
@@ -75,6 +76,11 @@ export const selectCol = (colId) => ({
 export const receiveDocument = (doc) => ({
   type: RECEIVE_DOCUMENT,
   doc: doc
+});
+
+export const updateDocumentName = (name) => ({
+  type: UPDATE_DOCUMENT_NAME,
+  name: name
 });
 
 

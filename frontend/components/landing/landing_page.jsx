@@ -35,9 +35,7 @@ export default class LandingPage extends React.Component {
   }
 
   openDoc(id) {
-    this.props.loadDocument(id).then(
-      newDoc => this.openNewDoc(newDoc)
-    );
+    this.props.router.push(`/documents/${id}`);
   }
 
   openNewDoc({doc}) {

@@ -66,6 +66,11 @@ function SheetReducer(state = blankState(), action) {
       const newDoc = merge({}, JSON.parse(action.doc.content), {id: action.doc.id}, {name:action.doc.name});
       return newDoc;
 
+    case Action.UPDATE_DOCUMENT_NAME:
+      newState.name = action.name;
+      return newState;
+
+
     default:
       return state;
   }

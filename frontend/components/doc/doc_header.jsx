@@ -1,19 +1,24 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router';
+import { Link } from 'react-router';
 
 class DocHeader extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      docName: ""
+      docName: props.name
     }
 
     this.onNameChange = this.onNameChange.bind(this);
+    this.saveName = this.saveName.bind(this);
   }
 
   onNameChange(e) {
     this.setState({docName: e.target.value});
+  }
+
+  saveName() {
+    this.props.updateDocumentName(this.state.docName);
   }
 
   render() {
@@ -23,7 +28,7 @@ class DocHeader extends React.Component {
             <Link href="/#/"></Link>
           </span>
           <span className="doc-title">
-            <input type="text" value={this.state.docName} onChange={this.onNameChange} />
+            <input type="text" size={this.state.docName.length > 5 ? this.state.docName.length+1 : 5} value={this.state.docName} onBlur={this.saveName} onChange={this.onNameChange} />
           </span>
         </nav>
     )
