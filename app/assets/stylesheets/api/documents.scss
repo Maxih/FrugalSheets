@@ -8,6 +8,41 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.document-search {
+  max-width: 800px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 5px 40px;
+
+}
+
+.document-search input {
+  display: block;
+  height: 50px;
+  background: #35ac72;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 20px;
+  color: #c2e6d5;
+  transition: background .2s, color .2s;
+}
+
+.document-search input:focus {
+  background: #FFF;
+  color: #666;
+}
+.document-search input::-webkit-input-placeholder {
+  color: #c2e6d5;
+  transition: color .2s;
+}
+.document-search input:focus::-webkit-input-placeholder {
+  color: #666;
+}
+
 .document-list li {
   display: block;
   list-style-type: none;

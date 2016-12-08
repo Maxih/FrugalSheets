@@ -1,11 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
 import dateFormat from 'dateformat';
-
+import DocListGroup from  './doc_list_group';
 
 export default class DocList extends React.Component {
+  constructor() {
+    super();
+
+    this.onClick = this.onClick.bind(this);
+  }
+
   onClick(id) {
-    this.props.onClick(id);
+    return (id) => this.props.onClick(id);
   }
 
   orderByDate() {
@@ -13,17 +19,17 @@ export default class DocList extends React.Component {
       {
         name: "Today",
         docs: [],
-        time: 1000 * 60 * 60 * 1
+        time: 1000 * 60 * 60 * 24
       },
       {
         name: "Yesterday",
         docs: [],
-        time: 1000 * 60 * 60 * 2
+        time: 1000 * 60 * 60 * 24 * 2
       },
       {
         name: "Previous 7 days",
         docs: [],
-        time: 1000 * 60 * 60 * 3
+        time: 1000 * 60 * 60 * 24 * 7
       },
       {
         name: "Earlier",
@@ -47,49 +53,28 @@ export default class DocList extends React.Component {
     });
 
     const docLists = timeGroups.map((doc, idx) => {
-      if(doc.docs.length > 0) {
-        const docList = doc.docs.map(curDoc => {
-          return this.listItem(curDoc);
-        });
-        return (
-          <section key={idx} className="document-list-group">
-            <span className="document-list-title">{doc.name}</span>
-            <ul className="document-list">
-              {docList}
-            </ul>
-          </section>
-        );
-      } else {
-        return "";
-      }
+      return <DocListGroup key={idx} doc={doc} onClick={this.onClick}/>
     });
 
-    return (
-      <section className="document-list-range">
-        {docLists}
-      </section>
-    );
+    return docLists;
   }
 
-  listItem(doc) {
-    return (
-      <li key={doc.id} onClick={this.onClick.bind(this, doc.id)}>
-        {doc.name}
-        <span>{this.formatDate(new Date(doc.updated_at))}</span>
-      </li>
-    );
-  }
+  searchList() {
+    const searchString = `Search: ${this.props.documents.length} result(s) for "${this.props.searchParam}"`;
+    const docList = {
+      name: searchString,
+      docs: this.props.documents
+    };
 
-  formatDate(date) {
-    let curTime = new Date();
-
-    if(curTime - date < 1000 * 60 * 60 * 24)
-      return dateFormat(date, "h:MM TT");
-    else
-      return dateFormat(date, "mmm d, yyyy");
+    return <DocListGroup doc={docList} onClick={this.onClick}/>
   }
 
   render() {
-    return this.orderByDate();
+    const docList = this.props.searchParam.length === 0 ? this.orderByDate() : this.searchList();
+    return (
+      <section className="document-list-range">
+        {docList}
+      </section>
+    );
   }
 }

@@ -1,10 +1,20 @@
 import * as Action from '../actions/document_actions.js';
 import {merge} from 'lodash';
 
-export function DocumentReducer(state = [], action) {
+const defaults = {
+  list: [],
+  searchParam: ""
+}
+
+export function DocumentReducer(state = defaults, action) {
   switch(action.type) {
     case Action.RECEIVE_DOCUMENTS:
-      return merge({}, action.documents);
+      const docs = {list: Object.keys(action.documents).map(doc=>action.documents[doc])};
+
+      return merge({}, state, docs);
+
+    case Action.FILTER_DOCUMENTS:
+      return merge({}, state, {searchParam: action.searchParam})
 
     default:
       return state;

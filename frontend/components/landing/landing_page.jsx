@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router';
 import DocList from '../doc/doc_list';
 import * as Util from '../../utils/grid_utils';
 import UserBadge from '../user/user_badge';
+import DocSearch from '../doc/doc_search';
 
 export default class LandingPage extends React.Component {
   constructor(props) {
@@ -35,13 +36,13 @@ export default class LandingPage extends React.Component {
 
   render() {
 
-    const documents = Object.keys(this.props.documents).map(doc=>this.props.documents[doc]);
+    const documents = this.props.documents || [];
 
     return (
       <section>
         <header className="page-header">
           <nav>
-            <DocSearchContainer />
+            <DocSearch searchParam={this.props.searchParam} filterDocuments={this.props.filterDocuments} />
             <UserBadge logOut={this.logOut} currentUser={this.props.currentUser} />
           </nav>
         </header>
@@ -57,7 +58,7 @@ export default class LandingPage extends React.Component {
           </article>
         </section>
         <section className="page-body">
-          <DocList onClick={this.openDoc.bind(this)} documents={documents} />
+          <DocList searchParam={this.props.searchParam} onClick={this.openDoc.bind(this)} documents={documents} />
         </section>
       </section>
     );
