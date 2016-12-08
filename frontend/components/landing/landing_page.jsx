@@ -41,7 +41,6 @@ export default class LandingPage extends React.Component {
   }
 
   openNewDoc({doc}) {
-    console.log(doc);
     this.props.router.push(`/documents/${doc.id}`);
   }
 
@@ -56,9 +55,15 @@ export default class LandingPage extends React.Component {
           </nav>
         </header>
         <section className="document-picker">
-          <ul>
-            <li onClick={this.createDoc}>Blank Sheet</li>
-          </ul>
+          <article>
+            <h2>Start a new spreadsheet</h2>
+            <ul>
+              <li>
+                <span onClick={this.createDoc} className="document-thumb">+</span>
+                <h3>Blank</h3>
+              </li>
+            </ul>
+          </article>
         </section>
         <section className="page-body">
           <DocList onClick={this.openDoc.bind(this)} documents={this.props.documents} />

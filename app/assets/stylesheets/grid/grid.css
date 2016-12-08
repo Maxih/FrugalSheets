@@ -101,7 +101,6 @@ body {
 
 .selected-cell {
   background: #ecf3ff;
-
 }
 
 .grid-row-labels .selected-cell,
@@ -110,7 +109,7 @@ body {
 }
 
 .active-cell {
-  border: 2px solid #4285f4;
+  border: 2px solid #4285f4 !important;
   box-shadow: 0px 0px 10px #666;
   z-index: 10;
   background: #FFF;

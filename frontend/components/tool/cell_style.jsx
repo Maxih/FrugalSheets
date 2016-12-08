@@ -1,6 +1,7 @@
 import React from 'react';
 import {merge} from 'lodash';
 import { CompactPicker } from 'react-color';
+import {LightenDarkenColor} from '../../utils/grid_utils';
 import BoldButton from './tool_box_buttons/bold_button';
 import ItalicButton from './tool_box_buttons/italic_button';
 import LineThroughButton from './tool_box_buttons/linethrough_button';
@@ -41,6 +42,18 @@ export default class CellStyle extends React.Component {
     this.props.updateRange(newStyledCell);
   }
 
+  changeBackground(value) {
+    if(this.props.cell.style === undefined)
+      return;
+
+    const newStyledCell = merge({}, this.props.cell);
+
+    newStyledCell.style["backgroundColor"] = value;
+    newStyledCell.style["borderColor"] = LightenDarkenColor(value, -40);
+
+    this.props.updateRange(newStyledCell);
+  }
+
   saveDoc() {
     this.props.saveDocument(this.props.grid);
   }
@@ -72,7 +85,7 @@ export default class CellStyle extends React.Component {
           <ColorButton color={this.props.cell.style} styleProperty="color" changeStyle={this.changeStyle.bind(this, "color")} className="style-type-fontcolor" />
         </ul>
         <ul>
-          <ColorButton color={this.props.cell.style} styleProperty="backgroundColor" changeStyle={this.changeStyle.bind(this, "backgroundColor")} className="style-type-paintbucket" />
+          <ColorButton color={this.props.cell.style} styleProperty="backgroundColor" changeStyle={this.changeBackground.bind(this)} className="style-type-paintbucket" />
         </ul>
       </div>
     );
