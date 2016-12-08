@@ -22,7 +22,7 @@ export const saveDocument = (doc, success, error) => {
   return $.ajax({
     method: "PATCH",
     url: `/api/documents/${doc.id}`,
-    data: {id: doc.id, name: "new Doc", content: JSON.stringify(doc)},
+    data: {id: doc.id, name: doc.name, content: JSON.stringify(doc)},
     success,
     error
   });

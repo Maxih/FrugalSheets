@@ -63,7 +63,7 @@ function SheetReducer(state = blankState(), action) {
       return newState;
 
     case Action.RECEIVE_DOCUMENT:
-      const newDoc = merge({}, JSON.parse(action.doc.content), {id: action.doc.id});
+      const newDoc = merge({}, JSON.parse(action.doc.content), {id: action.doc.id}, {name:action.doc.name});
       return newDoc;
 
     default:
