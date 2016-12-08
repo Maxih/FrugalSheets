@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {SessionReducer} from './session_reducer';
+import SessionReducer from './session_reducer';
 import {DocumentReducer} from './document_reducer';
 import SheetReducer from './sheet_reducer';
 

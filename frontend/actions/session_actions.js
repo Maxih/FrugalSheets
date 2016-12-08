@@ -3,14 +3,14 @@ import * as Util from '../utils/session_api_util';
 export const RECEIVE_CURRENT_USER = "RECEIVE_CURRENT_USER";
 export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
 
-export const receiveCurrentUser = (session) => ({
+export const receiveCurrentUser = currentUser => ({
   type: RECEIVE_CURRENT_USER,
-  session: session
+  currentUser
 });
 
-export const receiveErrors = (errors) => ({
+export const receiveErrors = errors => ({
   type: RECEIVE_ERRORS,
-  errors: errors
+  errors
 });
 
 export function login(user) {

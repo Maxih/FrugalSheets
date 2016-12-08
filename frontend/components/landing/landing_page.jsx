@@ -14,32 +14,18 @@ export default class LandingPage extends React.Component {
     this.props.fetchDocuments();
   }
 
-  componentDidUpdate() {
-		this.redirectIfLoggedOut();
-	}
-
-  redirectIfLoggedOut() {
-    if (!this.props.loggedIn) {
-      this.props.router.push("/login");
-    }
-  }
-
   logout() {
     this.props.logout();
   }
 
   createDoc() {
     this.props.createDocument(Util.blankSheet()).then(
-      newDoc => this.openNewDoc(newDoc)
+      newDoc => this.openDoc(newDoc.doc.id)
     );
   }
 
   openDoc(id) {
     this.props.router.push(`/documents/${id}`);
-  }
-
-  openNewDoc({doc}) {
-    this.props.router.push(`/documents/${doc.id}`);
   }
 
   render() {
@@ -48,7 +34,7 @@ export default class LandingPage extends React.Component {
       <section>
         <header className="page-header">
           <nav>
-            <h1>Welcome Back {this.props.user.firstname}</h1>
+            <h1>Welcome Back {this.props.currentUser.firstname}</h1>
             <button onClick={this.logout.bind(this)}>Logout</button>
           </nav>
         </header>

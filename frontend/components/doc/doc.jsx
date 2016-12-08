@@ -14,7 +14,6 @@ export default class Doc extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.props.loadDocument(this.props.routeParams.documentId).then(
       newDoc => this.setState({loading: false})
     );

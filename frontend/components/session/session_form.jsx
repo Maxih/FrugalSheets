@@ -10,18 +10,16 @@ class SessionForm extends React.Component {
         lastname: "",
         password: ""
     };
+
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.userChange = this.userChange.bind(this);
-    this.passChange = this.passChange.bind(this);
-    this.firstNameChange = this.firstNameChange.bind(this);
-    this.lastNameChange = this.lastNameChange.bind(this);
-    this.redirectIfLoggedIn = this.redirectIfLoggedIn.bind(this);
   }
+  
   handleSubmit(e) {
     e.preventDefault();
     const user = Object.assign({}, this.state);
     this.props.processForm(user).then(() => this.props.router.push("/"));
   }
+
   componentDidUpdate() {
 		this.redirectIfLoggedIn();
 	}
@@ -32,27 +30,17 @@ class SessionForm extends React.Component {
     }
   }
 
-  userChange(e) {
-    this.setState({email: e.target.value});
-  }
-
-  firstNameChange(e) {
-    this.setState({firstname: e.target.value});
-  }
-
-  lastNameChange(e) {
-    this.setState({lastname: e.target.value});
-  }
-
-  passChange(e) {
-    this.setState({password: e.target.value});
+  update(field) {
+    return e => this.setState({
+      [field]: e.currentTarget.value
+    });
   }
 
   render() {
     const additionalProps = (
       <label>
-      <input value={this.state.firstname} placeholder="First Name" type="text" onChange={this.firstNameChange}/>
-      <input value={this.state.lastname} placeholder="Last Name" type="text" onChange={this.lastNameChange}/>
+      <input value={this.state.firstname} placeholder="First Name" type="text" onChange={this.update("firstname")}/>
+      <input value={this.state.lastname} placeholder="Last Name" type="text" onChange={this.update("lastname")}/>
       </label>
     );
 
@@ -61,7 +49,7 @@ class SessionForm extends React.Component {
     );
 
     const loginLink = (
-      <Link href="/#/login" className="create-account">Already have an account? Sign in</Link>
+      <Link href="/#/login" className="create-account">{"Already have an account? Sign in"}</Link>
     );
 
     return (
@@ -69,8 +57,8 @@ class SessionForm extends React.Component {
         <section className="login-form">
           <h1>{this.props.formType}</h1>
           <form onSubmit={this.handleSubmit}>
-            <input value={this.state.email} placeholder="Email" type="text" onChange={this.userChange}/>
-            <input value={this.state.password} placeholder="Password" type="password" onChange={this.passChange}/>
+            <input value={this.state.email} placeholder="Email" type="text" onChange={this.update("email")}/>
+            <input value={this.state.password} placeholder="Password" type="password" onChange={this.update("password")}/>
             {this.props.formType === "Sign Up" ? additionalProps : ""}
             <button>{this.props.formType}</button>
           </form>

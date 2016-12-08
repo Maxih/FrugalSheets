@@ -5,9 +5,8 @@ import {fetchDocuments} from '../../actions/document_actions';
 import {createDocument, loadDocument} from '../../actions/sheet_actions';
 
 const mapStateToProps = state => ({
-  loggedIn: !!state.session.email,
-  user: state.session,
-  errors: state.errors,
+  loggedIn: !!state.session.loggedIn,
+  currentUser: state.session.currentUser,
   documents: state.documents
 });
 

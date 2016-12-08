@@ -1,31 +1,21 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { login, logout, signup } from '../../actions/session_actions';
 import SessionForm from './session_form';
-import * as Action from '../../actions/session_actions';
 
-const mapStateToProps = state => ({
-  loggedIn: !!state.session.email,
-  errors: state.errors
 
+const mapStateToProps = ({ session }) => ({
+  loggedIn: Boolean(session.currentUser),
+  errors: session.errors
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  let action = () => {};
-  let formType = "";
+const mapDispatchToProps = (dispatch, { location }) => {
+  const formType = location.pathname.slice(1);
+  const processForm = (formType === 'login') ? login : signup;
 
-  if(location.hash === '#/login') {
-    action = Action.login;
-    formType = "Login";
-  }
-
-  if(location.hash === '#/signup') {
-    action = Action.signup;
-    formType = "Sign Up";
-  }
-
-  return ({
-    processForm: (user) => dispatch(action(user)),
-    formType: formType
-  });
+  return {
+    processForm: user => dispatch(processForm(user)),
+    formType
+  };
 };
 
 export default connect(

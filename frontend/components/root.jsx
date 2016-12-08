@@ -6,14 +6,29 @@ import LandingPageContainer from './landing/landing_page_container';
 import DocContainer from './doc/doc_container';
 
 const Root = function({ store }) {
+  const _ensureLoggedIn = (nextState, replace) => {
+    console.log("checking user" + currentUser)
+    const currentUser = store.getState().session.currentUser;
+    if (!currentUser) {
+      replace('/login');
+    }
+  };
+
+  const _redirectIfLoggedIn = (nextState, replace) => {
+    const currentUser = store.getState().session.currentUser;
+    if (currentUser) {
+      replace('/');
+    }
+  }
+
   return (
     <Provider store={ store }>
       <Router history={ hashHistory }>
         <Route path="/">
-          <IndexRoute component={ LandingPageContainer } />
-          <Route path="/documents/:documentId" component={ DocContainer} />
-          <Route path="/login" component={ SessionFormContainer } />
-          <Route path="/signup" component={ SessionFormContainer } />
+          <IndexRoute onEnter={_ensureLoggedIn} component={ LandingPageContainer } />
+          <Route path="/documents/:documentId" onEnter={_ensureLoggedIn} component={ DocContainer } />
+          <Route path="/signup" onEnter={_redirectIfLoggedIn} component={ SessionFormContainer } />
+          <Route path="/login" onEnter={_redirectIfLoggedIn} component={ SessionFormContainer } />
         </Route>
       </Router>
     </Provider>

@@ -5,11 +5,17 @@ import configureStore from './store/store';
 import * as Util from './utils/session_api_util';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const initialState = window.currentUser;
+  let store;
 
-  const store = configureStore({session: initialState});
-  const root = document.getElementById('root');
+  if (window.currentUser) {
+    const preloadedState = { session: { currentUser: window.currentUser } };
+    store = configureStore(preloadedState);
+  } else {
+    store = configureStore();
+  }
+
   window.store = store;
-  window.login = Util.login;
+
+  const root = document.getElementById('root');
   ReactDOM.render(<Root store={ store }/>, root);
 });
