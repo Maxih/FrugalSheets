@@ -1,28 +1,31 @@
 import merge from 'lodash/merge';
 
-// export const DataType = {
-//   INTEGER: "INTEGER",
-//   FORMULA: "FORMULA",
-//   TEXT: "TEXT"
-// };
+export function getLinkedCells(grid, links) {
+  let linkKeys = Object.keys(links);
+  if(linkKeys === undefined)
+    return [];
 
-// export class Cell {
-//   constructor(cellData) {
-//     this.cell = {
-//       content: "",
-//       width: 100,
-//       height: 26,
-//       style: {},
-//       type: DataType.TEXT,
-//       pos: {
-//           row: 0,
-//           col: 0
-//       }
-//     }
-//     this.cell = merge(this.cell, cellData);
-//
-//   }
-// }
+  links = linkKeys.map((coord) => {
+
+    const parsed = parseCoord(coord);
+    return grid[parsed.row][parsed.col];
+  });
+
+  return links;
+}
+
+export function parseCoord(coord) {
+  const matcher = /([a-zA-Z]+)([0-9]+)/g;
+  const matched = matcher.exec(coord);
+
+  if(matched.length != 3)
+    return false;
+
+  let col = charToNum(matched[1]) - 1;
+  let row = parseInt(matched[2]) - 1;
+
+  return {row: row, col: col};
+}
 
 export function blankState() {
     const workingAreaDefaults = {
@@ -178,6 +181,8 @@ export const charToNum = function(alpha) {
             j = i;
         }
     }
+
+    return index;
 }
 
 export const numToChar = function(number) {

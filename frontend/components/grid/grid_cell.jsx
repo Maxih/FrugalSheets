@@ -2,6 +2,7 @@ import React from 'react';
 import * as Util from '../../utils/grid_utils';
 import {merge} from 'lodash';
 import CellInputContainer from '../tool/cell_input_container';
+import {Formula} from '../../utils/formula_util';
 
 
 export default class GridCell extends React.Component {
@@ -18,6 +19,18 @@ export default class GridCell extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     let havePropsChanged = !Util.compare(this.props.cell, nextProps.cell);
+
+    if(nextProps.cell.content[0] === "=") {
+      const formula = new Formula(nextProps.cell.content.slice(1));
+      const oldLinks = Util.getLinkedCells(this.props.grid, formula.vars);
+      const newLinks = Util.getLinkedCells(nextProps.grid, formula.vars);
+      for(let i = 0; i < oldLinks.length; i++) {
+        if(!Util.compare(oldLinks[i], newLinks[i])) {
+          return true;
+        }
+      }
+    }
+
     return (havePropsChanged ||
         this.props.selected !== nextProps.selected ||
         this.props.active !== nextProps.active
@@ -55,12 +68,36 @@ export default class GridCell extends React.Component {
       return className;
   }
 
+  parseFormula(text) {
+    const formula = new Formula(text.slice(1));
+    const vars = Object.keys(formula.vars);
+    const mappedVar = {};
+
+    vars.forEach((curVar) => {
+      let coord = Util.parseCoord(curVar)
+      mappedVar[curVar] = this.props.grid[coord.row][coord.col].content;
+    });
+
+    let parsed = formula.parse(mappedVar);
+
+    if(!parsed)
+      return "NaN";
+
+    return formula.parse();
+  }
+
   render() {
     let content = this.props.cell.content;
+
+
     if(this.props.active) {
       content = (
         <CellInputContainer styling={true} refName="cellRef" cell={this.props.cell} updateCell={this.props.updateCell} />
       );
+    } else {
+      if(content[0] === "=") {
+        content = this.parseFormula(content);
+      }
     }
 
     const style = merge({}, this.props.cell.style, {

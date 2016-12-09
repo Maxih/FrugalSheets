@@ -39,6 +39,7 @@ body {
   box-sizing: border-box;
   cursor: default;
   font-family: Arial;
+  padding: 2px;
 }
 
 
@@ -123,6 +124,7 @@ textarea.cell-val-textarea {
   outline: none;
   resize: none;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .grid-cell p {

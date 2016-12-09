@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { receiveStartCell, receiveEndCell, tempEndCell, updateCell } from '../../actions/sheet_actions';
-import { isCellActive, isCellSelected, getWorkingArea, getCell } from '../../reducers/selectors';
+import { isCellActive, isCellSelected, getWorkingArea, getCell, getDataGrid } from '../../reducers/selectors';
 import GridCell from './grid_cell';
 
 const mapStateToProps = (state, ownProps) => {
@@ -11,7 +11,8 @@ const mapStateToProps = (state, ownProps) => {
     selected: isCellSelected(workingArea.activeRange, cell),
     active: isCellActive(workingArea.activeRange, cell),
     selecting: workingArea.selecting,
-    cell: cell
+    cell: cell,
+    grid: getDataGrid(state)
   };
 };
 
