@@ -1,3 +1,29 @@
+import merge from 'lodash/merge';
+
+// export const DataType = {
+//   INTEGER: "INTEGER",
+//   FORMULA: "FORMULA",
+//   TEXT: "TEXT"
+// };
+
+// export class Cell {
+//   constructor(cellData) {
+//     this.cell = {
+//       content: "",
+//       width: 100,
+//       height: 26,
+//       style: {},
+//       type: DataType.TEXT,
+//       pos: {
+//           row: 0,
+//           col: 0
+//       }
+//     }
+//     this.cell = merge(this.cell, cellData);
+//
+//   }
+// }
+
 export function blankState() {
     const workingAreaDefaults = {
         activeCell: {
@@ -28,14 +54,30 @@ export function blankState() {
     return defaults;
 }
 
-export function objectSameVals(oldObj, newObj) {
-    const oldKeys = Object.keys(oldObj).sort();
-    const newKeys = Object.keys(newObj).sort();
+export function blankSheet() {
+    const grid = new Array(30);
 
-    return (oldKeys.length == newKeys.length) && oldKeys.every((element, index) => {
-        return element === newKeys[index] && oldObj[element] === newObj[element];
-    });
+    for (let i = 0; i < grid.length; i++) {
+        grid[i] = new Array(26);
+        for (let j = 0; j < grid[i].length; j++) {
+            grid[i][j] = blankCell(i, j);
+        }
+    }
 
+    return grid;
+}
+
+export function blankCell(row, col) {
+  return {
+    content: "",
+    width: 100,
+    height: 26,
+    style: {},
+    pos: {
+        row: row,
+        col: col
+    }
+  };
 }
 
 export function updateActiveRangeStyle(range, cell) {
@@ -128,28 +170,6 @@ export function newSheetName(taken) {
     return testName;
 }
 
-export function blankSheet() {
-    const grid = new Array(30);
-
-    for (let i = 0; i < grid.length; i++) {
-        grid[i] = new Array(26);
-        for (let j = 0; j < grid[i].length; j++) {
-            grid[i][j] = {
-                content: "",
-                width: 100,
-                height: 26,
-                style: {},
-                pos: {
-                    row: i,
-                    col: j
-                }
-            };
-        }
-    }
-
-    return grid;
-}
-
 export const charToNum = function(alpha) {
     var index = 0
     for (var i = 0, j = 1; i < j; i++, j++) {
@@ -207,3 +227,31 @@ export function LightenDarkenColor(col, amt) {
 
     return (usePound?"#":"") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
 }
+
+export const compare = function (obj1, obj2) {
+	//Loop through properties in object 1
+	for (var p in obj1) {
+		//Check property exists on both objects
+		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+
+		switch (typeof (obj1[p])) {
+			//Deep compare objects
+			case 'object':
+				if (!compare(obj1[p], obj2[p])) return false;
+				break;
+			//Compare function code
+			case 'function':
+				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
+				break;
+			//Compare values
+			default:
+				if (obj1[p] != obj2[p]) return false;
+		}
+	}
+
+	//Check object 2 for any extra properties
+	for (var p in obj2) {
+		if (typeof (obj1[p]) == 'undefined') return false;
+	}
+	return true;
+};

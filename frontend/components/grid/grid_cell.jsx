@@ -17,15 +17,11 @@ export default class GridCell extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if(
-      (this.props.cell.content !== nextProps.cell.content) ||
-      (this.props.cell.width !== nextProps.cell.width) ||
-      (this.props.cell.height !== nextProps.cell.height) ||
-      (this.props.selected !== nextProps.selected) ||
-      (this.props.active !== nextProps.active))
-        return true;
-
-    return !Util.objectSameVals(this.props.cell.style, nextProps.cell.style);
+    let havePropsChanged = !Util.compare(this.props.cell, nextProps.cell);
+    return (havePropsChanged ||
+        this.props.selected !== nextProps.selected ||
+        this.props.active !== nextProps.active
+    );
   }
 
   mouseAction(e) {
