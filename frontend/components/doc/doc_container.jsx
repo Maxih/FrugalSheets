@@ -4,8 +4,6 @@ import Doc from './doc';
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: !!state.session.email,
-    user: state.session,
   };
 };
 

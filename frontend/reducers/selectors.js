@@ -1,5 +1,24 @@
 import {between} from '../utils/grid_utils';
 
+export function getDataGrid(state) {
+  return state.doc.sheets[getActiveSheet(state)].data;
+}
+
+export function getWorkingArea(state) {
+  return state.doc.sheets[getActiveSheet(state)].workingArea;
+}
+
+export function getCell(state, row, col) {
+  return state.doc.sheets[getActiveSheet(state)].data[row][col];
+}
+
+export function getActiveSheet(state) {
+  return state.doc.activeSheet;
+}
+export function getActiveCell(state) {
+  return state.doc.sheets[getActiveSheet(state)].workingArea.activeCell;
+}
+
 export function applySearchParam(docs, searchParam) {
   if(docs === undefined)
     return [];

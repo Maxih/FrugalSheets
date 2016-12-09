@@ -1,15 +1,16 @@
 import { connect } from 'react-redux';
 import { receiveStartCell, receiveEndCell, tempEndCell, updateCell } from '../../actions/sheet_actions';
+import { isCellActive, isCellSelected, getWorkingArea, getCell } from '../../reducers/selectors';
 import GridCell from './grid_cell';
-import {isCellActive, isCellSelected, selectedBorders} from '../../reducers/selectors';
 
 const mapStateToProps = (state, ownProps) => {
-  const cell = state.doc.sheets[state.doc.activeSheet].data[ownProps.rowId][ownProps.colId];
+  const workingArea = getWorkingArea(state);
+  const cell = getCell(state, ownProps.rowId, ownProps.colId);
+
   return {
-    // selectedBorders: selectedBorders(state.doc.sheets[state.doc.activeSheet].workingArea.activeRange, cell),
-    selected: isCellSelected(state.doc.sheets[state.doc.activeSheet].workingArea.activeRange, state.doc.sheets[state.doc.activeSheet].data[ownProps.rowId][ownProps.colId]),
-    active: isCellActive(state.doc.sheets[state.doc.activeSheet].workingArea.activeRange, state.doc.sheets[state.doc.activeSheet].data[ownProps.rowId][ownProps.colId]),
-    selecting: state.doc.sheets[state.doc.activeSheet].workingArea.selecting,
+    selected: isCellSelected(workingArea.activeRange, cell),
+    active: isCellActive(workingArea.activeRange, cell),
+    selecting: workingArea.selecting,
     cell: cell
   };
 };

@@ -7,19 +7,23 @@ body {
 
   font-family: 'Roboto', sans-serif;
 }
-
-.document-search {
+.page-header nav {
   max-width: 800px;
   min-width: 400px;
   margin: 0 auto;
   box-sizing: border-box;
   padding: 5px 40px;
+  display: flex;
+}
+.document-search {
+  flex-grow: 1;
 
 }
 
+
 .document-search input {
   display: block;
-  height: 50px;
+  height: 45px;
   background: #35ac72;
   border: none;
   border-radius: 5px;
@@ -29,6 +33,7 @@ body {
   padding: 10px;
   font-size: 20px;
   color: #c2e6d5;
+  margin-top: 3px;
   transition: background .2s, color .2s;
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import GridContainer from '../grid/grid_container';
-import SheetNavContainer from './sheet_nav_container';
+import SheetNavContainer from '../grid/sheet_nav_container';
 import ToolBoxContainer from '../tool/tool_box_container';
 import DocHeaderContainer from './doc_header_container';
 
@@ -18,6 +18,7 @@ export default class Doc extends React.Component {
       newDoc => this.setState({loading: false})
     );
   }
+
   render() {
     if(this.state.loading)
       return (<span>loading</span>);

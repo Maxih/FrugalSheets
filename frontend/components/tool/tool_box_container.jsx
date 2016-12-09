@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import { updateCell, updateRange } from '../../actions/sheet_actions';
+import { getActiveCell } from '../../reducers/selectors';
 import ToolBox from './tool_box';
 
 const mapStateToProps = (state) => {
-  const cell = state.doc.sheets[state.doc.activeSheet].workingArea.activeCell;
-
   return {
-    activeCell: cell
+    activeCell: getActiveCell(state)
   };
 };
 
