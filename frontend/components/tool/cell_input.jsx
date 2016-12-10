@@ -1,6 +1,7 @@
 import React from 'react';
 import {merge} from 'lodash';
 import ReactDOM from 'react-dom';
+import autosize from 'autosize';
 
 
 export default class CellInput extends React.Component {
@@ -16,7 +17,9 @@ export default class CellInput extends React.Component {
 
   componentDidMount() {
     if(this.refs[this.props.refName]) {
-      ReactDOM.findDOMNode(this.refs[this.props.refName]).focus();
+      const node = ReactDOM.findDOMNode(this.refs[this.props.refName])
+      // node.focus();
+      // autosize(node);
     }
   }
 
@@ -24,22 +27,25 @@ export default class CellInput extends React.Component {
     const newCell = merge({}, this.props.cell, {content: e.target.value});
 
     this.setState({content: newCell.content});
+    // let height = this.refs[this.props.refName].clientHeight;
+    // if(height > this.props.cell.height && height > 30) {
+    //   this.props.resizeRow(this.props.cell.pos.row, height);
+    // }
 
     this.props.updateCell(newCell);
   }
 
+
+
   render() {
     if(this.props.styling) {
       return (
-        <div className="active-cell-wrapper">
-          <textarea style={this.props.cell.style} className="cell-val-textarea" ref={this.props.refName} onChange={this.cellChanged} value={this.props.cell.content} />
-          <div className="cell-val-expand"></div>
-        </div>
+        <textarea style={this.props.cell.style} className="cell-val-textarea grid-text" ref={this.props.refName} onChange={this.cellChanged} value={this.props.cell.content} />
       );
     }
 
     return (
-      <textarea style={{}} className="cell-val-textarea" ref={this.props.refName} onChange={this.cellChanged} value={this.props.cell.content} />
+      <input type="text" className="cell-val-textarea" ref={this.props.refName} onChange={this.cellChanged} value={this.props.cell.content} />
     );
   }
 }

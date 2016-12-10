@@ -30,15 +30,26 @@ function SheetReducer(state = blankState(), action) {
       return newState;
 
     case Action.RECEIVE_START_CELL:
-      curWorkingArea.selecting = action.selecting;
-      curWorkingArea.activeCell = action.cell;
+      curWorkingArea.selecting = true;
+      if(action.cell !== null)
+        curWorkingArea.activeCell = action.cell;
+
+      curWorkingArea.directional = action.directional;
+      if(action.directional) {
+        curWorkingArea.numRows = curWorkingArea.activeRange.length;
+        curWorkingArea.numCols = curWorkingArea.activeRange[0].length;
+      }
       return newState;
 
     case Action.RECEIVE_END_CELL:
-      curWorkingArea.selecting = action.selecting;
+      curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, curWorkingArea.numRows, curWorkingArea.numCols)
+      curWorkingArea.selecting = false;
+      curWorkingArea.directional = false;
 
+      return newState;
     case Action.SELECTING_TEMP_CELL:
-      curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos)
+      curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, curWorkingArea.numRows, curWorkingArea.numCols)
+
       return newState;
 
     case Action.RESIZE_COL:

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { receiveStartCell, receiveEndCell, tempEndCell, updateCell } from '../../actions/sheet_actions';
+import { resizeRow, receiveStartCell, receiveEndCell, tempEndCell, updateCell } from '../../actions/sheet_actions';
 import { isCellActive, isCellSelected, getWorkingArea, getCell, getDataGrid } from '../../reducers/selectors';
 import GridCell from './grid_cell';
 
@@ -17,10 +17,11 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  receiveStartCell: (cell) => dispatch(receiveStartCell(cell)),
+  receiveStartCell: (cell, directional) => dispatch(receiveStartCell(cell,directional)),
   receiveEndCell: (cell) => dispatch(receiveEndCell(cell)),
   tempEndCell: (cell) => dispatch(tempEndCell(cell)),
   updateCell: (cell) => dispatch(updateCell(cell)),
+  resizeRow: (rowId, height) => dispatch(resizeRow(rowId, height)),
 });
 
 export default connect(

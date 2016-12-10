@@ -41,6 +41,9 @@ export function blankState() {
         },
         activeRange: [],
         selecting: false,
+        directional: false,
+        numRows: 0,
+        numCols: 0,
     };
 
     const defaults = {
@@ -124,12 +127,22 @@ export function getColFromId(gridState, id) {
     })
 }
 
-export function getCellsBetween(gridState, start, end) {
-    const upperBoundsCol = start.col > end.col ? start.col : end.col;
-    const lowerBoundsCol = start.col < end.col ? start.col : end.col;
+export function getCellsBetween(gridState, start, end, directional, numRows, numCols) {
+    let upperBoundsCol = start.col > end.col ? start.col : end.col;
+    let lowerBoundsCol = start.col < end.col ? start.col : end.col;
 
-    const upperBoundsRow = start.row > end.row ? start.row : end.row;
-    const lowerBoundsRow = start.row < end.row ? start.row : end.row;
+    let upperBoundsRow = start.row > end.row ? start.row : end.row;
+    let lowerBoundsRow = start.row < end.row ? start.row : end.row;
+
+    if(directional) {
+      if(upperBoundsRow - lowerBoundsRow > upperBoundsCol - lowerBoundsCol) {
+        upperBoundsCol = start.col + numCols - 1;
+        lowerBoundsCol = start.col;
+      } else {
+        upperBoundsRow = start.row + numRows - 1;
+        lowerBoundsRow = start.row;
+      }
+    }
 
     const cells = [];
 

@@ -34,16 +34,15 @@ export const addSheet = (sheetName) => ({
   name: sheetName
 });
 
-export const receiveStartCell = (cell) => ({
+export const receiveStartCell = (cell, directional = false) => ({
   type: RECEIVE_START_CELL,
   cell: cell,
-  selecting: true
+  directional: directional
 });
 
 export const receiveEndCell = (cell) => ({
   type: RECEIVE_END_CELL,
   cell: cell,
-  selecting: false
 });
 
 export const tempEndCell = (cell) => ({

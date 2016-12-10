@@ -44,7 +44,7 @@ export default class GridCell extends React.Component {
     if(e.type === "mouseup") {
       receiveEndCell(this.props.cell);
     } else {
-      receiveStartCell(this.props.cell);
+      receiveStartCell(this.props.cell, false);
     }
   }
 
@@ -58,9 +58,9 @@ export default class GridCell extends React.Component {
   generateCellClass() {
     let className = "grid-cell";
 
-    if(this.props.selected) {
-      className += " selected-cell";
-    }
+    // if(this.props.selected) {
+    //   className += " selected-cell";
+    // }
 
     if(this.props.active)
       className += " active-cell";
@@ -86,14 +86,16 @@ export default class GridCell extends React.Component {
     return formula.parse();
   }
 
+
   render() {
     let content = this.props.cell.content;
 
-
     if(this.props.active) {
       content = (
-        <CellInputContainer styling={true} refName="cellRef" cell={this.props.cell} updateCell={this.props.updateCell} />
-      );
+        <div className="active-cell-wrapper">
+          <CellInputContainer styling={true} refName="cellRef" cell={this.props.cell} resizeRow={this.props.resizeRow} updateCell={this.props.updateCell} />
+        </div>
+        );
     } else {
       if(content[0] === "=") {
         content = this.parseFormula(content);

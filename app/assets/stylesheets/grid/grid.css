@@ -4,6 +4,27 @@ body {
   padding: 0;
 }
 
+.selection {
+  display: block;
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  border: 1px solid #4285f4;
+  box-sizing: border-box;
+}
+
+div.directional {
+  border: 1px dashed #4285f4;
+}
+
+.selection-body {
+  background: #4285f4;
+  display: block;
+  height: 100%;
+  width: 100%;
+  opacity: .1;
+}
+
 .grid-wrapper {
   display: block;
   position: relative;
@@ -22,6 +43,23 @@ body {
   background: #4285f4;
   border: 1px solid #FFF;
   z-index: 20;
+  pointer-events: all;
+}
+
+.cell-val-textarea {
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  max-height: 200px;
+  height: 100%;
+  padding: 5px;
+  z-index: 6;
+  background: #FFF;
 }
 
 .cell-val-expand:hover {
@@ -31,10 +69,12 @@ body {
 .active-cell-wrapper {
   border: 2px solid #4285f4 !important;
   position: relative;
-  height: 100%;
   box-sizing: border-box;
   box-shadow: 0px 0px 10px #999;
-  width: 150%;
+  display: block;
+  z-index: 6;
+  background: #FFF;
+  height: 100%;
 }
 
 .grid {
@@ -144,17 +184,9 @@ body {
   overflow: visible;
 }
 
-textarea.cell-val-textarea {
-  border: none;
-  width:100%;
-  box-sizing: border-box;
-  outline: none;
-  resize: none;
-  overflow: hidden;
-  white-space: nowrap;
-  display: block;
-  height: 100%;
-}
+
+
+
 
 .grid-cell p {
   padding: 0;

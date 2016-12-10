@@ -2,6 +2,7 @@ import React from 'react';
 import {numToChar, between, blankSheet} from '../../utils/grid_utils';
 import GridRow from './grid_row';
 import GridHeader from './grid_header';
+import GridSelectionContainer from './grid_selection_container';
 
 
 export default class Grid extends React.Component {
@@ -88,6 +89,7 @@ export default class Grid extends React.Component {
           <GridHeader row={this.rowHeads()} col={true} />
         </span>
         <section className="grid">
+          <GridSelectionContainer />
           {rows}
         </section>
       </section>
