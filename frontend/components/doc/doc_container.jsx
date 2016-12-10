@@ -8,7 +8,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  loadDocument: (id) => dispatch(loadDocument(id))
+  loadDocument: (id) => dispatch(loadDocument(id)),
 });
 
 export default connect(

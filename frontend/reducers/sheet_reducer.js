@@ -1,5 +1,5 @@
 import * as Action from '../actions/sheet_actions.js';
-import {blankState, blankSheet, getCellsBetween, getRowFromId, getColFromId, updateActiveRangeStyle, mapRangeToGrid, newSheetName} from '../utils/grid_utils';
+import {blankState, blankSheet, getCellsBetween, getRowFromId, getColFromId, updateActiveRangeContent, updateActiveRangeStyle, mapRangeToGrid, newSheetName} from '../utils/grid_utils';
 import {merge} from 'lodash';
 
 
@@ -42,7 +42,15 @@ function SheetReducer(state = blankState(), action) {
       return newState;
 
     case Action.RECEIVE_END_CELL:
-      curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, curWorkingArea.numRows, curWorkingArea.numCols)
+      if(action.cell !== null) {
+        curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, curWorkingArea.numRows, curWorkingArea.numCols)
+
+        if(curWorkingArea.directional) {
+          updateActiveRangeContent(curWorkingArea.activeRange, curWorkingArea.activeCell);
+          mapRangeToGrid(curWorkingArea.activeRange, curSheet.data);
+        }
+      }
+
       curWorkingArea.selecting = false;
       curWorkingArea.directional = false;
 

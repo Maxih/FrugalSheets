@@ -58,14 +58,10 @@ export default class GridCell extends React.Component {
   generateCellClass() {
     let className = "grid-cell";
 
-    // if(this.props.selected) {
-    //   className += " selected-cell";
-    // }
-
     if(this.props.active)
       className += " active-cell";
 
-      return className;
+    return className;
   }
 
   parseFormula(text) {

@@ -9,6 +9,7 @@ export default class Grid extends React.Component {
   constructor(props) {
     super(props);
 
+    this.removeSelecting = this.removeSelecting.bind(this);
   }
 
   componentDidMount() {
@@ -34,6 +35,11 @@ export default class Grid extends React.Component {
       $(".grid-blank-label").css("top", this.scrollTop);
       $(".grid-blank-label").css("left", this.scrollLeft);
     });
+
+  }
+
+  removeSelecting(event) {
+    this.props.receiveEndCell(null);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -80,7 +86,7 @@ export default class Grid extends React.Component {
     });
 
     return (
-      <section className="grid-wrapper">
+      <section className="grid-wrapper" onMouseLeave={this.removeSelecting}>
         <span className="grid-blank-label"></span>
         <span className="grid-column-labels">
           <GridHeader row={this.colHeads()}/>

@@ -96,6 +96,16 @@ export function updateActiveRangeStyle(range, cell) {
     return range;
 }
 
+export function updateActiveRangeContent(range, cell) {
+    for (let i = 0; i < range.length; i++) {
+        for (let j = 0; j < range[i].length; j++) {
+            range[i][j].content = cell.content;
+        }
+    }
+
+    return range;
+}
+
 export function mapRangeToGrid(range, grid) {
     for (let i = 0; i < range.length; i++) {
         for (let j = 0; j < range[i].length; j++) {
@@ -135,7 +145,7 @@ export function getCellsBetween(gridState, start, end, directional, numRows, num
     let lowerBoundsRow = start.row < end.row ? start.row : end.row;
 
     if(directional) {
-      if(upperBoundsRow - lowerBoundsRow > upperBoundsCol - lowerBoundsCol) {
+      if((upperBoundsRow - lowerBoundsRow - numRows) > (upperBoundsCol - lowerBoundsCol - numCols)) {
         upperBoundsCol = start.col + numCols - 1;
         lowerBoundsCol = start.col;
       } else {
