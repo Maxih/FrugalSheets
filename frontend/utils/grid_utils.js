@@ -2,7 +2,7 @@ import merge from 'lodash/merge';
 
 export function getLinkedCells(grid, links) {
   let linkKeys = Object.keys(links);
-  if(linkKeys === undefined)
+  if (linkKeys === undefined)
     return [];
 
   links = linkKeys.map((coord) => {
@@ -18,59 +18,62 @@ export function parseCoord(coord) {
   const matcher = /([a-zA-Z]+)([0-9]+)/g;
   const matched = matcher.exec(coord);
 
-  if(matched.length != 3)
+  if (matched.length != 3)
     return false;
 
   let col = charToNum(matched[1]) - 1;
   let row = parseInt(matched[2]) - 1;
 
-  return {row: row, col: col};
+  return {
+    row: row,
+    col: col
+  };
 }
 
 export function blankState() {
-    const workingAreaDefaults = {
-        activeCell: {
-            content: "",
-            width: 100,
-            height: 26,
-            style: {},
-            pos: {
-                row: 0,
-                col: 0
-            },
-        },
-        activeRange: [],
-        selecting: false,
-        directional: false,
-        numRows: 0,
-        numCols: 0,
-    };
+  const workingAreaDefaults = {
+    activeCell: {
+      content: "",
+      width: 100,
+      height: 26,
+      style: {},
+      pos: {
+        row: 0,
+        col: 0
+      },
+    },
+    activeRange: [],
+    selecting: false,
+    directional: false,
+    numRows: 0,
+    numCols: 0,
+  };
 
-    const defaults = {
-        activeSheet: "Sheet1",
-        sheets: {
-            "Sheet1": {
-                name: "Sheet1",
-                workingArea: workingAreaDefaults,
-                data: blankSheet()
-            }
-        }
-    };
+  const defaults = {
+    activeSheet: "Sheet1",
+    sheets: {
+      "Sheet1": {
+        name: "Sheet1",
+        workingArea: workingAreaDefaults,
+        data: blankSheet()
+      }
+    }
+  };
 
-    return defaults;
+  return defaults;
 }
 
 export function blankSheet() {
-    const grid = new Array(30);
+  const grid = new Array(30);
 
-    for (let i = 0; i < grid.length; i++) {
-        grid[i] = new Array(26);
-        for (let j = 0; j < grid[i].length; j++) {
-            grid[i][j] = blankCell(i, j);
-        }
+  for (let i = 0; i < grid.length; i++) {
+    grid[i] = new Array(26);
+    for (let j = 0; j < grid[i].length; j++) {
+      grid[i][j] = blankCell(i, j);
     }
+  }
 
-    return grid;
+  return grid;
 }
 
 export function blankCell(row, col) {
@@ -80,206 +83,209 @@ export function blankCell(row, col) {
     height: 26,
     style: {},
     pos: {
-        row: row,
-        col: col
+      row: row,
+      col: col
     }
   };
 }
 
 export function updateActiveRangeStyle(range, cell) {
-    for (let i = 0; i < range.length; i++) {
-        for (let j = 0; j < range[i].length; j++) {
-            range[i][j].style = cell.style;
-        }
+  for (let i = 0; i < range.length; i++) {
+    for (let j = 0; j < range[i].length; j++) {
+      range[i][j].style = cell.style;
     }
+  }
 
-    return range;
+  return range;
 }
 
-export function updateActiveRangeContent(range, cell) {
-    for (let i = 0; i < range.length; i++) {
-        for (let j = 0; j < range[i].length; j++) {
-            range[i][j].content = cell.content;
-        }
-    }
+export function updateActiveRangeContent(range, cell, numRows, numCols) {
+  for (let i = 0; i < range.length; i++) {
+    for (let j = 0; j < range[i].length; j++) {
+      let copyRow = i % numRows;
+      let copyCol = j % numCols;
 
-    return range;
+      range[i][j].content = range[copyRow][copyCol].content;
+    }
+  }
+
+  return range;
 }
 
 export function mapRangeToGrid(range, grid) {
-    for (let i = 0; i < range.length; i++) {
-        for (let j = 0; j < range[i].length; j++) {
-            const cell = range[i][j];
-            grid[cell.pos.row][cell.pos.col] = cell;
-        }
+  for (let i = 0; i < range.length; i++) {
+    for (let j = 0; j < range[i].length; j++) {
+      const cell = range[i][j];
+      grid[cell.pos.row][cell.pos.col] = cell;
     }
+  }
 
-    return grid;
+  return grid;
 }
 
 export function getRowFromId(gridState, id) {
-    return getCellsBetween(gridState, {
-        col: 0,
-        row: id
-    }, {
-        col: gridState[0].length - 1,
-        row: id
-    })
+  return getCellsBetween(gridState, {
+    col: 0,
+    row: id
+  }, {
+    col: gridState[0].length - 1,
+    row: id
+  })
 }
 
 export function getColFromId(gridState, id) {
-    return getCellsBetween(gridState, {
-        col: id,
-        row: 0
-    }, {
-        col: id,
-        row: gridState.length - 1
-    })
+  return getCellsBetween(gridState, {
+    col: id,
+    row: 0
+  }, {
+    col: id,
+    row: gridState.length - 1
+  })
 }
 
 export function getCellsBetween(gridState, start, end, directional, numRows, numCols) {
-    let upperBoundsCol = start.col > end.col ? start.col : end.col;
-    let lowerBoundsCol = start.col < end.col ? start.col : end.col;
+  let upperBoundsCol = start.col > end.col ? start.col : end.col;
+  let lowerBoundsCol = start.col < end.col ? start.col : end.col;
 
-    let upperBoundsRow = start.row > end.row ? start.row : end.row;
-    let lowerBoundsRow = start.row < end.row ? start.row : end.row;
+  let upperBoundsRow = start.row > end.row ? start.row : end.row;
+  let lowerBoundsRow = start.row < end.row ? start.row : end.row;
 
-    if(directional) {
-      if((upperBoundsRow - lowerBoundsRow - numRows) > (upperBoundsCol - lowerBoundsCol - numCols)) {
-        upperBoundsCol = start.col + numCols - 1;
-        lowerBoundsCol = start.col;
-      } else {
-        upperBoundsRow = start.row + numRows - 1;
-        lowerBoundsRow = start.row;
-      }
+  if (directional) {
+    if ((upperBoundsRow - lowerBoundsRow - numRows) > (upperBoundsCol - lowerBoundsCol - numCols)) {
+      upperBoundsCol = start.col + numCols - 1;
+      lowerBoundsCol = start.col;
+    } else {
+      upperBoundsRow = start.row + numRows - 1;
+      lowerBoundsRow = start.row;
+    }
+  }
+
+  const cells = [];
+
+  for (let i = lowerBoundsRow; i <= upperBoundsRow; i++) {
+    const row = [];
+
+    for (let j = lowerBoundsCol; j <= upperBoundsCol; j++) {
+      row.push(gridState[i][j]);
     }
 
-    const cells = [];
+    cells.push(row);
+  }
 
-    for (let i = lowerBoundsRow; i <= upperBoundsRow; i++) {
-        const row = [];
-
-        for (let j = lowerBoundsCol; j <= upperBoundsCol; j++) {
-            row.push(gridState[i][j]);
-        }
-
-        cells.push(row);
-    }
-
-    return cells;
+  return cells;
 }
 
 export function cellInSelection(rowId, colId, startVal, endVal) {
-    return between(colId, startVal.col, endVal.col) && between(rowId, startVal.row, endVal.row)
+  return between(colId, startVal.col, endVal.col) && between(rowId, startVal.row, endVal.row)
 }
 
 export function between(cellCoord, startVal, endVal) {
 
-    if (!$.isNumeric(cellCoord))
-        return false;
-
-    const upperBounds = startVal > endVal ? startVal : endVal;
-    const lowerBounds = startVal < endVal ? startVal : endVal;
-
-    if (cellCoord <= upperBounds && cellCoord >= lowerBounds)
-        return true;
-
+  if (!$.isNumeric(cellCoord))
     return false;
+
+  const upperBounds = startVal > endVal ? startVal : endVal;
+  const lowerBounds = startVal < endVal ? startVal : endVal;
+
+  if (cellCoord <= upperBounds && cellCoord >= lowerBounds)
+    return true;
+
+  return false;
 }
 export function newSheetName(taken) {
-    let sheetId = 2;
-    let testName = `Sheet${sheetId}`;
-    while (taken.indexOf(testName) > -1) {
-        sheetId++;
-        testName = `Sheet${sheetId}`;
-    }
-    return testName;
+  let sheetId = 2;
+  let testName = `Sheet${sheetId}`;
+  while (taken.indexOf(testName) > -1) {
+    sheetId++;
+    testName = `Sheet${sheetId}`;
+  }
+  return testName;
 }
 
 export const charToNum = function(alpha) {
-    var index = 0
-    for (var i = 0, j = 1; i < j; i++, j++) {
-        if (alpha == numToChar(i)) {
-            index = i;
-            j = i;
-        }
+  var index = 0
+  for (var i = 0, j = 1; i < j; i++, j++) {
+    if (alpha == numToChar(i)) {
+      index = i;
+      j = i;
     }
+  }
 
-    return index;
+  return index;
 }
 
 export const numToChar = function(number) {
-    var numeric = (number - 1) % 26;
-    var letter = chr(65 + numeric);
-    var number2 = parseInt((number - 1) / 26);
-    if (number2 > 0) {
-        return numToChar(number2) + letter;
-    } else {
-        return letter;
-    }
+  var numeric = (number - 1) % 26;
+  var letter = chr(65 + numeric);
+  var number2 = parseInt((number - 1) / 26);
+  if (number2 > 0) {
+    return numToChar(number2) + letter;
+  } else {
+    return letter;
+  }
 }
 
 const chr = function(codePt) {
-    if (codePt > 0xFFFF) {
-        codePt -= 0x10000;
-        return String.fromCharCode(0xD800 + (codePt >> 10), 0xDC00 + (codePt & 0x3FF));
-    }
-    return String.fromCharCode(codePt);
+  if (codePt > 0xFFFF) {
+    codePt -= 0x10000;
+    return String.fromCharCode(0xD800 + (codePt >> 10), 0xDC00 + (codePt & 0x3FF));
+  }
+  return String.fromCharCode(codePt);
 }
 
 export function LightenDarkenColor(col, amt) {
 
-    var usePound = false;
+  var usePound = false;
 
-    if (col[0] == "#") {
-        col = col.slice(1);
-        usePound = true;
-    }
+  if (col[0] == "#") {
+    col = col.slice(1);
+    usePound = true;
+  }
 
-    var num = parseInt(col, 16);
+  var num = parseInt(col, 16);
 
-    var r = (num >> 16) + amt;
+  var r = (num >> 16) + amt;
 
-    if (r > 255) r = 255;
-    else if (r < 0) r = 0;
+  if (r > 255) r = 255;
+  else if (r < 0) r = 0;
 
-    var b = ((num >> 8) & 0x00FF) + amt;
+  var b = ((num >> 8) & 0x00FF) + amt;
 
-    if (b > 255) b = 255;
-    else if (b < 0) b = 0;
+  if (b > 255) b = 255;
+  else if (b < 0) b = 0;
 
-    var g = (num & 0x0000FF) + amt;
+  var g = (num & 0x0000FF) + amt;
 
-    if (g > 255) g = 255;
-    else if (g < 0) g = 0;
+  if (g > 255) g = 255;
+  else if (g < 0) g = 0;
 
-    return (usePound?"#":"") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
+  return (usePound ? "#" : "") + String("000000" + (g | (b << 8) | (r << 16)).toString(16)).slice(-6);
 }
 
-export const compare = function (obj1, obj2) {
-	//Loop through properties in object 1
-	for (var p in obj1) {
-		//Check property exists on both objects
-		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+export const compare = function(obj1, obj2) {
+  //Loop through properties in object 1
+  for (var p in obj1) {
+    //Check property exists on both objects
+    if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
 
-		switch (typeof (obj1[p])) {
-			//Deep compare objects
-			case 'object':
-				if (!compare(obj1[p], obj2[p])) return false;
-				break;
-			//Compare function code
-			case 'function':
-				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
-				break;
-			//Compare values
-			default:
-				if (obj1[p] != obj2[p]) return false;
-		}
-	}
+    switch (typeof(obj1[p])) {
+      //Deep compare objects
+      case 'object':
+        if (!compare(obj1[p], obj2[p])) return false;
+        break;
+        //Compare function code
+      case 'function':
+        if (typeof(obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
+        break;
+        //Compare values
+      default:
+        if (obj1[p] != obj2[p]) return false;
+    }
+  }
 
-	//Check object 2 for any extra properties
-	for (var p in obj2) {
-		if (typeof (obj1[p]) == 'undefined') return false;
-	}
-	return true;
+  //Check object 2 for any extra properties
+  for (var p in obj2) {
+    if (typeof(obj1[p]) == 'undefined') return false;
+  }
+  return true;
 };

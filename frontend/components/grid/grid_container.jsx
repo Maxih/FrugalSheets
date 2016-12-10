@@ -1,6 +1,5 @@
-import { connect } from 'react-redux';
-// import {  } from '../../actions/sheet_actions';
-import { receiveEndCell } from '../../actions/sheet_actions';
+import {connect} from 'react-redux';
+import {receiveEndCell} from '../../actions/sheet_actions';
 
 import Grid from './grid';
 
@@ -12,10 +11,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  receiveEndCell: (cell) => dispatch(receiveEndCell(cell)),
+  receiveEndCell: (cell) => dispatch(receiveEndCell(cell))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Grid);
+export default connect(mapStateToProps, mapDispatchToProps)(Grid);
