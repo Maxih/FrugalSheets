@@ -1,21 +1,23 @@
-import {between} from '../utils/grid_utils';
+import {
+  between
+} from '../utils/grid_utils';
 
 export function getSelectionOffset(sheet) {
-  if(sheet.workingArea.activeRange[0] === undefined)
+  if (sheet.workingArea.activeRange[0] === undefined)
     return {};
-    
+
   const dims = sheet.workingArea.activeRange[0][0].pos;
   const grid = sheet.data;
 
   let totalWidth = 50;
   let totalHeight = 26;
 
-  if(grid[0] !== undefined) {
-    for(let i = 0; i < dims.row; i++) {
+  if (grid[0] !== undefined) {
+    for (let i = 0; i < dims.row; i++) {
       totalHeight += grid[i][0].height;
     }
 
-    for(let j = 0; j < dims.col; j++) {
+    for (let j = 0; j < dims.col; j++) {
       totalWidth += grid[0][j].width;
     }
   }
@@ -32,12 +34,12 @@ export function getSelectionDimensions(range) {
   let totalWidth = 0;
   let totalHeight = 0;
 
-  if(range[0] !== undefined) {
-    for(let i = 0; i < range.length; i++) {
+  if (range[0] !== undefined) {
+    for (let i = 0; i < range.length; i++) {
       totalHeight += range[i][0].height;
     }
 
-    for(let j = 0; j < range[0].length; j++) {
+    for (let j = 0; j < range[0].length; j++) {
       totalWidth += range[0][j].width;
     }
   }
@@ -75,10 +77,10 @@ export function getActiveCell(state) {
 }
 
 export function applySearchParam(docs, searchParam) {
-  if(docs === undefined)
+  if (docs === undefined)
     return [];
 
-  if(searchParam === "")
+  if (searchParam === "")
     return docs;
 
   return docs.filter((doc) => {
@@ -87,10 +89,10 @@ export function applySearchParam(docs, searchParam) {
 }
 
 export function isCellActive(selectedRange, cell) {
-  if(selectedRange === undefined)
+  if (selectedRange === undefined)
     return false;
 
-  if(selectedRange[0] === undefined)
+  if (selectedRange[0] === undefined)
     return false;
 
   const activeCell = selectedRange[0][0];
@@ -99,10 +101,10 @@ export function isCellActive(selectedRange, cell) {
 }
 
 export function isCellSelected(selectedRange, cell) {
-  if(selectedRange === undefined)
+  if (selectedRange === undefined)
     return false;
 
-  if(selectedRange[0] === undefined)
+  if (selectedRange[0] === undefined)
     return false
 
   const startRow = selectedRange[0][0].pos.row;
@@ -115,25 +117,25 @@ export function isCellSelected(selectedRange, cell) {
 }
 
 export function isHeaderActive(range, ownProps) {
-  if(range.length < 1 || range[0].length < 1)
+  if (range.length < 1 || range[0].length < 1)
     return false;
 
-  if(ownProps.col) {
+  if (ownProps.col) {
     let colRange = range[0][0].pos.col + range[0].length - 1
 
-    if(between(ownProps.colId, range[0][0].pos.col, colRange))
+    if (between(ownProps.colId, range[0][0].pos.col, colRange))
       return true;
   } else {
     let rowRange = range[0][0].pos.row + range.length - 1
 
-    if(between(ownProps.rowId, range[0][0].pos.row, rowRange))
+    if (between(ownProps.rowId, range[0][0].pos.row, rowRange))
       return true;
   }
   return false;
 }
 
 export function headerSize(grid, ownProps) {
-  if(ownProps.col) {
+  if (ownProps.col) {
     return grid[0][ownProps.colId].width;
   } else {
     return grid[ownProps.rowId][0].height;

@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+import {Formula} from './formula_util';
 
 export function getLinkedCells(grid, links) {
   let linkKeys = Object.keys(links);
@@ -100,16 +101,33 @@ export function updateActiveRangeStyle(range, cell) {
 }
 
 export function updateActiveRangeContent(range, cell, numRows, numCols) {
+  const newRange = merge({}, range);
   for (let i = 0; i < range.length; i++) {
     for (let j = 0; j < range[i].length; j++) {
       let copyRow = i % numRows;
       let copyCol = j % numCols;
+      let newCell = merge({}, range[copyRow][copyCol]);
 
-      range[i][j].content = range[copyRow][copyCol].content;
+      if(newCell.content[0] === "=") {
+
+        const formula = new Formula(newCell.content.slice(1));
+        let varNames= Object.keys(formula.vars);
+        varNames.forEach((curVar) => {
+          const coord = parseCoord(curVar);
+          const newVar = `${numToChar(coord.col + j + 1)}${coord.row + i + 1}`;
+
+          newCell.content = newCell.content.replace(curVar, newVar);
+        });
+
+      }
+
+      newRange[i][j].content = newCell.content;
     }
   }
 
-  return range;
+  merge(range, newRange);
+
+  return newRange;
 }
 
 export function mapRangeToGrid(range, grid) {

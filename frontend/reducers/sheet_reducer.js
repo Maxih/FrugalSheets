@@ -58,7 +58,7 @@ function SheetReducer(state = blankState(), action) {
         curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, curWorkingArea.numRows, curWorkingArea.numCols)
 
         if (curWorkingArea.directional) {
-          updateActiveRangeContent(curWorkingArea.activeRange, curWorkingArea.activeCell, curWorkingArea.numRows, curWorkingArea.numCols);
+          curWorkingArea.activeRange = updateActiveRangeContent(curWorkingArea.activeRange, curWorkingArea.activeCell, curWorkingArea.numRows, curWorkingArea.numCols);
           mapRangeToGrid(curWorkingArea.activeRange, curSheet.data);
         }
       }
