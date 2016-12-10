@@ -28,7 +28,6 @@ export default class ColorButton extends React.Component {
   render() {
     const cellStyle = this.props.color || {};
 
-
     const colorPicker = (
       <div className="color-picker">
         <CompactPicker onChange={this.cellColorChange}/>
@@ -36,7 +35,7 @@ export default class ColorButton extends React.Component {
     )
 
     return (
-      <li className={`${this.props.className}${this.state.pickingColor ? " active-style" : ""}`}
+      <li className={`${this.props.className} style-group-item${this.state.pickingColor ? " active-style" : ""}`}
           onClick={this.toggleColorPicker}>
         <span className="paintbucket-swatch" style={cellStyle[this.props.styleProperty] ? {backgroundColor: cellStyle[this.props.styleProperty] } : {backgroundColor: "#FFF" }}></span>
         {this.state.pickingColor ? colorPicker : ""}

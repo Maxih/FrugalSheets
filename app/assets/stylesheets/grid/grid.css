@@ -1,8 +1,19 @@
-
 body {
   margin: 0;
   padding: 0;
 }
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+/* Grid Selection Component */
 
 .selection {
   display: block;
@@ -13,10 +24,6 @@ body {
   box-sizing: border-box;
 }
 
-div.directional {
-  border: 1px dashed #4285f4;
-}
-
 .selection-body {
   background: #4285f4;
   display: block;
@@ -24,6 +31,29 @@ div.directional {
   width: 100%;
   opacity: .1;
 }
+
+div.directional {
+  border: 1px dashed #4285f4;
+}
+
+.cell-val-expand {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 6px;
+  height: 6px;
+  background: #4285f4;
+  border: 1px solid #FFF;
+  z-index: 20;
+  pointer-events: all;
+}
+
+.cell-val-expand:hover {
+  cursor: crosshair;
+}
+
+
+/* Grid Component */
 
 .grid-wrapper {
   display: block;
@@ -34,17 +64,80 @@ div.directional {
   height: 500px;
 }
 
-.cell-val-expand {
-  position:absolute;
-  bottom: -3px;
-  right: -3px;
-  width: 6px;
-  height: 6px;
-  background: #4285f4;
-  border: 1px solid #FFF;
-  z-index: 20;
-  pointer-events: all;
+.grid {
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 26px 0px 0px 50px;
+  z-index: 5;
+  border-collapse: collapse
 }
+
+
+/* Grid Row Component */
+
+.grid-row {
+  display: block;
+  white-space: nowrap;
+}
+
+.grid-row-labels {
+  display: inline-block;
+  position: absolute;
+  top: 26px;
+  z-index: 9;
+}
+
+.grid-column-labels {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  white-space: nowrap;
+  left: 50px;
+  z-index: 9;
+}
+
+.grid-row-labels .grid-cell {
+  display: block;
+  width: 50px;
+  height: 26px;
+  border-right: 1px solid #ccc;
+}
+
+.grid-column-labels .grid-cell {
+  border-bottom: 1px solid #ccc;
+}
+
+.grid-row-labels .grid-cell, .grid-column-labels .grid-cell {
+  position: relative;
+  overflow: visible;
+  background: #f3f3f3;
+  font-family: Arial;
+  text-align: center;
+  line-height: 26px;
+  box-sizing: border-box;
+}
+
+.grid-blank-label {
+  height: 26px;
+  width: 50px;
+  background: #f3f3f3;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.grid-row-labels .selected-cell, .grid-column-labels .selected-cell {
+  background: #dddddd;
+}
+
+
+/* Grid Cell & Cell Input */
 
 .cell-val-textarea {
   border: none;
@@ -62,10 +155,6 @@ div.directional {
   background: #FFF;
 }
 
-.cell-val-expand:hover {
-  cursor: crosshair;
-}
-
 .active-cell-wrapper {
   border: 2px solid #4285f4 !important;
   position: relative;
@@ -75,20 +164,6 @@ div.directional {
   z-index: 6;
   background: #FFF;
   height: 100%;
-}
-
-.grid {
-  display: inline-block;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 26px 0px 0px 50px;
-  z-index: 5;
-  border-collapse:collapse
-}
-
-.grid-row {
-  display: block;
-  white-space: nowrap;
 }
 
 .grid-cell {
@@ -104,81 +179,6 @@ div.directional {
   cursor: default;
   font-family: Arial;
   padding: 2px;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-   -khtml-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-
-.grid-row-labels {
-  display: inline-block;
-  position: absolute;
-  top: 26px;
-  z-index: 10;
-}
-
-.grid-column-labels {
-  display: block;
-  position: absolute;
-  overflow: hidden;
-  white-space: nowrap;
-  left: 50px;
-  z-index: 10;
-}
-
-.grid-row-labels .grid-cell {
-  display: block;
-  width: 50px;
-  height: 26px;
-  border-right: 1px solid #ccc;
-}
-
-.grid-column-labels .grid-cell {
-  border-bottom: 1px solid #ccc;
-}
-
-.grid-row-labels .grid-cell,
-.grid-column-labels .grid-cell {
-  position: relative;
-  overflow: visible;
-  background: #f3f3f3;
-  font-family: Arial;
-  text-align: center;
-  line-height: 26px;
-  box-sizing: border-box;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-   -khtml-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-
-.grid-blank-label {
-  height: 26px;
-  width: 50px;
-  background: #f3f3f3;
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 20;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-.selected-cell {
-  background: #ecf3ff;
-}
-
-.grid-row-labels .selected-cell,
-.grid-column-labels .selected-cell {
-  background: #dddddd;
 }
 
 .active-cell {
@@ -191,19 +191,22 @@ div.directional {
 }
 
 
+/* Resizer Component */
 
-
-
-.grid-cell p {
-  padding: 0;
-  margin: 0;
+.resizer {
+  background: transparent;
+  display: block;
+  position: absolute;
+  z-index: 5;
 }
+
 .grid-row-labels .resizer {
   height: 6px;
   width: 50px;
   bottom: -3px;
   left: 0;
 }
+
 .grid-row-labels .resizer:hover {
   cursor: ns-resize;
 }
@@ -219,48 +222,6 @@ div.directional {
   cursor: ew-resize;
 }
 
-.grid-column-labels .resizer::after {
-  width: 6px;
-  height: 26px;
-  right: 0px;
-  top: 0px;
-  content: "";
-  position: absolute;
-}
-
-.grid-row-labels .resizer::after {
-  height: 6px;
-  width: 50px;
-  bottom: 0px;
-  left: 0;
-  content: "";
-  position: absolute;
-}
-
-.resizer {
-  background: transparent;
-  display: block;
-  position: absolute;
-  z-index: 5;
-}
-
-.resizer:hover::after {
+.resizer:hover {
   background: #4285f4;
 }
-
-/*.grid-column-labels {
-  overflow: visible;
-}
-
-.grid-column-labels .resizer:hover::after {
-  content: "";
-  width: 1px;
-  height: 70vh;
-  display: block;
-  position: absolute;
-  top: 0px;
-  right: 2px;
-  background: #4285f4;
-  z-index: 10;
-  overflow: visible;
-}*/

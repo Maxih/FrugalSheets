@@ -1,3 +1,5 @@
+/* Sheet Nav Component */
+
 .sheet-nav {
   display: block;
   height: 50px;
@@ -57,6 +59,8 @@
   color: #000;
 }
 
+/* Formula Component */
+
 .formula-bar {
   width: 100%;
   border-bottom: 1px solid #AAA;
@@ -94,7 +98,9 @@
   padding-left: 10px;
 }
 
-.cell-style {
+/* Cell Style Component */
+
+.cell-style-wrapper {
   display: block;
   height: 35px;
   background: linear-gradient(#f4f4f4, #eeeeee);
@@ -102,7 +108,7 @@
   border-bottom: 1px solid #d9d9d9;
 }
 
-.style-bar > ul {
+.style-group {
   margin: 0;
   padding: 3px;
   float: left;
@@ -111,7 +117,7 @@
   box-sizing: border-box;
 }
 
-.style-bar > ul > li {
+.style-group-item {
   list-style-type: none;
   display: inline-block;
   border: 1px solid transparent;
@@ -122,39 +128,41 @@
   position: relative;
 }
 
-.style-bar > ul > li:first-child {
+.style-group-item:first-child {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.style-bar > ul > li:last-child {
+.style-group-item:last-child {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
 
-.style-bar > ul > li:hover {
+.style-group-item:hover {
   cursor: pointer;
   box-shadow: 0px 0px 1px #BBB;
   border: 1px solid #ccc;
 }
 
-.style-bar > ul > li:hover .dropdown-arrow {
+.style-group-item:hover .dropdown-arrow {
   border-left: 1px solid #CCC;
 }
 
-.style-bar > ul > li.active-style {
+.style-group-item.active-style {
   background-color: #E4E4E4;
   border-color: #CCC;
   box-shadow: inset 0px 0px 2px #999;
 }
-.style-bar > ul > li.active-style .dropdown-arrow {
-  border-left: 1px solid #CCC;
-}
 
-.style-bar > ul > li.active-style:hover {
+.style-group-item.active-style:hover {
   box-shadow: inset 0px 0px 2px #999;
 }
 
+.style-group-item.active-style .dropdown-arrow {
+  border-left: 1px solid #CCC;
+}
 
+
+/* Unique Button Styles */
 
 .style-type-bold {
   background: url("./bold.png") center center no-repeat;
@@ -170,20 +178,41 @@
   background: url("./strikethrough.png") center center no-repeat;
   background-size: auto 14px;
 }
-.style-bar > ul > li.style-type-paintbucket {
+.style-group-item.style-type-paintbucket {
   background: url("./paintbucket.png") 5px center no-repeat;
   background-size: auto 14px;
   width: 35px;
 }
-.style-bar > ul > li.style-type-fontcolor {
+.style-group-item.style-type-fontcolor {
   background: url("./fontcolor.png") 5px center no-repeat;
   background-size: auto 14px;
   width: 35px;
 }
 
-.style-bar > ul > li.style-type-save {
+.style-group-item.style-type-save {
   background: url("./savebutton.png") 5px center no-repeat;
   background-size: auto 14px;
+}
+
+.style-group-item.style-type-fontsize {
+  font-family: Arial;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  line-height: 27px;
+  font-weight: bold;
+  width: 50px;
+
+}
+.style-group-item.style-type-fontfamily {
+  font-family: Arial;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  line-height: 27px;
+  font-weight: bold;
+  width: 90px;
+  white-space: nowrap;
 }
 
 .dropdown-arrow {
@@ -210,27 +239,6 @@
   margin-top: 21px;
   margin-left: 2px;
   float: left;
-}
-
-.style-bar > ul > li.style-type-fontsize {
-  font-family: Arial;
-  font-size: 12px;
-  position: relative;
-  text-align: center;
-  line-height: 27px;
-  font-weight: bold;
-  width: 50px;
-
-}
-.style-bar > ul > li.style-type-fontfamily {
-  font-family: Arial;
-  font-size: 12px;
-  position: relative;
-  text-align: center;
-  line-height: 27px;
-  font-weight: bold;
-  width: 90px;
-  white-space: nowrap;
 }
 
 .fontsize-dropdown {

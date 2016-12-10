@@ -13,7 +13,7 @@ export default class SaveButton extends React.Component {
   render() {
     return (
         <li
-          className="style-type-save"
+          className="style-group-item style-type-save"
           onClick={this.saveDoc}>
         </li>
     );

@@ -10,7 +10,7 @@ export default class ToolBox extends React.Component {
   render() {
     return (
       <section className="toolbox">
-        <section className="cell-style">
+        <section className="cell-style-wrapper">
           <CellStyleContainer updateRange={this.props.updateRange} cell={this.props.activeCell} />
         </section>
 

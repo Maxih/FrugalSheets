@@ -69,22 +69,22 @@ export default class CellStyle extends React.Component {
 
     return (
       <div className="style-bar">
-        <ul>
+        <ul className="style-group">
           <SaveButtonContainer />
         </ul>
-        <ul>
+        <ul className="style-group">
           <FontFamilyButton family={this.props.cell.style} changeStyle={this.changeStyle.bind(this)} />
         </ul>
-        <ul>
+        <ul className="style-group">
           <FontSizeButton size={this.props.cell.style} changeStyle={this.changeStyle.bind(this)} />
         </ul>
-        <ul>
+        <ul className="style-group">
           <BoldButton toggleStyle={this.toggleStyle.bind(this, {"fontWeight": "bold"})} active={cellStyle.fontWeight === undefined} />
           <ItalicButton toggleStyle={this.toggleStyle.bind(this, {"fontStyle": "italic"})} active={cellStyle.fontStyle === undefined} />
           <LineThroughButton toggleStyle={this.toggleStyle.bind(this, {"textDecoration": "line-through"})} active={cellStyle.textDecoration === undefined} />
           <ColorButton color={this.props.cell.style} styleProperty="color" changeStyle={this.changeStyle.bind(this, "color")} className="style-type-fontcolor" />
         </ul>
-        <ul>
+        <ul className="style-group">
           <ColorButton color={this.props.cell.style} styleProperty="backgroundColor" changeStyle={this.changeBackground.bind(this)} className="style-type-paintbucket" />
         </ul>
       </div>

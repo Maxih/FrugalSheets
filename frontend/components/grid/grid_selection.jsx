@@ -7,11 +7,16 @@ export default class GridSelection extends React.Component {
     super(props);
 
     this.duplicateContent = this.duplicateContent.bind(this);
+    this.endSelection = this.endSelection.bind(this);
   }
 
   duplicateContent(e) {
     e.stopPropagation();
     this.props.receiveStartCell(null, true);
+  }
+
+  endSelection(e) {
+    this.props.receiveEndCell(null);
   }
 
   render() {
@@ -34,7 +39,7 @@ export default class GridSelection extends React.Component {
     return (
       <div style={style} className={className}>
         <div className="selection-body"></div>
-        <div className="cell-val-expand" onMouseDown={this.duplicateContent}></div>
+        <div className="cell-val-expand" onMouseUp={this.endSelection} onMouseDown={this.duplicateContent}></div>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { getSelectionOffset, getSelectionDimensions, getWorkingArea, getCurSheet } from '../../reducers/selectors';
-import { receiveStartCell } from '../../actions/sheet_actions';
+import { receiveStartCell, receiveEndCell } from '../../actions/sheet_actions';
 
 import GridSelection from './grid_selection';
 
@@ -25,6 +25,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return {
     receiveStartCell: (cell, directional) => dispatch(receiveStartCell(cell,directional)),
+    receiveEndCell: (cell) => dispatch(receiveEndCell(cell)),
   };
 };
 

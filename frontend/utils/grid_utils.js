@@ -116,6 +116,7 @@ export function updateActiveRangeContent(range, cell, numRows, numCols) {
           const coord = parseCoord(curVar);
           const newVar = `${numToChar(coord.col + j + 1)}${coord.row + i + 1}`;
 
+
           newCell.content = newCell.content.replace(curVar, newVar);
         });
 

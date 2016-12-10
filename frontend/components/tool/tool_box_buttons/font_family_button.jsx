@@ -46,7 +46,7 @@ export default class FontFamilyButton extends React.Component {
     return (
         <li
           style={style}
-          className={this.state.pickingFamily ? "style-type-fontfamily active-style" : "style-type-fontfamily"}
+          className={this.state.pickingFamily ? "style-group-item style-type-fontfamily active-style" : "style-group-item style-type-fontfamily"}
           onClick={this.toggleFamilyPicker}>
           {this.props.family.fontFamily ? this.props.family.fontFamily.trunc(10) : "Arial"}
           {this.state.pickingFamily ? this.renderDropDown() : ""}

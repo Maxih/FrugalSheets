@@ -52,7 +52,7 @@ export default class GridHeaderCell extends React.Component {
   }
 
   generateCellClass() {
-    let className = "grid-cell";
+    let className = "grid-cell unselectable";
 
     if(this.props.active)
       className += " selected-cell";

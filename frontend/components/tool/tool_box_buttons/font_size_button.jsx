@@ -41,7 +41,7 @@ export default class FontSizeButton extends React.Component {
   render() {
     return (
         <li
-          className={this.state.pickingSize ? "style-type-fontsize active-style" : "style-type-fontsize"}
+          className={this.state.pickingSize ? "style-group-item style-type-fontsize active-style" : "style-group-item style-type-fontsize"}
           onClick={this.toggleSizePicker}>
           {this.props.size.fontSize ? this.props.size.fontSize : "12"}
           {this.state.pickingSize ? this.renderDropDown() : ""}
