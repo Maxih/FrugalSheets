@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { updateCell } from '../../actions/sheet_actions';
+import { updateRangeGroups } from '../../actions/sheet_actions';
 import CellInput from './cell_input';
 
 const mapStateToProps = (state) => {
@@ -7,7 +7,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    updateRangeGroups: (groups) => dispatch(updateRangeGroups(groups)),
+  };
 };
 
 export default connect(

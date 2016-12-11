@@ -3,6 +3,8 @@ import {numToChar, between, blankSheet} from '../../utils/grid_utils';
 import GridRow from './grid_row';
 import GridHeader from './grid_header';
 import GridSelectionContainer from './grid_selection_container';
+import GridSelectionGroupContainer from './grid_selection_group_container';
+
 
 
 export default class Grid extends React.Component {
@@ -96,6 +98,7 @@ export default class Grid extends React.Component {
         </span>
         <section className="grid">
           <GridSelectionContainer />
+          <GridSelectionGroupContainer />
           {rows}
         </section>
       </section>

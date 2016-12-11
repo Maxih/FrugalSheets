@@ -2,12 +2,11 @@ import {
   between
 } from '../utils/grid_utils';
 
-export function getSelectionOffset(sheet) {
-  if (sheet.workingArea.activeRange[0] === undefined)
+export function getSelectionOffset(grid, range) {
+  if (range[0] === undefined)
     return {};
 
-  const dims = sheet.workingArea.activeRange[0][0].pos;
-  const grid = sheet.data;
+  const dims = range[0][0].pos;
 
   let totalWidth = 50;
   let totalHeight = 26;
@@ -30,13 +29,10 @@ export function getSelectionOffset(sheet) {
   return style;
 }
 
-export function getSelectionDimensions(sheet) {
+export function getSelectionDimensions(grid, range) {
   let totalWidth = 0;
   let totalHeight = 0;
 
-
-  const range = sheet.workingArea.activeRange;
-  const grid = sheet.data;
 
   if (range[0] !== undefined) {
     for (let i = 0; i < range.length; i++) {

@@ -2,6 +2,7 @@ import React from 'react';
 import {merge} from 'lodash';
 import ReactDOM from 'react-dom';
 import autosize from 'autosize';
+import {Formula} from '../../utils/formula_util';
 
 
 export default class CellInput extends React.Component {
@@ -25,6 +26,13 @@ export default class CellInput extends React.Component {
 
   cellChanged(e) {
     const newCell = merge({}, this.props.cell, {content: e.target.value});
+
+    if(newCell.content[0] === "=") {
+      const formula = new Formula(newCell.content);
+      this.props.updateRangeGroups(Object.keys(formula.vars));
+    } else {
+      this.props.updateRangeGroups([]);
+    }
 
     this.setState({content: newCell.content});
     // let height = this.refs[this.props.refName].clientHeight;

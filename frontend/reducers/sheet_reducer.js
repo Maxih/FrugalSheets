@@ -8,7 +8,8 @@ import {
   updateActiveRangeContent,
   updateActiveRangeStyle,
   mapRangeToGrid,
-  newSheetName
+  newSheetName,
+  getFormulaRange
 } from '../utils/grid_utils';
 import {
   merge
@@ -106,9 +107,13 @@ function SheetReducer(state = blankState(), action) {
       newState.name = action.name;
       return newState;
 
+    case Action.UPDATE_RANGE_GROUPS:
+      curSheet.rangeGroups = action.groups.map((group) => getFormulaRange(curSheet.data, group));
+
+      return newState
 
     default:
-      return state;
+      return newState;
   }
 }
 

@@ -1,16 +1,20 @@
 import { connect } from 'react-redux';
-import { getSelectionOffset, getSelectionDimensions, getWorkingArea, getCurSheet } from '../../reducers/selectors';
+import { getSelectionOffset, getSelectionDimensions, getCurSheet } from '../../reducers/selectors';
 import { receiveStartCell, receiveEndCell } from '../../actions/sheet_actions';
 
-import GridSelection from './grid_selection';
+import GridSelectionGroup from './grid_selection_group';
 
 const mapStateToProps = (state) => {
-  const workingArea = getWorkingArea(state);
   const sheet = getCurSheet(state);
+  const groups = sheet.rangeGroups.map((range) => {
+    return {
+      offset: getSelectionOffset(sheet.data, range),
+      dimensions: getSelectionDimensions(sheet.data, range),
+    }
+  });
+
   return {
-    offset: getSelectionOffset(sheet.data, workingArea.activeRange),
-    dimensions: getSelectionDimensions(sheet.data, workingArea.activeRange),
-    directional: workingArea.directional,
+    groups: groups
   };
 };
 
@@ -24,4 +28,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(GridSelection);
+)(GridSelectionGroup);

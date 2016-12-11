@@ -30,10 +30,10 @@ export default class GridSelection extends React.Component {
     if(style.width === 0 || style.height === 0)
       style.display = "none";
 
-    let className = "selection";
+    let className = "selection active-selection";
 
     if(this.props.directional) {
-      className = "selection directional";
+      className += " directional";
     }
 
     return (

@@ -44,6 +44,13 @@ export default class GridCell extends React.Component {
     if(e.type === "mouseup") {
       receiveEndCell(this.props.cell);
     } else {
+      if(this.props.cell.content[0] === "=") {
+        const formula = new Formula(this.props.cell.content);
+        this.props.updateRangeGroups(Object.keys(formula.vars));
+      } else {
+        this.props.updateRangeGroups([]);
+      }
+
       receiveStartCell(this.props.cell, false);
     }
   }

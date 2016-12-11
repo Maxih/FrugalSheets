@@ -92,7 +92,8 @@ export function blankState() {
       "Sheet1": {
         name: "Sheet1",
         workingArea: workingAreaDefaults,
-        data: blankSheet()
+        data: blankSheet(),
+        rangeGroups: []
       }
     }
   };

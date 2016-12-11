@@ -15,21 +15,31 @@ body {
 
 /* Grid Selection Component */
 
+.selection.range-selection {
+  border: 2px dashed;
+}
+
+.selection.active-selection {
+  border: 1px solid #4285f4;
+}
+
 .selection {
   display: block;
   position: absolute;
   z-index: 5;
   pointer-events: none;
-  border: 1px solid #4285f4;
   box-sizing: border-box;
 }
 
 .selection-body {
-  background: #4285f4;
   display: block;
   height: 100%;
   width: 100%;
   opacity: .1;
+}
+
+.selection.active-selection .selection-body {
+  background: #4285f4;
 }
 
 div.directional {

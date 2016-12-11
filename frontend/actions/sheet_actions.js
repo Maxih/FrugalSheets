@@ -13,6 +13,7 @@ export const SELECT_ROW = "SELECT_ROW";
 export const SELECT_COL = "SELECT_COL";
 export const RECEIVE_DOCUMENT = "RECEIVE_DOCUMENT";
 export const UPDATE_DOCUMENT_NAME = "UPDATE_DOCUMENT_NAME";
+export const UPDATE_RANGE_GROUPS = "UPDATE_RANGE_GROUPS";
 
 export const updateCell = (cell) => ({
   type: UPDATE_CELL,
@@ -80,6 +81,11 @@ export const receiveDocument = (doc) => ({
 export const updateDocumentName = (name) => ({
   type: UPDATE_DOCUMENT_NAME,
   name: name
+});
+
+export const updateRangeGroups = (groups) => ({
+  type: UPDATE_RANGE_GROUPS,
+  groups: groups
 });
 
 
