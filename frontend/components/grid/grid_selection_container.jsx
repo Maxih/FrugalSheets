@@ -5,19 +5,11 @@ import { receiveStartCell, receiveEndCell } from '../../actions/sheet_actions';
 import GridSelection from './grid_selection';
 
 const mapStateToProps = (state) => {
-
-
-  // if(state.doc 0) {
-  //   return {
-  //     offset: {},
-  //     dimensions: {}
-  //   };
-  // }
   const workingArea = getWorkingArea(state);
   const sheet = getCurSheet(state);
   return {
     offset: getSelectionOffset(sheet),
-    dimensions: getSelectionDimensions(workingArea.activeRange),
+    dimensions: getSelectionDimensions(sheet),
     directional: workingArea.directional,
   };
 };

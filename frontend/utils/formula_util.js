@@ -4,14 +4,53 @@ export class Formula {
   constructor(formulaString = "") {
     this.formulaString = formulaString;
     this.funcs = {
-      DIVIDE: (a, b) => {return parseInt(a) / parseInt(b)},
-      ADD: (a, b) => {return parseInt(a) + parseInt(b)},
-      MULT: (a, b) => {return parseInt(a) * parseInt(b)},
-      MINUS: (a, b) => {return parseInt(a) - parseInt(b)},
-      CONCAT: (a, b) => {return `${a}${b}`},
+      DIVIDE: (a, b) => {return parseInt(a[0][0]) / parseInt(b[0][0])},
+      ADD: (a, b) => {return parseInt(a[0][0]) + parseInt(b[0][0])},
+      MULT: (a, b) => {return parseInt(a[0][0]) * parseInt(b[0][0])},
+      MINUS: (a, b) => {return parseInt(a[0][0]) - parseInt(b[0][0])},
+      CONCAT: (a, b) => {return `${a.join(',')}${b.join(',')}`},
+      MAX: (range) => {return Math.max(...this.flattenRange(range))},
+      MIN: (range) => {return Math.min(...this.flattenRange(range))},
+      SUM: (range) => {return this._SUM(this.flattenRange(range))},
+      VLOOKUP: (search, range, index) => {return this._VLOOKUP(search, range, index)}
     }
 
     this.vars = this.findVars();
+  }
+
+  flattenRange(range) {
+    let linked = [];
+
+    for(let i = 0; i < range.length; i++) {
+      for(let j = 0; j < range[0].length; j++) {
+        linked.push(range[i][j]);
+      }
+    }
+
+    return linked
+  }
+
+  _VLOOKUP(search, range, index) {
+    index = parseInt(index);
+    
+    for(let i = 0; i < range.length; i++) {
+      for(let j = 0; j < range[i].length; j++) {
+        if(range[i][j] === search && j + index < range[i].length) {
+          return range[i][j + index];
+        }
+      }
+    }
+    return "";
+  }
+
+  _SUM(range) {
+    range = range.map((str) => (parseInt(str) ? parseInt(str) : 0));
+
+    range = range.reduce((a, b) => {
+      return a + b;
+    }, 0);
+
+    return range ? range : 0;
   }
 
   execFunc(fn, args) {
@@ -38,7 +77,7 @@ export class Formula {
   }
 
   findVars() {
-    const matcher = /([A-Z]+)([0-9]+)/g;
+    const matcher = /([a-zA-Z]+)([0-9]+)(:([a-zA-Z]+)([0-9]+))?/g;
     let vars = this.formulaString.match(matcher);
 
     if(vars === null)

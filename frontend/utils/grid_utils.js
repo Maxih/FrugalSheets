@@ -6,29 +6,65 @@ export function getLinkedCells(grid, links) {
   if (linkKeys === undefined)
     return [];
 
-  links = linkKeys.map((coord) => {
+  let linked = [];
+  linkKeys.forEach((coord) => {
 
     const parsed = parseCoord(coord);
-    return grid[parsed.row][parsed.col];
+
+    let curLinks = getCellsBetween(grid, parsed.start, parsed.end)
+    for(let i = 0; i < curLinks.length; i++) {
+      for(let j = 0; j < curLinks[0].length; j++) {
+        linked.push(curLinks[i][j]);
+      }
+    }
+
   });
 
-  return links;
+  return linked;
+}
+
+export function getFormulaRange(grid, coord) {
+  let linked = [];
+
+  const parsed = parseCoord(coord);
+
+  return getCellsBetween(grid, parsed.start, parsed.end)
+  // for(let i = 0; i < curLinks.length; i++) {
+  //   for(let j = 0; j < curLinks[0].length; j++) {
+  //     linked.push(curLinks[i][j]);
+  //   }
+  // }
+  //
+  // return linked;
 }
 
 export function parseCoord(coord) {
-  const matcher = /([a-zA-Z]+)([0-9]+)/g;
+  const matcher = /([a-zA-Z]+)([0-9]+)(:([a-zA-Z]+)([0-9]+))?/g;
   const matched = matcher.exec(coord);
 
-  if (matched.length != 3)
+  if (matched === null)
     return false;
 
-  let col = charToNum(matched[1]) - 1;
-  let row = parseInt(matched[2]) - 1;
 
-  return {
-    row: row,
-    col: col
-  };
+  const startCoord = {
+    col: charToNum(matched[1]) - 1,
+    row: parseInt(matched[2]) - 1
+  }
+
+  const coords = {
+    start: startCoord,
+    end: startCoord
+  }
+
+  if(matched[3] != undefined) {
+    coords.end = {
+      row: parseInt(matched[5]) - 1,
+      col: charToNum(matched[4]) - 1
+    }
+  }
+
+
+  return coords;
 }
 
 export function blankState() {
@@ -109,17 +145,14 @@ export function updateActiveRangeContent(range, cell, numRows, numCols) {
       let newCell = merge({}, range[copyRow][copyCol]);
 
       if(newCell.content[0] === "=") {
-
         const formula = new Formula(newCell.content.slice(1));
         let varNames= Object.keys(formula.vars);
         varNames.forEach((curVar) => {
           const coord = parseCoord(curVar);
           const newVar = `${numToChar(coord.col + j + 1)}${coord.row + i + 1}`;
 
-
           newCell.content = newCell.content.replace(curVar, newVar);
         });
-
       }
 
       newRange[i][j].content = newCell.content;
@@ -162,7 +195,7 @@ export function getColFromId(gridState, id) {
   })
 }
 
-export function getCellsBetween(gridState, start, end, directional, numRows, numCols) {
+export function getCellsBetween(gridState, start, end, directional = false, numRows, numCols) {
   let upperBoundsCol = start.col > end.col ? start.col : end.col;
   let lowerBoundsCol = start.col < end.col ? start.col : end.col;
 

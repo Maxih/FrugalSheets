@@ -30,17 +30,23 @@ export function getSelectionOffset(sheet) {
   return style;
 }
 
-export function getSelectionDimensions(range) {
+export function getSelectionDimensions(sheet) {
   let totalWidth = 0;
   let totalHeight = 0;
 
+
+  const range = sheet.workingArea.activeRange;
+  const grid = sheet.data;
+
   if (range[0] !== undefined) {
     for (let i = 0; i < range.length; i++) {
-      totalHeight += range[i][0].height;
+      let cell = range[i][0].pos;
+      totalHeight += grid[cell.row][cell.col].height;
     }
 
     for (let j = 0; j < range[0].length; j++) {
-      totalWidth += range[0][j].width;
+      let cell = range[0][j].pos;
+      totalWidth += grid[cell.row][cell.col].width;
     }
   }
 

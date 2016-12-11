@@ -29,8 +29,9 @@ export default class FontFamilyButton extends React.Component {
 
   renderDropDown() {
     const options = this.families.map((family) => {
+      const style = {fontFamily: family};
       return (
-        <li key={family} onClick={this.selectFamily.bind(this, family)}>{family}</li>
+        <li key={family} style={style} onClick={this.selectFamily.bind(this, family)}>{family}</li>
       );
     });
 
