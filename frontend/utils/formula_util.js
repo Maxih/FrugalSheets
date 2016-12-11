@@ -8,13 +8,14 @@ export class Formula {
       ADD: (a, b) => {return parseInt(a[0][0]) + parseInt(b[0][0])},
       MULT: (a, b) => {return parseInt(a[0][0]) * parseInt(b[0][0])},
       MINUS: (a, b) => {return parseInt(a[0][0]) - parseInt(b[0][0])},
-      CONCAT: (a, b) => {return `${a.join(',')}${b.join(',')}`},
+      CONCAT: (a, b) => {return `${a}${b}`},
       MAX: (range) => {return Math.max(...this.flattenRange(range))},
       MIN: (range) => {return Math.min(...this.flattenRange(range))},
       SUM: (range) => {return this._SUM(this.flattenRange(range))},
       VLOOKUP: (search, range, index) => {return this._VLOOKUP(search, range, index)}
     }
 
+    this.quoted = this.safeQuotes();
     this.vars = this.findVars();
   }
 
@@ -32,7 +33,7 @@ export class Formula {
 
   _VLOOKUP(search, range, index) {
     index = parseInt(index);
-    
+
     for(let i = 0; i < range.length; i++) {
       for(let j = 0; j < range[i].length; j++) {
         if(range[i][j] === search && j + index < range[i].length) {
@@ -81,7 +82,7 @@ export class Formula {
     let vars = this.formulaString.match(matcher);
 
     if(vars === null)
-      return []
+      return [];
 
     const varObj = {}
 
@@ -114,9 +115,35 @@ export class Formula {
       }
     }
 
+    evaledArgs = evaledArgs.map((arg) => {
+      for(let key in this.quoted) {
+        arg = arg.replace(key, this.quoted[key]);
+      }
+      return arg;
+    });
+
     return this.execFunc(matched[1], evaledArgs);
   }
+
+  safeQuotes() {
+    let quoted = this.formulaString.match(/".*?"/g);
+
+    if(quoted === null) {
+      return {};
+    }
+    const quoteMap = {};
+
+    quoted.forEach((quote, idx) => {
+      let quoteKey = `%${idx}`;
+      quoteMap[quoteKey] = quote.slice(1, quote.length-1);
+      this.formulaString = this.formulaString.replace(quote, quoteKey);
+    });
+
+    return quoteMap;
+  }
 }
+
+
 
 function splitByComma(string) {
   let args = [];

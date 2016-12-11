@@ -73,7 +73,7 @@ export default class GridCell extends React.Component {
     vars.forEach((curVar) => {
 
       let coords = Util.getFormulaRange(this.props.grid, curVar);
-      let curContent = []
+      let curContent = [];
       for(let i = 0; i < coords.length; i++) {
         curContent.push(coords[i].map((coord) => {
           let cur = this.props.grid[coord.pos.row][coord.pos.col].content;
@@ -81,7 +81,7 @@ export default class GridCell extends React.Component {
           if(cur[0] === "=")
             cur = this.parseFormula(cur);
 
-          return cur
+          return cur;
         }));
       }
 
@@ -95,30 +95,6 @@ export default class GridCell extends React.Component {
 
     return parsed;
   }
-
-  // parseFormula(text) {
-  //   let parsed = text;
-  //   const formula = new Formula(text.slice(1));
-  //   const vars = Object.keys(formula.vars);
-  //   const mappedVar = {};
-  //
-  //   vars.forEach((curVar) => {
-  //     let coord = Util.parseCoord(curVar)
-  //     let curContent = this.props.grid[coord.row][coord.col].content;
-  //     if(curContent[0] === "=")
-  //       curContent = this.parseFormula(curContent);
-  //
-  //     mappedVar[curVar] = curContent;
-  //   });
-  //
-  //   parsed = formula.parse(mappedVar);
-  //
-  //   if(!parsed)
-  //     return "NaN";
-  //
-  //   return parsed;
-  // }
-
 
   render() {
     let content = this.props.cell.content;
