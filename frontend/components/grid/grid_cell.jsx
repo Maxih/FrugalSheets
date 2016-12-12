@@ -9,9 +9,6 @@ export default class GridCell extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      content: this.props.cell.content
-    }
 
     this.mouseOver = this.mouseOver.bind(this);
     this.mouseAction = this.mouseAction.bind(this);
@@ -21,9 +18,10 @@ export default class GridCell extends React.Component {
     let havePropsChanged = !Util.compare(this.props.cell, nextProps.cell);
 
     if(nextProps.cell.content[0] === "=") {
-      const nextContent = this.parseFormula(nextProps.cell.content);
-      if(this.state.content !== nextContent) {
-        this.setState({content: nextContent});
+      const curContent = this.parseFormula(this.props.cell.content, this.props.grid);
+      const nextContent = this.parseFormula(nextProps.cell.content, nextProps.grid);
+
+      if(curContent !== nextContent) {
         return true;
       }
     }
@@ -68,7 +66,7 @@ export default class GridCell extends React.Component {
     return className;
   }
 
-  parseFormula(text) {
+  parseFormula(text, grid) {
     let parsed = text;
     const formula = new Formula(text.slice(1));
     const vars = Object.keys(formula.vars);
@@ -76,14 +74,14 @@ export default class GridCell extends React.Component {
 
     vars.forEach((curVar) => {
 
-      let coords = Util.getFormulaRange(this.props.grid, curVar);
+      let coords = Util.getFormulaRange(grid, curVar);
       let curContent = [];
       for(let i = 0; i < coords.length; i++) {
         curContent.push(coords[i].map((coord) => {
-          let cur = this.props.grid[coord.pos.row][coord.pos.col].content;
+          let cur = grid[coord.pos.row][coord.pos.col].content;
 
           if(cur[0] === "=")
-            cur = this.parseFormula(cur);
+            cur = this.parseFormula(cur, grid);
 
           return cur;
         }));
@@ -113,7 +111,7 @@ export default class GridCell extends React.Component {
         );
     } else {
       if(content[0] === "=") {
-        content = this.parseFormula(content);
+        content = this.parseFormula(content, this.props.grid);
         this.curFormulaEval = content;
       }
     }

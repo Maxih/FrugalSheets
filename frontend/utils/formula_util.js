@@ -67,14 +67,14 @@ export class Formula {
 
     this.vars = merge(this.vars, vars);
 
-    parsed = this.parseFormula(this.formulaString);
+    //parsed = this.parseFormula(this.formulaString);
 
-    // try {
-    //   parsed = this.parseFormula(this.formulaString);
-    // }
-    // catch(err) {
-    //   parsed = false;
-    // }
+    try {
+      parsed = this.parseFormula(this.formulaString);
+    }
+    catch(err) {
+      parsed = false;
+    }
 
     return parsed;
   }
