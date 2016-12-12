@@ -14,6 +14,8 @@ export const SELECT_COL = "SELECT_COL";
 export const RECEIVE_DOCUMENT = "RECEIVE_DOCUMENT";
 export const UPDATE_DOCUMENT_NAME = "UPDATE_DOCUMENT_NAME";
 export const UPDATE_RANGE_GROUPS = "UPDATE_RANGE_GROUPS";
+export const MOVE_ACTIVE_CELL = "MOVE_ACTIVE_CELL";
+export const MOVE_ACTIVE_RANGE = "MOVE_ACTIVE_RANGE";
 
 export const updateCell = (cell) => ({
   type: UPDATE_CELL,
@@ -88,6 +90,15 @@ export const updateRangeGroups = (groups) => ({
   groups: groups
 });
 
+export const moveActiveCell = (delta) => ({
+  type: MOVE_ACTIVE_CELL,
+  delta: delta
+});
+
+export const moveActiveRange = (delta) => ({
+  type: MOVE_ACTIVE_RANGE,
+  delta: delta
+});
 
 export function loadDocument(docId) {
   return dispatch => {

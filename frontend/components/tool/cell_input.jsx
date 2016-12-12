@@ -43,21 +43,15 @@ export default class CellInput extends React.Component {
     this.props.updateCell(newCell);
   }
 
-  selectNextCell(e) {
-    if(e.charCode === 13) {
-
-    }
-  }
-
   render() {
     if(this.props.styling) {
       return (
-        <textarea style={this.props.cell.style} className="cell-val-textarea grid-text" ref={this.props.refName} onKeyPress={this.selectNextCell} onChange={this.cellChanged} value={this.props.cell.content} />
+        <textarea style={this.props.cell.style} className="cell-val-textarea grid-text" ref={this.props.refName} onKeyDown={this.props.keyPress} onChange={this.cellChanged} value={this.props.cell.content} />
       );
     }
 
     return (
-      <input type="text" className="cell-val-textarea" ref={this.props.refName} onChange={this.cellChanged} value={this.props.cell.content} />
+      <input type="text" className="cell-val-textarea" ref={this.props.refName} onChange={this.cellChanged} onKeyDown={this.props.keyPress} value={this.props.cell.content} />
     );
   }
 }

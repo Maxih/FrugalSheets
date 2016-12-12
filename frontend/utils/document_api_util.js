@@ -31,7 +31,7 @@ export const createDocument = (success, error) => {
   return $.ajax({
     method: "POST",
     url: `/api/documents`,
-    data: {name: "new Doc", content: JSON.stringify(Util.blankState())},
+    data: {name: "Untitled spreadsheet", content: JSON.stringify(Util.blankState())},
     success,
     error
   });

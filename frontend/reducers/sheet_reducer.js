@@ -2,6 +2,7 @@ import * as Action from '../actions/sheet_actions.js';
 import {
   blankState,
   blankSheet,
+  between,
   getCellsBetween,
   getRowFromId,
   getColFromId,
@@ -9,7 +10,8 @@ import {
   updateActiveRangeStyle,
   mapRangeToGrid,
   newSheetName,
-  getFormulaRange
+  getFormulaRange,
+  toggleShouldUpdate
 } from '../utils/grid_utils';
 import {
   merge
@@ -21,13 +23,21 @@ function SheetReducer(state = blankState(), action) {
   const curSheet = newState.sheets[newState.activeSheet];
   const curWorkingArea = curSheet.workingArea;
 
+  // for(let i = 0; i < curSheet.data.length; i++) {
+  //   for(let j = 0; j < curSheet.data[i].length; j++) {
+  //     toggleShouldUpdate(curSheet, i, j, false);
+  //   }
+  // }
+
   switch (action.type) {
+
     case Action.UPDATE_RANGE:
       curWorkingArea.activeRange = updateActiveRangeStyle(curWorkingArea.activeRange, action.cell);
       curSheet.data = mapRangeToGrid(curWorkingArea.activeRange, curSheet.data);
 
     case Action.UPDATE_CELL:
       curSheet.data[action.cell.pos.row][action.cell.pos.col] = action.cell;
+      toggleShouldUpdate(curSheet.data, action.cell.pos.row, action.cell.pos.col);
       curWorkingArea.activeCell = action.cell;
       return newState;
 
@@ -42,10 +52,36 @@ function SheetReducer(state = blankState(), action) {
       newState.activeSheet = action.name;
       return newState;
 
+    case Action.MOVE_ACTIVE_CELL:
+      const newRow = curWorkingArea.activeCell.pos.row + action.delta.row;
+      const newCol = curWorkingArea.activeCell.pos.col + action.delta.col;
+
+      if(between(newRow, 0, curSheet.data.length-1) && between(newCol, 0, curSheet.data[0].length-1)) {
+        curWorkingArea.activeCell = curSheet.data[newRow][newCol];
+        curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, curWorkingArea.activeCell.pos);
+      }
+
+      return newState;
+
+    case Action.MOVE_ACTIVE_RANGE:
+      const numRows1 = curWorkingArea.activeRange.length - 1;
+      const numCols1 = curWorkingArea.activeRange[0].length - 1;
+      const newRow1 = curWorkingArea.activeRange[numRows1][numCols1].pos.row + action.delta.row;
+      const newCol1 = curWorkingArea.activeRange[numRows1][numCols1].pos.col + action.delta.col;
+
+      if(between(newRow1, 0, curSheet.data.length-1) && between(newCol1, 0, curSheet.data[0].length-1)) {
+        const newCell = curSheet.data[newRow1][newCol1];
+        curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeRange[0][0].pos, newCell.pos);
+      }
+
+      return newState;
+
     case Action.RECEIVE_START_CELL:
       curWorkingArea.selecting = true;
-      if (action.cell !== null)
+      if (action.cell !== null) {
         curWorkingArea.activeCell = action.cell;
+        toggleShouldUpdate(curSheet.data, action.cell.pos.row, action.cell.pos.col);
+      }
 
       curWorkingArea.directional = action.directional;
       if (action.directional) {
@@ -61,8 +97,6 @@ function SheetReducer(state = blankState(), action) {
         curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, numRows, numCols)
 
         if (curWorkingArea.directional) {
-
-
           updateActiveRangeContent(curWorkingArea.duplicateRange, curWorkingArea.activeRange);
           mapRangeToGrid(curWorkingArea.activeRange, curSheet.data);
         }

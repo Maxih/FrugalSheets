@@ -5,6 +5,13 @@ import CellStyleContainer from './cell_style_container';
 export default class ToolBox extends React.Component {
   constructor(props) {
     super(props);
+
+
+    this.keyPress = this.keyPress.bind(this);
+  }
+
+  keyPress(e) {
+
   }
 
   render() {
@@ -17,7 +24,7 @@ export default class ToolBox extends React.Component {
         <section className="formula-bar">
           <span className="formula-logo">fx</span>
           <span className="formula">
-            <CellInputContainer styling={false} refName="formulaRef" updateCell={this.props.updateCell} cell={this.props.activeCell} />
+            <CellInputContainer styling={false} keyPress={this.keyPress} refName="formulaRef" updateCell={this.props.updateCell} cell={this.props.activeCell} />
           </span>
         </section>
       </section>

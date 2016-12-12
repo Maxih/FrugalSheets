@@ -165,15 +165,23 @@ body {
   background: #FFF;
 }
 
+.grid-text {
+  position: absolute;
+}
+
+.cell-val-textarea:focus {
+  box-shadow: 0px 3px 7px #666;
+}
+
 .active-cell-wrapper {
   border: 2px solid #4285f4 !important;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 0px 0px 10px #999;
   display: block;
   z-index: 6;
   background: #FFF;
   height: 100%;
+  overflow: visible;
 }
 
 .grid-cell {
@@ -189,6 +197,7 @@ body {
   cursor: default;
   font-family: Arial;
   padding: 2px;
+  outline: none;
 }
 
 .active-cell {

@@ -1,6 +1,10 @@
 import merge from 'lodash/merge';
 import {Formula} from './formula_util';
 
+export function toggleShouldUpdate(grid, row, col) {
+  grid[row][col].shouldUpdate = !grid[row][col].shouldUpdate;
+}
+
 export function getLinkedCells(grid, links) {
   let linkKeys = Object.keys(links);
   if (linkKeys === undefined)
@@ -10,6 +14,9 @@ export function getLinkedCells(grid, links) {
   linkKeys.forEach((coord) => {
 
     const parsed = parseCoord(coord);
+
+    if(!parsed)
+      return;
 
     let curLinks = getCellsBetween(grid, parsed.start, parsed.end)
     for(let i = 0; i < curLinks.length; i++) {
@@ -24,38 +31,44 @@ export function getLinkedCells(grid, links) {
 }
 
 export function getFormulaRange(grid, coord) {
-  let linked = [];
-
   const parsed = parseCoord(coord);
+
+  if(!parsed)
+    return [];
 
   return getCellsBetween(grid, parsed.start, parsed.end)
 }
 
 export function parseCoord(coord) {
-  const matcher = /([a-zA-Z]+)([0-9]+)(:([a-zA-Z]+)([0-9]+))?/g;
+  const matcher = /([a-zA-Z0-9]+!)?([A-Z]+)([0-9]+)(:([A-Z]+)([0-9]+))?/g;
   const matched = matcher.exec(coord);
 
   if (matched === null)
     return false;
 
 
+
   const startCoord = {
-    col: charToNum(matched[1]) - 1,
-    row: parseInt(matched[2]) - 1
+    col: charToNum(matched[2]) - 1,
+    row: parseInt(matched[3]) - 1
   }
 
   const coords = {
+    sheet: null,
     start: startCoord,
     end: startCoord
   }
 
-  if(matched[3] != undefined) {
+  if(matched[5] != undefined) {
     coords.end = {
-      row: parseInt(matched[5]) - 1,
-      col: charToNum(matched[4]) - 1
+      col: charToNum(matched[5]) - 1,
+      row: parseInt(matched[6]) - 1
     }
   }
 
+  if(matched[1] != undefined) {
+    coords.sheet = matched[1].slice(0, matched[1].length-1);
+  }
 
   return coords;
 }
@@ -76,8 +89,6 @@ export function blankState() {
     selecting: false,
     directional: false,
     duplicateRange: [],
-    numRows: 0,
-    numCols: 0,
   };
 
   const defaults = {
@@ -96,7 +107,7 @@ export function blankState() {
 }
 
 export function blankSheet() {
-  const grid = new Array(30);
+  const grid = new Array(200);
 
   for (let i = 0; i < grid.length; i++) {
     grid[i] = new Array(26);
@@ -114,6 +125,7 @@ export function blankCell(row, col) {
     width: 100,
     height: 26,
     style: {},
+    shouldUpdate: false,
     pos: {
       row: row,
       col: col
@@ -180,6 +192,7 @@ export function mapRangeToGrid(range, grid) {
     for (let j = 0; j < range[i].length; j++) {
       const cell = range[i][j];
       grid[cell.pos.row][cell.pos.col] = cell;
+      toggleShouldUpdate(grid, cell.pos.row, cell.pos.col);
     }
   }
 
@@ -207,6 +220,9 @@ export function getColFromId(gridState, id) {
 }
 
 export function getCellsBetween(gridState, start, end, directional = false, numRows, numCols) {
+  if(start === undefined || end === undefined)
+    return [];
+
   let upperBoundsCol = start.col > end.col ? start.col : end.col;
   let lowerBoundsCol = start.col < end.col ? start.col : end.col;
 

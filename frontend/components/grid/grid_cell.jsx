@@ -12,10 +12,10 @@ export default class GridCell extends React.Component {
 
     this.mouseOver = this.mouseOver.bind(this);
     this.mouseAction = this.mouseAction.bind(this);
+    this.keyPress = this.keyPress.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
-    let havePropsChanged = !Util.compare(this.props.cell, nextProps.cell);
 
     if(nextProps.cell.content[0] === "=") {
       const curContent = this.parseFormula(this.props.cell.content, this.props.grid);
@@ -25,11 +25,7 @@ export default class GridCell extends React.Component {
         return true;
       }
     }
-
-    return (havePropsChanged ||
-        this.props.selected !== nextProps.selected ||
-        this.props.active !== nextProps.active
-    );
+    return (this.props.cell.shouldUpdate !== nextProps.cell.shouldUpdate) || this.props.active !== nextProps.active;
   }
 
   mouseAction(e) {
@@ -95,17 +91,69 @@ export default class GridCell extends React.Component {
     return parsed;
   }
 
+  keyPress(e) {
+    e.stopPropagation();
+
+    switch(e.keyCode) {
+      case 13: // enter
+        e.preventDefault();
+        if(e.shiftKey) // shift enter
+          this.props.moveActiveCell({row: -1, col: 0});
+        else
+          this.props.moveActiveCell({row: 1, col: 0});
+        break;
+      case 9: // tab
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveCell({row: 0, col: -1});
+        else
+          this.props.moveActiveCell({row: 0, col: 1});
+        break;
+      case 37:
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveRange({row: 0, col: -1});
+        else
+          this.props.moveActiveCell({row: 0, col: -1});
+        break;
+      case 38:
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveRange({row: -1, col: 0});
+        else
+          this.props.moveActiveCell({row: -1, col: 0});
+        break;
+      case 39:
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveRange({row: 0, col: 1});
+        else
+          this.props.moveActiveCell({row: 0, col: 1});
+        break;
+      case 40:
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveRange({row: 1, col: 0});
+        else
+          this.props.moveActiveCell({row: 1, col: 0});
+        break;
+    }
+  }
+
   render() {
     let content = this.props.cell.content;
 
     if(this.props.active) {
       content = (
-        <div className="active-cell-wrapper">
+        <div
+          className="active-cell-wrapper"
+          >
           <CellInputContainer
             styling={true}
             refName="cellRef"
             cell={this.props.cell}
             resizeRow={this.props.resizeRow}
+            keyPress={this.keyPress}
             updateCell={this.props.updateCell} />
         </div>
         );
@@ -130,6 +178,8 @@ export default class GridCell extends React.Component {
         onMouseUp={this.mouseAction}
         onMouseOver={this.mouseOver}
         style={style}
+        onKeyDown={this.keyPress}
+        tabIndex="1"
         >
         {content}
       </span>

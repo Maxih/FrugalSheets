@@ -36,7 +36,7 @@ export class Formula {
 
     for(let i = 0; i < range.length; i++) {
       for(let j = 0; j < range[i].length; j++) {
-        if(range[i][j] === search && j + index < range[i].length) {
+        if(range[i][j] == search && j + index < range[i].length) {
           return range[i][j + index];
         }
       }
@@ -67,20 +67,21 @@ export class Formula {
 
     this.vars = merge(this.vars, vars);
 
-    //parsed = this.parseFormula(this.formulaString);
+    parsed = this.parseFormula(this.formulaString);
 
-    try {
-      parsed = this.parseFormula(this.formulaString);
-    }
-    catch(err) {
-      parsed = false;
-    }
+    // try {
+    //   parsed = this.parseFormula(this.formulaString);
+    // }
+    // catch(err) {
+    //   parsed = false;
+    // }
 
     return parsed;
   }
 
   findVars() {
-    const matcher = /([A-Z]+)([0-9]+)(:([A-Z]+)([0-9]+))?/g;
+    const matcher = /([a-zA-Z0-9]+!)?([a-zA-Z]+)([0-9]+)(:([a-zA-Z]+)([0-9]+))?/g;
+
     let vars = this.formulaString.match(matcher);
 
     if(vars === null)
