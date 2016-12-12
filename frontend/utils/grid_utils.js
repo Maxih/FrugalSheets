@@ -135,9 +135,6 @@ export function updateActiveRangeContent(oldRange, newRange) {
   const numRows = oldRange.length || 0;
   const numCols = oldRange[0].length || 0;
 
-  const dupCol = (newRange[0].length - numCols) > (newRange.length - numRows);
-
-
   for (let i = 0; i < newRange.length; i++) {
     for (let j = 0; j < newRange[i].length; j++) {
 
@@ -149,7 +146,15 @@ export function updateActiveRangeContent(oldRange, newRange) {
       // If new content is a formula, update referenced cells
       if(newCell.content[0] === "=") {
         const formula = new Formula(newCell.content.slice(1));
-        let varNames= Object.keys(formula.vars);
+        let varNames = Object.keys(formula.vars);
+        let varMap = {};
+
+        // Map to dummy key so new references to same cells dont get overwritten
+        varNames.map((curVar, idx) => {
+          const varKey = `%${idx}`;
+          newCell.content = newCell.content.replaceAll(curVar, varKey);
+          varMap[curVar] = varKey;
+        });
 
         varNames.forEach((curVar) => {
           const newCoord = parseCoord(curVar);
@@ -158,15 +163,13 @@ export function updateActiveRangeContent(oldRange, newRange) {
 
           let newVar = `${numToChar(newCol)}${newRow}`;
 
-          newCell.content = newCell.content.replace(curVar, newVar);
+          newCell.content = newCell.content.replaceAll(varMap[curVar], newVar);
         });
       }
-
 
       newRange[i][j].content = newCell.content;
     }
   }
-
 
   return newRange;
 }
@@ -348,4 +351,9 @@ export const compare = function(obj1, obj2) {
     if (typeof(obj1[p]) == 'undefined') return false;
   }
   return true;
+};
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
 };
