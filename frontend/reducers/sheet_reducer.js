@@ -49,17 +49,21 @@ function SheetReducer(state = blankState(), action) {
 
       curWorkingArea.directional = action.directional;
       if (action.directional) {
-        curWorkingArea.numRows = curWorkingArea.activeRange.length;
-        curWorkingArea.numCols = curWorkingArea.activeRange[0].length;
+        curWorkingArea.duplicateRange = curWorkingArea.activeRange;
       }
       return newState;
 
     case Action.RECEIVE_END_CELL:
       if (action.cell !== null) {
-        curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, curWorkingArea.numRows, curWorkingArea.numCols)
+        const numRows = curWorkingArea.duplicateRange.length || 0;
+        const numCols = curWorkingArea.duplicateRange[0] === undefined ? 0 : curWorkingArea.duplicateRange[0].length;
+
+        curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, numRows, numCols)
 
         if (curWorkingArea.directional) {
-          updateActiveRangeContent(curWorkingArea.activeRange, curWorkingArea.activeCell, curWorkingArea.numRows, curWorkingArea.numCols);
+
+
+          updateActiveRangeContent(curWorkingArea.duplicateRange, curWorkingArea.activeRange);
           mapRangeToGrid(curWorkingArea.activeRange, curSheet.data);
         }
       }
@@ -69,7 +73,9 @@ function SheetReducer(state = blankState(), action) {
 
       return newState;
     case Action.SELECTING_TEMP_CELL:
-      curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, curWorkingArea.numRows, curWorkingArea.numCols)
+      const numRows = curWorkingArea.duplicateRange.length || 0;
+      const numCols = curWorkingArea.duplicateRange[0] === undefined ? 0 : curWorkingArea.duplicateRange[0].length;
+      curWorkingArea.activeRange = getCellsBetween(curSheet.data, curWorkingArea.activeCell.pos, action.cell.pos, curWorkingArea.directional, numRows, numCols)
 
       return newState;
 

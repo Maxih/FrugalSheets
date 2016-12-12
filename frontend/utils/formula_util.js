@@ -67,18 +67,20 @@ export class Formula {
 
     this.vars = merge(this.vars, vars);
 
-    try {
-      parsed = this.parseFormula(this.formulaString);
-    }
-    catch(err) {
-      parsed = false;
-    }
+    parsed = this.parseFormula(this.formulaString);
+
+    // try {
+    //   parsed = this.parseFormula(this.formulaString);
+    // }
+    // catch(err) {
+    //   parsed = false;
+    // }
 
     return parsed;
   }
 
   findVars() {
-    const matcher = /([a-zA-Z]+)([0-9]+)(:([a-zA-Z]+)([0-9]+))?/g;
+    const matcher = /([A-Z]+)([0-9]+)(:([A-Z]+)([0-9]+))?/g;
     let vars = this.formulaString.match(matcher);
 
     if(vars === null)

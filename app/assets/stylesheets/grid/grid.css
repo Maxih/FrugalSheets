@@ -42,7 +42,7 @@ body {
   background: #4285f4;
 }
 
-div.directional {
+.selection.directional {
   border: 1px dashed #4285f4;
 }
 

@@ -29,13 +29,6 @@ export function getFormulaRange(grid, coord) {
   const parsed = parseCoord(coord);
 
   return getCellsBetween(grid, parsed.start, parsed.end)
-  // for(let i = 0; i < curLinks.length; i++) {
-  //   for(let j = 0; j < curLinks[0].length; j++) {
-  //     linked.push(curLinks[i][j]);
-  //   }
-  // }
-  //
-  // return linked;
 }
 
 export function parseCoord(coord) {
@@ -82,6 +75,7 @@ export function blankState() {
     activeRange: [],
     selecting: false,
     directional: false,
+    duplicateRange: [],
     numRows: 0,
     numCols: 0,
   };
@@ -137,33 +131,46 @@ export function updateActiveRangeStyle(range, cell) {
   return range;
 }
 
-export function updateActiveRangeContent(range, cell, numRows, numCols) {
-  const newRange = merge({}, range);
-  for (let i = 0; i < range.length; i++) {
-    for (let j = 0; j < range[i].length; j++) {
-      let copyRow = i % numRows;
-      let copyCol = j % numCols;
-      let newCell = merge({}, range[copyRow][copyCol]);
+export function updateActiveRangeContent(oldRange, newRange) {
+  const numRows = oldRange.length || 0;
+  const numCols = oldRange[0].length || 0;
 
+  const dupCol = (newRange[0].length - numCols) > (newRange.length - numRows);
+
+
+  for (let i = 0; i < newRange.length; i++) {
+    for (let j = 0; j < newRange[i].length; j++) {
+
+      let oldRow = i % numRows;
+      let oldCol = j % numCols;
+
+      const newCell = merge({}, oldRange[oldRow][oldCol]);
+
+      // If new content is a formula, update referenced cells
       if(newCell.content[0] === "=") {
         const formula = new Formula(newCell.content.slice(1));
         let varNames= Object.keys(formula.vars);
+
         varNames.forEach((curVar) => {
-          const coord = parseCoord(curVar);
-          const newVar = `${numToChar(coord.col + j + 1)}${coord.row + i + 1}`;
+          const newCoord = parseCoord(curVar);
+          let newRow = newRange[i][j].pos.row + (newCoord.start.row - newCell.pos.row) + 1;
+          let newCol = newRange[i][j].pos.col + (newCoord.start.col - newCell.pos.col) + 1;
+
+          let newVar = `${numToChar(newCol)}${newRow}`;
 
           newCell.content = newCell.content.replace(curVar, newVar);
         });
       }
 
+
       newRange[i][j].content = newCell.content;
     }
   }
 
-  merge(range, newRange);
 
   return newRange;
 }
+
 
 export function mapRangeToGrid(range, grid) {
   for (let i = 0; i < range.length; i++) {
