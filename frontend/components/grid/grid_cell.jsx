@@ -10,10 +10,8 @@ export default class GridCell extends React.Component {
     super(props);
 
     this.state = {
-      content: props.cell.content
+      content: this.props.cell.content
     }
-
-    this.curFormulaEval = null;
 
     this.mouseOver = this.mouseOver.bind(this);
     this.mouseAction = this.mouseAction.bind(this);
@@ -23,20 +21,11 @@ export default class GridCell extends React.Component {
     let havePropsChanged = !Util.compare(this.props.cell, nextProps.cell);
 
     if(nextProps.cell.content[0] === "=") {
-      const formula = new Formula(nextProps.cell.content.slice(1));
-      const oldLinks = Util.getLinkedCells(this.props.grid, formula.vars);
-      const newLinks = Util.getLinkedCells(nextProps.grid, formula.vars);
-      // console.log(oldLinks);
-      for(let i = 0; i < oldLinks.length; i++) {
-        if(!Util.compare(oldLinks[i], newLinks[i])) {
-          return true;
-        }
+      const nextContent = this.parseFormula(nextProps.cell.content);
+      if(this.state.content !== nextContent) {
+        this.setState({content: nextContent});
+        return true;
       }
-      // const nextContent = this.parseFormula(this.props.cell.content);
-      //
-      // if(nextContent !== this.curFormulaEval) {
-      //   return true
-      // }
     }
 
     return (havePropsChanged ||
@@ -104,8 +93,6 @@ export default class GridCell extends React.Component {
     });
 
     parsed = formula.parse(mappedVar);
-    // if(!parsed)
-    //   return "NaN";
 
     return parsed;
   }
