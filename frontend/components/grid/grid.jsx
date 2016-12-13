@@ -1,5 +1,5 @@
 import React from 'react';
-import {numToChar, between, blankSheet} from '../../utils/grid_utils';
+import {numToChar, between, blankSheet, parseCoord} from '../../utils/grid_utils';
 import GridRow from './grid_row';
 import GridHeader from './grid_header';
 import GridSelectionContainer from './grid_selection_container';
@@ -12,6 +12,8 @@ export default class Grid extends React.Component {
     super(props);
 
     this.removeSelecting = this.removeSelecting.bind(this);
+    this.mouseAction = this.mouseAction.bind(this);
+    this.mouseOver = this.mouseOver.bind(this);
   }
 
   componentDidMount() {
@@ -79,8 +81,61 @@ export default class Grid extends React.Component {
     return columnHeads;
   }
 
-  render() {
+  mouseAction(e) {
+    let node = e.target
+    while(node.parentNode !== null && node.id === "") {
+      node = node.parentNode;
+    }
 
+    if(node.id === "")
+      return false;
+
+    const coord = parseCoord(node.id);
+    const {receiveStartCell, receiveEndCell, updateRangeGroups} = this.props;
+
+    if(!coord) {
+      receiveEndCell(null);
+      return false;
+    }
+
+    e.stopPropagation();
+
+    const cell = this.props.grid[coord.start.row][coord.start.col];
+
+    if(e.type === "mouseup") {
+      receiveEndCell(cell);
+    } else {
+      if(cell.content[0] === "=") {
+        const formula = new Formula(cell.content);
+        updateRangeGroups(Object.keys(formula.vars));
+      } else {
+        updateRangeGroups([]);
+      }
+      receiveStartCell(cell, false);
+    }
+  }
+
+  mouseOver(e) {
+    const {tempEndCell} = this.props;
+
+    if(e.target.id === "")
+      return false;
+
+    const coord = parseCoord(e.target.id);
+
+    if(!coord)
+      return false;
+
+    e.stopPropagation();
+
+    const cell = this.props.grid[coord.start.row][coord.start.col];
+    if(this.props.selecting) {
+      tempEndCell(cell);
+    }
+
+  }
+
+  render() {
     const rows = this.props.grid.map((row, idx) => {
       return (
         <GridRow key={idx} rowId={idx} row={row} />
@@ -96,7 +151,11 @@ export default class Grid extends React.Component {
         <span className="grid-row-labels">
           <GridHeader row={this.rowHeads()} col={true} />
         </span>
-        <section className="grid">
+        <section className="grid"
+          onMouseDown={this.mouseAction}
+          onMouseUp={this.mouseAction}
+          onMouseOver={this.mouseOver}
+          >
           <GridSelectionContainer />
           <GridSelectionGroupContainer />
           {rows}

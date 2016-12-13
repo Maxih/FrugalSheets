@@ -19,15 +19,10 @@ import {
 
 
 function SheetReducer(state = blankState(), action) {
+  const now = new Date();
   const newState = merge({}, state);
   const curSheet = newState.sheets[newState.activeSheet];
   const curWorkingArea = curSheet.workingArea;
-
-  // for(let i = 0; i < curSheet.data.length; i++) {
-  //   for(let j = 0; j < curSheet.data[i].length; j++) {
-  //     toggleShouldUpdate(curSheet, i, j, false);
-  //   }
-  // }
 
   switch (action.type) {
 
@@ -87,6 +82,8 @@ function SheetReducer(state = blankState(), action) {
       if (action.directional) {
         curWorkingArea.duplicateRange = curWorkingArea.activeRange;
       }
+
+
       return newState;
 
     case Action.RECEIVE_END_CELL:
@@ -155,6 +152,9 @@ function SheetReducer(state = blankState(), action) {
     default:
       return newState;
   }
+
+
+
 }
 
 export default SheetReducer;

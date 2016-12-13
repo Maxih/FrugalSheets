@@ -107,10 +107,10 @@ export function blankState() {
 }
 
 export function blankSheet() {
-  const grid = new Array(200);
+  const grid = new Array(50);
 
   for (let i = 0; i < grid.length; i++) {
-    grid[i] = new Array(26);
+    grid[i] = new Array(13);
     for (let j = 0; j < grid[i].length; j++) {
       grid[i][j] = blankCell(i, j);
     }

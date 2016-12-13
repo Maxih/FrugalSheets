@@ -27,17 +27,13 @@ const mapStateToProps = (state, ownProps) => {
     active: isCellActive(workingArea.activeRange, cell),
     selecting: workingArea.selecting,
     cell: cell,
-    grid: getDataGrid(state)
+    // grid: getDataGrid(state)
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  receiveStartCell: (cell, directional) => dispatch(receiveStartCell(cell, directional)),
-  receiveEndCell: (cell) => dispatch(receiveEndCell(cell)),
-  tempEndCell: (cell) => dispatch(tempEndCell(cell)),
   updateCell: (cell) => dispatch(updateCell(cell)),
   resizeRow: (rowId, height) => dispatch(resizeRow(rowId, height)),
-  updateRangeGroups: (groups) => dispatch(updateRangeGroups(groups)),
   moveActiveCell: (delta) => dispatch(moveActiveCell(delta)),
   moveActiveRange: (delta) => dispatch(moveActiveRange(delta)),
 });

@@ -9,9 +9,6 @@ export default class GridCell extends React.Component {
   constructor(props) {
     super(props);
 
-
-    this.mouseOver = this.mouseOver.bind(this);
-    this.mouseAction = this.mouseAction.bind(this);
     this.keyPress = this.keyPress.bind(this);
   }
 
@@ -26,31 +23,6 @@ export default class GridCell extends React.Component {
       }
     }
     return (this.props.cell.shouldUpdate !== nextProps.cell.shouldUpdate) || this.props.active !== nextProps.active;
-  }
-
-  mouseAction(e) {
-    const {rowId, colId} = this.props;
-    const {receiveStartCell, receiveEndCell} = this.props;
-
-    if(e.type === "mouseup") {
-      receiveEndCell(this.props.cell);
-    } else {
-      if(this.props.cell.content[0] === "=") {
-        const formula = new Formula(this.props.cell.content);
-        this.props.updateRangeGroups(Object.keys(formula.vars));
-      } else {
-        this.props.updateRangeGroups([]);
-      }
-
-      receiveStartCell(this.props.cell, false);
-    }
-  }
-
-  mouseOver() {
-    const {rowId, colId, tempEndCell} = this.props;
-
-    if(this.props.selecting)
-      tempEndCell(this.props.cell);
   }
 
   generateCellClass() {
@@ -169,14 +141,10 @@ export default class GridCell extends React.Component {
       height: this.props.cell.height
     });
 
-
-
     return (
       <span
         className={this.generateCellClass()}
-        onMouseDown={this.mouseAction}
-        onMouseUp={this.mouseAction}
-        onMouseOver={this.mouseOver}
+        id={this.props.id}
         style={style}
         onKeyDown={this.keyPress}
         tabIndex="1"
