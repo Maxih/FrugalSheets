@@ -13,6 +13,7 @@ export default class GridCell extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    console.log("thinkin bout it");
 
     if(nextProps.cell.content[0] === "=") {
       const curContent = this.parseFormula(this.props.cell.content, this.props.grid);

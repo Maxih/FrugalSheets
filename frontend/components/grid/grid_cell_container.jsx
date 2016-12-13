@@ -1,17 +1,12 @@
 import {connect} from 'react-redux';
 import {
   resizeRow,
-  receiveStartCell,
-  receiveEndCell,
-  tempEndCell,
   updateCell,
-  updateRangeGroups,
   moveActiveCell,
   moveActiveRange,
 } from '../../actions/sheet_actions';
 import {
   isCellActive,
-  isCellSelected,
   getWorkingArea,
   getCell,
   getDataGrid,
@@ -25,7 +20,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     active: isCellActive(workingArea.activeRange, cell),
-    selecting: workingArea.selecting,
+    // selecting: workingArea.selecting,
     cell: cell,
     // grid: getDataGrid(state)
   };
