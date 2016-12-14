@@ -1,7 +1,6 @@
 import React from 'react';
 import {merge} from 'lodash';
 import ReactDOM from 'react-dom';
-import autosize from 'autosize';
 import {Formula} from '../../utils/formula_util';
 
 
