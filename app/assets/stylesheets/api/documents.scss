@@ -61,7 +61,7 @@ body {
   padding-left: 47px;
   font-size: 14px;
   font-weight: 500;
-  background: #FFF url("./spreadsheeticon.png") 15px center no-repeat;
+  background: #FFF image-url("api/spreadsheeticon.png") 15px center no-repeat;
   background-size: 17px;
 
 }
@@ -95,7 +95,7 @@ ul.document-list {
 .doc-home-link {
   float: left;
   height: 60px;
-  background: #0f9d58 url("./spreadsheeticon.png") center center no-repeat;
+  background: #0f9d58 image-url("api/spreadsheeticon.png") center center no-repeat;
   width: 40px;
   display: block;
 }

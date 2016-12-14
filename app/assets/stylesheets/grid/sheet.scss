@@ -77,7 +77,7 @@
   font-size: 0px;
   width: 49px;
   text-align: center;
-  background: url("./function.png") center center no-repeat;
+  background: image-url("grid/function.png") center center no-repeat;
   background-size: 19px;
 }
 
@@ -165,32 +165,32 @@
 /* Unique Button Styles */
 
 .style-type-bold {
-  background: url("./bold.png") center center no-repeat;
+  background: image-url("grid/bold.png") center center no-repeat;
   background-size: auto 13px;
 }
 
 .style-type-italic {
-  background: url("./italic.png") center center no-repeat;
+  background: image-url("grid/italic.png") center center no-repeat;
   background-size: auto 12px;
 }
 
 .style-type-linethrough {
-  background: url("./strikethrough.png") center center no-repeat;
+  background: image-url("grid/strikethrough.png") center center no-repeat;
   background-size: auto 14px;
 }
 .style-group-item.style-type-paintbucket {
-  background: url("./paintbucket.png") 5px center no-repeat;
+  background: image-url("grid/paintbucket.png") 5px center no-repeat;
   background-size: auto 14px;
   width: 35px;
 }
 .style-group-item.style-type-fontcolor {
-  background: url("./fontcolor.png") 5px center no-repeat;
+  background: image-url("grid/fontcolor.png") 5px center no-repeat;
   background-size: auto 14px;
   width: 35px;
 }
 
 .style-group-item.style-type-save {
-  background: url("./savebutton.png") 5px center no-repeat;
+  background: image-url("grid/savebutton.png") 5px center no-repeat;
   background-size: auto 14px;
 }
 
@@ -216,7 +216,7 @@
 }
 
 .dropdown-arrow {
-  background: url("./dropdownarrow.png") center center no-repeat;
+  background: image-url("grid/dropdownarrow.png") center center no-repeat;
   background-size: 7px;
   display: block;
   float: right;
