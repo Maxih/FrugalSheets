@@ -30,13 +30,60 @@ export function getLinkedCells(grid, links) {
   return linked;
 }
 
-export function getFormulaRange(grid, coord) {
+export function expandRange(oldRange, newRange) {
+  const oldCoords = parseCoord(oldRange);
+  const newCoords = parseCoord(newRange);
+
+  const numCols = Math.abs(oldCoords.start.col - oldCoords.end.col);
+  const numRows = Math.abs(oldCoords.start.row - oldCoords.end.row);
+
+
+  let upperBoundsCol = newCoords.start.col > newCoords.end.col ? newCoords.start.col : newCoords.end.col;
+  let lowerBoundsCol = newCoords.start.col < newCoords.end.col ? newCoords.start.col : newCoords.end.col;
+
+  let upperBoundsRow = newCoords.start.row > newCoords.end.row ? newCoords.start.row : newCoords.end.row;
+  let lowerBoundsRow = newCoords.start.row < newCoords.end.row ? newCoords.start.row : newCoords.end.row;
+
+  if ((upperBoundsRow - lowerBoundsRow - numRows) > (upperBoundsCol - lowerBoundsCol - numCols)) {
+    upperBoundsCol = newCoords.start.col + numCols;
+    lowerBoundsCol = newCoords.start.col;
+  } else {
+    upperBoundsRow = newCoords.start.row + numRows;
+    lowerBoundsRow = newCoords.start.row;
+  }
+
+  return `${numToChar(upperBoundsCol)}${upperBoundsRow}:${numToChar(lowerBoundsCol)}${lowerBoundsRow}`
+}
+
+export function getFormulaRange(cells, coord) {
   const parsed = parseCoord(coord);
 
   if(!parsed)
     return [];
 
-  return getCellsBetween(grid, parsed.start, parsed.end)
+  return getCellsBetween(parsed.start, parsed.end);
+}
+
+export function getCellsBetween(start, end) {
+  if(start === undefined || end === undefined)
+    return [];
+
+  let upperBoundsCol = start.col > end.col ? start.col : end.col;
+  let lowerBoundsCol = start.col < end.col ? start.col : end.col;
+
+  let upperBoundsRow = start.row > end.row ? start.row : end.row;
+  let lowerBoundsRow = start.row < end.row ? start.row : end.row;
+
+
+  const cells = [];
+
+  for (let i = lowerBoundsRow; i <= upperBoundsRow; i++) {
+    for (let j = lowerBoundsCol; j <= upperBoundsCol; j++) {
+      cells.push(`${numToChar(j)}${i}`);
+    }
+  }
+
+  return cells;
 }
 
 export function parseCoord(coord) {
@@ -46,11 +93,9 @@ export function parseCoord(coord) {
   if (matched === null)
     return false;
 
-
-
   const startCoord = {
-    col: charToNum(matched[2]) - 1,
-    row: parseInt(matched[3]) - 1
+    col: charToNum(matched[2]),
+    row: parseInt(matched[3])
   }
 
   const coords = {
@@ -61,8 +106,8 @@ export function parseCoord(coord) {
 
   if(matched[5] != undefined) {
     coords.end = {
-      col: charToNum(matched[5]) - 1,
-      row: parseInt(matched[6]) - 1
+      col: charToNum(matched[5]),
+      row: parseInt(matched[6])
     }
   }
 
@@ -73,22 +118,22 @@ export function parseCoord(coord) {
   return coords;
 }
 
-export function blankState() {
+export function blankState(rows = 30, cols = 26) {
+  const cells = {};
+
+  for(let i = 1; i <= rows; i++) {
+    for(let j = 1; j <= cols; j++) {
+      let id = `${numToChar(j)}${i}`;
+      cells[id] = blankCell(id);
+    }
+  }
+
   const workingAreaDefaults = {
-    activeCell: {
-      content: "",
-      width: 100,
-      height: 26,
-      style: {},
-      pos: {
-        row: 0,
-        col: 0
-      },
-    },
-    activeRange: [],
+    activeCell: "A1",
+    activeRange: "",
+    duplicateRange: "",
     selecting: false,
     directional: false,
-    duplicateRange: [],
   };
 
   const defaults = {
@@ -96,9 +141,14 @@ export function blankState() {
     sheets: {
       "Sheet1": {
         name: "Sheet1",
+        rows: rows,
+        cols: cols,
+        rangeGroups: [],
+        colSizes: {},
+        rowSizes: {},
+        formulas: {},
+        cells: cells,
         workingArea: workingAreaDefaults,
-        data: blankSheet(),
-        rangeGroups: []
       }
     }
   };
@@ -107,29 +157,18 @@ export function blankState() {
 }
 
 export function blankSheet() {
-  const grid = new Array(50);
-
-  for (let i = 0; i < grid.length; i++) {
-    grid[i] = new Array(13);
-    for (let j = 0; j < grid[i].length; j++) {
-      grid[i][j] = blankCell(i, j);
-    }
-  }
-
-  return grid;
+  return blankState().sheets["Sheet1"];
 }
 
-export function blankCell(row, col) {
+export function blankCell(id = "") {
   return {
+    id: id,
     content: "",
-    width: 100,
-    height: 26,
-    style: {},
+    style: {
+      width: 100,
+      height: 26
+    },
     shouldUpdate: false,
-    pos: {
-      row: row,
-      col: col
-    }
   };
 }
 
@@ -217,41 +256,6 @@ export function getColFromId(gridState, id) {
     col: id,
     row: gridState.length - 1
   })
-}
-
-export function getCellsBetween(gridState, start, end, directional = false, numRows, numCols) {
-  if(start === undefined || end === undefined)
-    return [];
-
-  let upperBoundsCol = start.col > end.col ? start.col : end.col;
-  let lowerBoundsCol = start.col < end.col ? start.col : end.col;
-
-  let upperBoundsRow = start.row > end.row ? start.row : end.row;
-  let lowerBoundsRow = start.row < end.row ? start.row : end.row;
-
-  if (directional) {
-    if ((upperBoundsRow - lowerBoundsRow - numRows) > (upperBoundsCol - lowerBoundsCol - numCols)) {
-      upperBoundsCol = start.col + numCols - 1;
-      lowerBoundsCol = start.col;
-    } else {
-      upperBoundsRow = start.row + numRows - 1;
-      lowerBoundsRow = start.row;
-    }
-  }
-
-  const cells = [];
-
-  for (let i = lowerBoundsRow; i <= upperBoundsRow; i++) {
-    const row = [];
-
-    for (let j = lowerBoundsCol; j <= upperBoundsCol; j++) {
-      row.push(gridState[i][j]);
-    }
-
-    cells.push(row);
-  }
-
-  return cells;
 }
 
 export function cellInSelection(rowId, colId, startVal, endVal) {

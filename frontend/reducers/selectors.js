@@ -1,49 +1,101 @@
 import {
-  between
+  between,
+  parseCoord,
+  numToChar,
+  charToNum,
+  getFormulaRange
 } from '../utils/grid_utils';
 
-export function getSelectionOffset(grid, range) {
-  if (range[0] === undefined)
+import {
+  Formula
+} from '../utils/formula_util';
+
+
+export function parseFormula(cells, text) {
+  let parsed = text;
+  const formula = new Formula(text.slice(1));
+  const vars = Object.keys(formula.vars);
+  const mappedVar = {};
+
+  vars.forEach((curVar) => {
+    let coords = getFormulaRange(cells, curVar);
+
+    let varMap = {};
+
+    coords.forEach((coord) => {
+      let cur = cells[coord].content;
+
+      if(cur[0] === "=")
+        cur = parseFormula(cells, cur);
+
+      varMap[coord] = cur;
+    });
+
+    mappedVar[curVar] = varMap;
+  });
+
+  parsed = formula.parse(mappedVar);
+
+  return parsed;
+}
+
+export function getSelectionOffset(cells, range) {
+  if (range === undefined || cells === undefined)
     return {};
 
-  const dims = range[0][0].pos;
+  const coords = parseCoord(range);
 
-  let totalWidth = 50;
-  let totalHeight = 26;
+  if(!coords)
+    return {};
 
-  if (grid[0] !== undefined) {
-    for (let i = 0; i < dims.row; i++) {
-      totalHeight += grid[i][0].height;
-    }
+  let offSetX = 50;
+  let offSetY = 26;
 
-    for (let j = 0; j < dims.col; j++) {
-      totalWidth += grid[0][j].width;
-    }
+  let lowerBoundsCol = coords.start.col < coords.end.col ? coords.start.col : coords.end.col;
+  let lowerBoundsRow = coords.start.row < coords.end.row ? coords.start.row : coords.end.row;
+
+  for (let i = 1; i <= lowerBoundsRow-1; i++) {
+    offSetY += cells[`A${i}`].style.height;
+  }
+
+  for (let j = 1; j <= lowerBoundsCol-1; j++) {
+    const curCol = numToChar(j);
+    offSetX += cells[`${curCol}1`].style.width;
   }
 
   const style = {
-    x: totalWidth,
-    y: totalHeight
+    x: offSetX,
+    y: offSetY
   }
 
   return style;
 }
 
-export function getSelectionDimensions(grid, range) {
+export function getSelectionDimensions(cells, range) {
+  if (range === undefined || cells === undefined)
+    return {};
+
+  const coords = parseCoord(range);
+
+  if(!coords)
+    return {};
+
   let totalWidth = 0;
   let totalHeight = 0;
 
+  let upperBoundsCol = coords.start.col > coords.end.col ? coords.start.col : coords.end.col;
+  let lowerBoundsCol = coords.start.col < coords.end.col ? coords.start.col : coords.end.col;
 
-  if (range[0] !== undefined) {
-    for (let i = 0; i < range.length; i++) {
-      let cell = range[i][0].pos;
-      totalHeight += grid[cell.row][cell.col].height;
-    }
+  let upperBoundsRow = coords.start.row > coords.end.row ? coords.start.row : coords.end.row;
+  let lowerBoundsRow = coords.start.row < coords.end.row ? coords.start.row : coords.end.row;
 
-    for (let j = 0; j < range[0].length; j++) {
-      let cell = range[0][j].pos;
-      totalWidth += grid[cell.row][cell.col].width;
-    }
+  for (let i = lowerBoundsRow; i <= upperBoundsRow; i++) {
+    totalHeight += cells[`A${i}`].style.height;
+  }
+
+  for (let j = lowerBoundsCol; j <= upperBoundsCol; j++) {
+    const curCol = numToChar(j);
+    totalWidth += cells[`${curCol}1`].style.width;
   }
 
   const style = {
@@ -62,8 +114,8 @@ export function getWorkingArea(state) {
   return state.doc.sheets[getActiveSheet(state)].workingArea;
 }
 
-export function getCell(state, row, col) {
-  return state.doc.sheets[getActiveSheet(state)].data[row][col];
+export function getCell(state, cellId) {
+  return state.doc.sheets[getActiveSheet(state)].cells[cellId];
 }
 
 export function getActiveSheet(state) {
@@ -90,56 +142,30 @@ export function applySearchParam(docs, searchParam) {
   });
 }
 
-export function isCellActive(selectedRange, cell) {
-  if (selectedRange === undefined)
-    return false;
-
-  if (selectedRange[0] === undefined)
-    return false;
-
-  const activeCell = selectedRange[0][0];
-
-  return activeCell.pos.row === cell.pos.row && activeCell.pos.col == cell.pos.col
-}
-
-export function isCellSelected(selectedRange, cell) {
-  if (selectedRange === undefined)
-    return false;
-
-  if (selectedRange[0] === undefined)
-    return false
-
-  const startRow = selectedRange[0][0].pos.row;
-  const endRow = startRow + selectedRange.length - 1;
-
-  const startCol = selectedRange[0][0].pos.col;
-  const endCol = startCol + selectedRange[0].length - 1;
-
-  return between(cell.pos.row, startRow, endRow) && between(cell.pos.col, startCol, endCol);
-}
-
 export function isHeaderActive(range, ownProps) {
-  if (range.length < 1 || range[0].length < 1)
+  if(range === "")
     return false;
+
+  const coord = parseCoord(range);
 
   if (ownProps.col) {
-    let colRange = range[0][0].pos.col + range[0].length - 1
-
-    if (between(ownProps.colId, range[0][0].pos.col, colRange))
-      return true;
+    if (between(charToNum(ownProps.colId), coord.start.col, coord.end.col)) {
+        return true;
+    }
   } else {
-    let rowRange = range[0][0].pos.row + range.length - 1
 
-    if (between(ownProps.rowId, range[0][0].pos.row, rowRange))
+    if (between(ownProps.rowId, coord.start.row, coord.end.row)) {
       return true;
+    }
   }
+
   return false;
 }
 
-export function headerSize(grid, ownProps) {
+export function headerSize(cells, ownProps) {
   if (ownProps.col) {
-    return grid[0][ownProps.colId].width;
+    return cells[`${ownProps.colId}1`].style.width;
   } else {
-    return grid[ownProps.rowId][0].height;
+    return cells[`A${ownProps.rowId}`].style.height;
   }
 }

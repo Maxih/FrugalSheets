@@ -9,20 +9,15 @@ export default class GridCell extends React.Component {
   constructor(props) {
     super(props);
 
-    this.keyPress = this.keyPress.bind(this);
+    // this.keyPress = this.keyPress.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
     console.log("thinkin bout it");
 
-    if(nextProps.cell.content[0] === "=") {
-      const curContent = this.parseFormula(this.props.cell.content, this.props.grid);
-      const nextContent = this.parseFormula(nextProps.cell.content, nextProps.grid);
+    if(this.props.content != nextProps.content)
+      return true;
 
-      if(curContent !== nextContent) {
-        return true;
-      }
-    }
     return (this.props.cell.shouldUpdate !== nextProps.cell.shouldUpdate) || this.props.active !== nextProps.active;
   }
 
@@ -35,86 +30,57 @@ export default class GridCell extends React.Component {
     return className;
   }
 
-  parseFormula(text, grid) {
-    let parsed = text;
-    const formula = new Formula(text.slice(1));
-    const vars = Object.keys(formula.vars);
-    const mappedVar = {};
-
-    vars.forEach((curVar) => {
-
-      let coords = Util.getFormulaRange(grid, curVar);
-      let curContent = [];
-      for(let i = 0; i < coords.length; i++) {
-        curContent.push(coords[i].map((coord) => {
-          let cur = grid[coord.pos.row][coord.pos.col].content;
-
-          if(cur[0] === "=")
-            cur = this.parseFormula(cur, grid);
-
-          return cur;
-        }));
-      }
-
-      mappedVar[curVar] = curContent;
-    });
-
-    parsed = formula.parse(mappedVar);
-
-    return parsed;
-  }
-
-  keyPress(e) {
-    e.stopPropagation();
-
-    switch(e.keyCode) {
-      case 13: // enter
-        e.preventDefault();
-        if(e.shiftKey) // shift enter
-          this.props.moveActiveCell({row: -1, col: 0});
-        else
-          this.props.moveActiveCell({row: 1, col: 0});
-        break;
-      case 9: // tab
-        e.preventDefault();
-        if(e.shiftKey)
-          this.props.moveActiveCell({row: 0, col: -1});
-        else
-          this.props.moveActiveCell({row: 0, col: 1});
-        break;
-      case 37:
-        e.preventDefault();
-        if(e.shiftKey)
-          this.props.moveActiveRange({row: 0, col: -1});
-        else
-          this.props.moveActiveCell({row: 0, col: -1});
-        break;
-      case 38:
-        e.preventDefault();
-        if(e.shiftKey)
-          this.props.moveActiveRange({row: -1, col: 0});
-        else
-          this.props.moveActiveCell({row: -1, col: 0});
-        break;
-      case 39:
-        e.preventDefault();
-        if(e.shiftKey)
-          this.props.moveActiveRange({row: 0, col: 1});
-        else
-          this.props.moveActiveCell({row: 0, col: 1});
-        break;
-      case 40:
-        e.preventDefault();
-        if(e.shiftKey)
-          this.props.moveActiveRange({row: 1, col: 0});
-        else
-          this.props.moveActiveCell({row: 1, col: 0});
-        break;
-    }
-  }
-
+  // keyPress(e) {
+  //   e.stopPropagation();
+  //
+  //   switch(e.keyCode) {
+  //     case 13: // enter
+  //       e.preventDefault();
+  //       if(e.shiftKey) // shift enter
+  //         this.props.moveActiveCell({row: -1, col: 0});
+  //       else
+  //         this.props.moveActiveCell({row: 1, col: 0});
+  //       break;
+  //     case 9: // tab
+  //       e.preventDefault();
+  //       if(e.shiftKey)
+  //         this.props.moveActiveCell({row: 0, col: -1});
+  //       else
+  //         this.props.moveActiveCell({row: 0, col: 1});
+  //       break;
+  //     case 37:
+  //       e.preventDefault();
+  //       if(e.shiftKey)
+  //         this.props.moveActiveRange({row: 0, col: -1});
+  //       else
+  //         this.props.moveActiveCell({row: 0, col: -1});
+  //       break;
+  //     case 38:
+  //       e.preventDefault();
+  //       if(e.shiftKey)
+  //         this.props.moveActiveRange({row: -1, col: 0});
+  //       else
+  //         this.props.moveActiveCell({row: -1, col: 0});
+  //       break;
+  //     case 39:
+  //       e.preventDefault();
+  //       if(e.shiftKey)
+  //         this.props.moveActiveRange({row: 0, col: 1});
+  //       else
+  //         this.props.moveActiveCell({row: 0, col: 1});
+  //       break;
+  //     case 40:
+  //       e.preventDefault();
+  //       if(e.shiftKey)
+  //         this.props.moveActiveRange({row: 1, col: 0});
+  //       else
+  //         this.props.moveActiveCell({row: 1, col: 0});
+  //       break;
+  //   }
+  // }
+            // keyPress={this.keyPress}
   render() {
-    let content = this.props.cell.content;
+    let content = this.props.content;
 
     if(this.props.active) {
       content = (
@@ -126,29 +92,17 @@ export default class GridCell extends React.Component {
             refName="cellRef"
             cell={this.props.cell}
             resizeRow={this.props.resizeRow}
-            keyPress={this.keyPress}
             updateCell={this.props.updateCell} />
         </div>
         );
-    } else {
-      if(content[0] === "=") {
-        content = this.parseFormula(content, this.props.grid);
-        this.curFormulaEval = content;
-      }
     }
-
-    const style = merge({}, this.props.cell.style, {
-      width: this.props.cell.width,
-      height: this.props.cell.height
-    });
 
     return (
       <span
         className={this.generateCellClass()}
         id={this.props.id}
-        style={style}
-        onKeyDown={this.keyPress}
         tabIndex="1"
+        style={this.props.cell.style}
         >
         {content}
       </span>

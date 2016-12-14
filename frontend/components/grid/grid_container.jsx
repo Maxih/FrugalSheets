@@ -18,10 +18,16 @@ import Grid from './grid';
 
 const mapStateToProps = (state) => {
   const workingArea = getWorkingArea(state);
+  const sheet = state.doc.sheets[state.doc.activeSheet];
+
   return {
-    grid: state.doc.sheets[state.doc.activeSheet].data,
     activeSheet: state.doc.activeSheet,
     selecting: workingArea.selecting,
+    rows: sheet.rows,
+    cols: sheet.cols,
+    rowSizes: sheet.rowSizes,
+    colSizes: sheet.colSizes,
+    cells: sheet.cells,
   };
 };
 

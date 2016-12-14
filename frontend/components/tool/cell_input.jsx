@@ -35,11 +35,6 @@ export default class CellInput extends React.Component {
     }
 
     this.setState({content: newCell.content});
-    // let height = this.refs[this.props.refName].clientHeight;
-    // if(height > this.props.cell.height && height > 30) {
-    //   this.props.resizeRow(this.props.cell.pos.row, height);
-    // }
-
     this.props.updateCell(newCell);
   }
 

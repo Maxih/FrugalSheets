@@ -28,7 +28,6 @@ export default class CellStyle extends React.Component {
     else
       delete newStyledCell.style[keys[0]];
 
-
     this.props.updateRange(newStyledCell);
   }
 

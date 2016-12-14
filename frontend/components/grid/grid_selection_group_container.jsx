@@ -8,8 +8,8 @@ const mapStateToProps = (state) => {
   const sheet = getCurSheet(state);
   const groups = sheet.rangeGroups.map((range) => {
     return {
-      offset: getSelectionOffset(sheet.data, range),
-      dimensions: getSelectionDimensions(sheet.data, range),
+      offset: getSelectionOffset(sheet.cells, range),
+      dimensions: getSelectionDimensions(sheet.cells, range),
     }
   });
 

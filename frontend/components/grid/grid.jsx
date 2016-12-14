@@ -4,6 +4,7 @@ import GridRow from './grid_row';
 import GridHeader from './grid_header';
 import GridSelectionContainer from './grid_selection_container';
 import GridSelectionGroupContainer from './grid_selection_group_container';
+import {Formula} from '../../utils/formula_util';
 
 
 
@@ -54,31 +55,26 @@ export default class Grid extends React.Component {
   }
 
   rowHeads() {
-    const rowHeads = new Array(this.props.grid.length);
-    for(let i = 0; i < rowHeads.length; i++) {
-
-      const head = {
+    let rows = [];
+    for(let i = 0; i < this.props.rows; i++) {
+      rows.push({
         content: `${i+1}`,
-        size: this.props.grid[i][0].height
-      }
-
-      rowHeads[i] = head
+        size: this.props.colSizes[i+1] || 26
+      });
     }
-    return rowHeads;
+    return rows;
   }
 
   colHeads() {
-    const columnHeads = new Array(this.props.grid[0].length);
-
-    for(let i = 0; i < columnHeads.length; i++) {
-      const head = {
-        content: numToChar(i+1),
-        size: this.props.grid[0][i].width
-      }
-      columnHeads[i] = head;
+    let cols = [];
+    for(let i = 0; i < this.props.cols; i++) {
+      const colId = numToChar( i + 1 )
+      cols.push({
+        content: colId,
+        size: this.props.rowSizes[colId] || 100
+      });
     }
-
-    return columnHeads;
+    return cols;
   }
 
   mouseAction(e) {
@@ -90,17 +86,15 @@ export default class Grid extends React.Component {
     if(node.id === "")
       return false;
 
-    const coord = parseCoord(node.id);
-    const {receiveStartCell, receiveEndCell, updateRangeGroups} = this.props;
+    const cell = this.props.cells[node.id];
 
-    if(!coord) {
-      receiveEndCell(null);
+    if(cell === undefined)
       return false;
-    }
+
+    const {receiveStartCell, receiveEndCell, updateRangeGroups} = this.props;
 
     e.stopPropagation();
 
-    const cell = this.props.grid[coord.start.row][coord.start.col];
 
     if(e.type === "mouseup") {
       receiveEndCell(cell);
@@ -121,26 +115,27 @@ export default class Grid extends React.Component {
     if(e.target.id === "")
       return false;
 
-    const coord = parseCoord(e.target.id);
+    const cell = this.props.cells[e.target.id];
 
-    if(!coord)
+    if(cell === undefined)
       return false;
 
     e.stopPropagation();
 
-    const cell = this.props.grid[coord.start.row][coord.start.col];
     if(this.props.selecting) {
       tempEndCell(cell);
     }
-
   }
 
   render() {
-    const rows = this.props.grid.map((row, idx) => {
-      return (
-        <GridRow key={idx} rowId={idx} row={row} />
+    const rows = [];
+
+    for(let i = 0; i < this.props.rows; i++) {
+      let rowId = i + 1;
+      rows.push(
+        <GridRow key={rowId} rowId={rowId} cols={this.props.cols} />
       );
-    });
+    }
 
     return (
       <section className="grid-wrapper" onMouseLeave={this.removeSelecting}>

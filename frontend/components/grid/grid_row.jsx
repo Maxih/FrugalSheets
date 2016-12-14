@@ -4,11 +4,13 @@ import {numToChar} from '../../utils/grid_utils';
 
 export default class GridRow extends React.Component {
   render() {
-    const cells = this.props.row.map((cell, idx) => {
-      return (
-        <GridCellContainer id={`${numToChar(idx+1)}${this.props.rowId+1}`} key={idx} colId={idx} rowId={this.props.rowId} />
+    const cells = [];
+    for(let i = 0; i < this.props.cols; i++) {
+      const cellId = `${numToChar( i + 1 )}${ this.props.rowId }`
+      cells.push(
+        <GridCellContainer key={i} id={cellId} />
       );
-    });
+    }
 
     return (
       <span className="grid-row">

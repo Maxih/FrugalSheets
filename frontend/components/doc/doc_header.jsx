@@ -22,13 +22,14 @@ class DocHeader extends React.Component {
   }
 
   render() {
+    // const name =  size={this.state.docName.length > 5 ? this.state.docName.length+1 : 5};
     return (
         <nav>
           <span className="doc-home-link">
             <Link href="/#/"></Link>
           </span>
           <span className="doc-title">
-            <input type="text" size={this.state.docName.length > 5 ? this.state.docName.length+1 : 5} value={this.state.docName} onBlur={this.saveName} onChange={this.onNameChange} />
+            <input type="text" value={this.state.docName} onBlur={this.saveName} onChange={this.onNameChange} />
           </span>
         </nav>
     )

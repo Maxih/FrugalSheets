@@ -14,13 +14,15 @@ export default class ToolBox extends React.Component {
 
   }
 
+
+
+
   render() {
     return (
       <section className="toolbox">
         <section className="cell-style-wrapper">
           <CellStyleContainer updateRange={this.props.updateRange} cell={this.props.activeCell} />
         </section>
-
         <section className="formula-bar">
           <span className="formula-logo">fx</span>
           <span className="formula">

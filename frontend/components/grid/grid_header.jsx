@@ -1,5 +1,8 @@
 import React from 'react';
 import GridHeaderCellContainer from './grid_header_cell_container';
+import {
+  numToChar,
+} from '../../utils/grid_utils';
 
 export default class GridHeader extends React.Component {
   render() {
@@ -10,7 +13,7 @@ export default class GridHeader extends React.Component {
           <GridHeaderCellContainer
             key={idx}
             col={true}
-            colId={idx}
+            colId={numToChar(idx+1)}
             rowId=""
             cell={cell}
             />
@@ -21,7 +24,7 @@ export default class GridHeader extends React.Component {
             key={idx}
             col={false}
             colId=""
-            rowId={idx}
+            rowId={idx+1}
             cell={cell}
             />
         );

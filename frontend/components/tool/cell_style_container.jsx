@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import { updateCell } from '../../actions/sheet_actions';
-import { getActiveCell } from '../../reducers/selectors';
+import { getActiveCell, getCell } from '../../reducers/selectors';
 
 import CellStyle from './cell_style';
 
 const mapStateToProps = (state) => {
   return {
-    activeCell: getActiveCell(state)
   };
 };
 

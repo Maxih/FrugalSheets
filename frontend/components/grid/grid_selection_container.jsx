@@ -8,8 +8,8 @@ const mapStateToProps = (state) => {
   const workingArea = getWorkingArea(state);
   const sheet = getCurSheet(state);
   return {
-    offset: getSelectionOffset(sheet.data, workingArea.activeRange),
-    dimensions: getSelectionDimensions(sheet.data, workingArea.activeRange),
+    offset: getSelectionOffset(sheet.cells, workingArea.activeRange),
+    dimensions: getSelectionDimensions(sheet.cells, workingArea.activeRange),
     directional: workingArea.directional,
   };
 };

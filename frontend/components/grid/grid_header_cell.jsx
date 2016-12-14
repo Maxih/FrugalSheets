@@ -74,9 +74,9 @@ export default class GridHeaderCell extends React.Component {
     const {rowId, colId} = this.props;
 
     if(this.props.col) {
-      style.width = this.props.size;
+      style.width = this.state.size;
     } else {
-      style.height = this.props.size;
+      style.height = this.state.size;
     }
 
     return (

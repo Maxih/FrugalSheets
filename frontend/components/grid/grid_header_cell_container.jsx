@@ -4,9 +4,8 @@ import {resizeRow, resizeCol, selectRow, selectCol} from '../../actions/sheet_ac
 import { isHeaderActive, headerSize, getDataGrid, getActiveSheet, getWorkingArea } from '../../reducers/selectors';
 
 const mapStateToProps = (state, ownProps) => {
-
   return {
-    size: headerSize(getDataGrid(state), ownProps),
+    // size: headerSize(getDataGrid(state), ownProps),
     activeSheet: getActiveSheet(state),
     active: isHeaderActive(getWorkingArea(state).activeRange, ownProps)
   };
