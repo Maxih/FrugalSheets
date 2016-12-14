@@ -16,6 +16,10 @@ export default class GridHeaderCell extends React.Component {
     this.selectCells = this.selectCells.bind(this);
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({size: props.size});
+  }
+
   headerResize(e) {
     const offset = $(e.target.parentElement).offset();
 
@@ -51,6 +55,8 @@ export default class GridHeaderCell extends React.Component {
     }
   }
 
+
+
   generateCellClass() {
     let className = "grid-cell unselectable";
 
@@ -71,7 +77,6 @@ export default class GridHeaderCell extends React.Component {
 
   render() {
     const style = {};
-    const {rowId, colId} = this.props;
 
     if(this.props.col) {
       style.width = this.state.size;

@@ -39,8 +39,8 @@ export function parseFormula(cells, text) {
   return parsed;
 }
 
-export function getSelectionOffset(cells, range) {
-  if (range === undefined || cells === undefined)
+export function getSelectionOffset(range, rowDefaults, colDefaults) {
+  if (range === undefined)
     return {};
 
   const coords = parseCoord(range);
@@ -55,12 +55,14 @@ export function getSelectionOffset(cells, range) {
   let lowerBoundsRow = coords.start.row < coords.end.row ? coords.start.row : coords.end.row;
 
   for (let i = 1; i <= lowerBoundsRow-1; i++) {
-    offSetY += cells[`A${i}`].style.height;
+    // offSetY += cells[`A${i}`].style.height;
+    offSetY += rowDefaults[i] || 26;
   }
 
   for (let j = 1; j <= lowerBoundsCol-1; j++) {
     const curCol = numToChar(j);
-    offSetX += cells[`${curCol}1`].style.width;
+    // offSetX += cells[`${curCol}1`].style.width;
+    offSetX += colDefaults[curCol] || 100;
   }
 
   const style = {
@@ -71,8 +73,8 @@ export function getSelectionOffset(cells, range) {
   return style;
 }
 
-export function getSelectionDimensions(cells, range) {
-  if (range === undefined || cells === undefined)
+export function getSelectionDimensions(range, rowDefaults, colDefaults) {
+  if (range === undefined)
     return {};
 
   const coords = parseCoord(range);
@@ -90,12 +92,14 @@ export function getSelectionDimensions(cells, range) {
   let lowerBoundsRow = coords.start.row < coords.end.row ? coords.start.row : coords.end.row;
 
   for (let i = lowerBoundsRow; i <= upperBoundsRow; i++) {
-    totalHeight += cells[`A${i}`].style.height;
+    // totalHeight += cells[`A${i}`].style.height;
+    totalHeight += rowDefaults[i] || 26;
   }
 
   for (let j = lowerBoundsCol; j <= upperBoundsCol; j++) {
     const curCol = numToChar(j);
-    totalWidth += cells[`${curCol}1`].style.width;
+    // totalWidth += cells[`${curCol}1`].style.width;
+    totalWidth += colDefaults[curCol] || 100;
   }
 
   const style = {
@@ -104,10 +108,6 @@ export function getSelectionDimensions(cells, range) {
   }
 
   return style;
-}
-
-export function getDataGrid(state) {
-  return state.doc.sheets[getActiveSheet(state)].data;
 }
 
 export function getWorkingArea(state) {

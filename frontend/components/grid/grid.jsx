@@ -59,7 +59,6 @@ export default class Grid extends React.Component {
     for(let i = 0; i < this.props.rows; i++) {
       rows.push({
         content: `${i+1}`,
-        size: this.props.colSizes[i+1] || 26
       });
     }
     return rows;
@@ -71,7 +70,6 @@ export default class Grid extends React.Component {
       const colId = numToChar( i + 1 )
       cols.push({
         content: colId,
-        size: this.props.rowSizes[colId] || 100
       });
     }
     return cols;

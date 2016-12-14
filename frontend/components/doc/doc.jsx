@@ -19,10 +19,6 @@ export default class Doc extends React.Component {
     );
   }
 
-            //
-            //
-            // <SheetNavContainer />
-
   render() {
     if(this.state.loading)
       return (<span>loading</span>);
@@ -40,7 +36,7 @@ export default class Doc extends React.Component {
           <GridContainer />
         </section>
         <section className="sheet-nav">
-
+          <SheetNavContainer />
         </section>
       </section>
     );

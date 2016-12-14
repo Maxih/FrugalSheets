@@ -21,7 +21,9 @@ const mapStateToProps = (state, ownProps) => {
   return {
     cell: cell,
     active: (ownProps.id === workingArea.activeCell),
-    content: content
+    content: content,
+    width: sheet.colSizes[ownProps.colId] || 100,
+    height: sheet.rowSizes[ownProps.rowId] || 26
   };
 };
 

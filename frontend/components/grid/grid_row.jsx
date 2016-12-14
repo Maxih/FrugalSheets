@@ -8,7 +8,7 @@ export default class GridRow extends React.Component {
     for(let i = 0; i < this.props.cols; i++) {
       const cellId = `${numToChar( i + 1 )}${ this.props.rowId }`
       cells.push(
-        <GridCellContainer key={i} id={cellId} />
+        <GridCellContainer key={i} rowId={this.props.rowId} colId={numToChar( i + 1 )} id={cellId} />
       );
     }
 

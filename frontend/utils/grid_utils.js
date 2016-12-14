@@ -164,10 +164,7 @@ export function blankCell(id = "") {
   return {
     id: id,
     content: "",
-    style: {
-      width: 100,
-      height: 26
-    },
+    style: {},
     shouldUpdate: false,
   };
 }

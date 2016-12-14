@@ -13,9 +13,10 @@ export default class GridCell extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    console.log("thinkin bout it");
-
     if(this.props.content != nextProps.content)
+      return true;
+
+    if(this.props.width !== nextProps.width || this.props.height !== nextProps.height)
       return true;
 
     return (this.props.cell.shouldUpdate !== nextProps.cell.shouldUpdate) || this.props.active !== nextProps.active;
@@ -82,6 +83,8 @@ export default class GridCell extends React.Component {
   render() {
     let content = this.props.content;
 
+    let style = merge({}, this.props.cell.style, {height: this.props.height, width: this.props.width});
+
     if(this.props.active) {
       content = (
         <div
@@ -102,7 +105,7 @@ export default class GridCell extends React.Component {
         className={this.generateCellClass()}
         id={this.props.id}
         tabIndex="1"
-        style={this.props.cell.style}
+        style={style}
         >
         {content}
       </span>

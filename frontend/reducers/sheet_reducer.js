@@ -86,6 +86,12 @@ function SheetsReducer(state, action) {
       newState[action.activeSheet] = SheetReducer(newState[action.activeSheet], action);
       return newState;
 
+    case Action.ADD_SHEET:
+      newState[action.name] = blankState().sheets["Sheet1"];
+      newState[action.name].name = action.name;
+
+      return newState;
+
     default:
       return state;
   }
@@ -111,15 +117,20 @@ function SheetReducer(state, action) {
       if(action.type === Action.RESIZE_ROW)
         newState.rowSizes = Object.assign({}, newState.rowSizes, {[action.rowId]: action.height})
 
+      return newState;
+
     case Action.UPDATE_CELL:
-      if(action.cell.content[0] === "=") {
-        newState.formulas = Object.assign({}, newState.formulas, {[action.cell.id]: action.cell.content})
-      } else {
-        if(newState.formulas[action.cell.id] !== undefined) {
-          newState.formulas = Object.assign({}, newState.formulas)
-          delete newState.formulas[action.cell.id];
+      if(action.cell !== undefined) {
+        if(action.cell.content[0] === "=") {
+          newState.formulas = Object.assign({}, newState.formulas, {[action.cell.id]: action.cell.content})
+        } else {
+          if(newState.formulas[action.cell.id] !== undefined) {
+            newState.formulas = Object.assign({}, newState.formulas)
+            delete newState.formulas[action.cell.id];
+          }
         }
       }
+
     case Action.UPDATE_RANGE:
       action.range = newState.workingArea.activeRange;
       newState.cells = CellReducer(newState.cells, action);
@@ -229,31 +240,6 @@ function CellReducer(state, action) {
         }
 
         newCell.style = merge(newCell.style, action.cell.style, oldSize);
-        newCell.shouldUpdate = !newCell.shouldUpdate;
-        newState[cellId] = newCell;
-      });
-
-      return newState;
-
-    case Action.RESIZE_COL:
-      const col = charToNum(action.colId);
-      const colCellMap = getCellsBetween({col: col, row: 1}, {col: col, row: action.rows});
-
-      colCellMap.forEach((cellId) => {
-        const newCell = merge({}, newState[cellId]);
-        newCell.style.width = action.width
-        newCell.shouldUpdate = !newCell.shouldUpdate;
-        newState[cellId] = newCell;
-      });
-
-      return newState;
-
-    case Action.RESIZE_ROW:
-      const rowCellMap = getCellsBetween({col: 1, row: action.rowId}, {col: action.cols, row: action.rowId});
-
-      rowCellMap.forEach((cellId) => {
-        const newCell = merge({}, newState[cellId]);
-        newCell.style.height= action.height
         newCell.shouldUpdate = !newCell.shouldUpdate;
         newState[cellId] = newCell;
       });
