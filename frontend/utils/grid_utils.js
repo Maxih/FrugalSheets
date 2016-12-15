@@ -303,6 +303,16 @@ export function newSheetName(taken) {
   return testName;
 }
 
+export function newChartName(taken) {
+  let sheetId = 2;
+  let testName = `Chart${sheetId}`;
+  while (taken.indexOf(testName) > -1) {
+    sheetId++;
+    testName = `Chart${sheetId}`;
+  }
+  return testName;
+}
+
 export const charToNum = function(alpha) {
   var index = 0
   for (var i = 0, j = 1; i < j; i++, j++) {

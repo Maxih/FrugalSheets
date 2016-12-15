@@ -18,6 +18,7 @@ import {
   expandRange,
   splitCoord,
   curCell,
+  newChartName
 } from '../utils/grid_utils';
 import {
   merge
@@ -39,6 +40,8 @@ function DocumentReducer(state = blankState(), action) {
     case Action.UPDATE_RANGE_GROUPS:
     case Action.ADD_CHART:
     case Action.REMOVE_CHART:
+    case Action.MOVE_CHART:
+    case Action.SELECT_CHART:
       action.activeSheet = newState.activeSheet;
       newState.sheets = SheetsReducer(newState.sheets, action);
 
@@ -89,6 +92,8 @@ function SheetsReducer(state, action) {
     case Action.UPDATE_RANGE_GROUPS:
     case Action.ADD_CHART:
     case Action.REMOVE_CHART:
+    case Action.MOVE_CHART:
+    case Action.SELECT_CHART:
       newState[action.activeSheet] = SheetReducer(newState[action.activeSheet], action);
       return newState;
 
@@ -155,12 +160,11 @@ function SheetReducer(state, action) {
       return newState;
 
     case Action.ADD_CHART:
-      newState.charts = Object.assign({}, newState.charts, {[action.cellId]: action.chart});
+    let chartId = action.cellId;
+      if(action.cellId === null)
+        chartId = newChartName(Object.keys(newState.charts));
 
-      const split = splitCoord(action.cellId);
-
-      newState.colSizes = Object.assign({}, newState.colSizes, {[split.col]: 400})
-      newState.rowSizes = Object.assign({}, newState.rowSizes, {[split.row]: 400})
+      newState.charts = Object.assign({}, newState.charts, {[chartId]: action.chart});
 
       return newState;
 
@@ -170,10 +174,17 @@ function SheetReducer(state, action) {
         delete newState.charts[action.cellId];
       }
 
-      const splitChartCoord = splitCoord(action.cellId);
+      return newState;
+    case Action.MOVE_CHART:
+      const newChart = merge({}, newState.charts[action.chartId], action.chart);
 
-      newState.colSizes = Object.assign({}, newState.colSizes, {[splitChartCoord.col]: 100})
-      newState.rowSizes = Object.assign({}, newState.rowSizes, {[splitChartCoord.row]: 26})
+      newState.charts = Object.assign({}, newState.charts);
+      newState.charts[action.chartId] = newChart;
+
+      return newState;
+
+    case Action.SELECT_CHART:
+      newState.activeChart = action.chartId;
 
       return newState;
     default:

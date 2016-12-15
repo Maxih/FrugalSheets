@@ -3,7 +3,6 @@ import * as Util from '../../utils/grid_utils';
 import {merge} from 'lodash';
 import CellInputContainer from '../tool/cell_input_container';
 import {Formula} from '../../utils/formula_util';
-import CellChartContainer from '../tool/cell_chart_container';
 
 
 export default class GridCell extends React.Component {
@@ -95,24 +94,22 @@ export default class GridCell extends React.Component {
 
     let style = merge({}, this.state.cell.style, {height: this.props.height, width: this.props.width});
 
-    if(this.props.chart) {
-      content = (<CellChartContainer cell={this.state.cell} />);
-    } else {
-      if(this.props.active) {
-        content = (
-          <div
-            className="active-cell-wrapper"
-            >
-            <CellInputContainer
-              styling={true}
-              refName="cellRef"
-              cell={this.state.cell}
-              resizeRow={this.props.resizeRow}
-              updateCell={this.props.updateCell} />
-          </div>
-          );
-      }
+
+    if(this.props.active) {
+      content = (
+        <div
+          className="active-cell-wrapper"
+          >
+          <CellInputContainer
+            styling={true}
+            refName="cellRef"
+            cell={this.state.cell}
+            resizeRow={this.props.resizeRow}
+            updateCell={this.props.updateCell} />
+        </div>
+        );
     }
+
 
 
 

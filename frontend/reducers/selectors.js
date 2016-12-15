@@ -29,13 +29,13 @@ export function prepChartData(cells, chart) {
   const chartBorders = [];
 
   const chartTitles = titleRange.map((coord) => {
-    chartColors.push(cells[coord].style.backgroundColor || "#F1F1F1");
-    chartBorders.push(cells[coord].style.borderColor || "#D9D9D9");
+    chartColors.push(curCell(cells, coord).style.backgroundColor || "#F1F1F1");
+    chartBorders.push(curCell(cells, coord).style.borderColor || "#D9D9D9");
 
-    if(cells[coord].content[0] === "=")
+    if(curCell(cells, coord).content[0] === "=")
       return `${parseFormula(cells, cells[coord].content)}`;
     else
-      return cells[coord].content;
+      return curCell(cells, coord).content;
   });
 
   return {

@@ -18,6 +18,9 @@ export const MOVE_ACTIVE_CELL = "MOVE_ACTIVE_CELL";
 export const MOVE_ACTIVE_RANGE = "MOVE_ACTIVE_RANGE";
 export const ADD_CHART = "ADD_CHART";
 export const REMOVE_CHART = "REMOVE_CHART";
+export const MOVE_CHART = "MOVE_CHART";
+export const SELECT_CHART = "SELECT_CHART";
+
 
 export const addChart = (cellId, chart) => ({
   type: ADD_CHART,
@@ -111,6 +114,17 @@ export const moveActiveCell = (delta) => ({
 export const moveActiveRange = (delta) => ({
   type: MOVE_ACTIVE_RANGE,
   delta: delta
+});
+
+export const moveChart = (chartId, chart) => ({
+  type: MOVE_CHART,
+  chartId: chartId,
+  chart: chart
+});
+
+export const selectChart = (chartId) => ({
+  type: SELECT_CHART,
+  chartId: chartId
 });
 
 export function loadDocument(docId) {

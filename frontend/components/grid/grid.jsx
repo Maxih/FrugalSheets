@@ -5,6 +5,7 @@ import GridHeader from './grid_header';
 import GridSelectionContainer from './grid_selection_container';
 import GridSelectionGroupContainer from './grid_selection_group_container';
 import {Formula} from '../../utils/formula_util';
+import FloatingChartsContainer from '../tool/floating_charts_container';
 
 
 
@@ -81,7 +82,7 @@ export default class Grid extends React.Component {
       node = node.parentNode;
     }
 
-    if(node.id === "")
+    if(!parseCoord(node.id))
       return false;
 
     const cell = curCell(this.props.cells, node.id);
@@ -149,6 +150,7 @@ export default class Grid extends React.Component {
           onMouseUp={this.mouseAction}
           onMouseOver={this.mouseOver}
           >
+          <FloatingChartsContainer />
           <GridSelectionContainer />
           <GridSelectionGroupContainer />
           {rows}

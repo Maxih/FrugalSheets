@@ -28,6 +28,7 @@ const mapStateToProps = (state) => {
     rowSizes: sheet.rowSizes,
     colSizes: sheet.colSizes,
     cells: sheet.cells,
+    charts: sheet.charts,
   };
 };
 

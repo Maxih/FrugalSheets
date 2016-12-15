@@ -3,7 +3,8 @@ import { addChart, removeChart } from '../../../actions/sheet_actions';
 import ChartButton from './chart_button';
 
 const mapStateToProps = (state, ownProps) => {
-  let chart = state.doc.sheets[state.doc.activeSheet].charts[ownProps.cell.id];
+  let activeChart = state.doc.sheets[state.doc.activeSheet].activeChart;
+  let chart = state.doc.sheets[state.doc.activeSheet].charts[activeChart];
   return {
     chart: chart || false
   };

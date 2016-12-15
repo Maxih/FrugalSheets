@@ -276,11 +276,6 @@
   background: #EEE;
 }
 
-.chart-canvas {
-  // pointer-events: none;
-  width: 100%;
-  height: 100%;
-}
 
 .chart-dropdown {
   position: absolute;
@@ -292,7 +287,7 @@
   box-shadow: 0px 0px 10px #999;
 }
 
-.chart-dropdown li {
+.chart-options li {
   list-style-type: none;
   background: #FFF;
   font-weight: normal;
@@ -317,7 +312,7 @@
   box-sizing: border-box;
 }
 
-.chart-dropdown-wrapper {
+.chart-options {
   font-family: Arial;
   font-size: 12px;
   position: relative;
@@ -358,10 +353,9 @@
 }
 
 .chart-dropdown-submit.chart-dropdown-delete {
-  background: #F1F1F1;
-  border: 1px solid #D9D9D9;
+  background: red;
   margin-left: 10px;
-  color: #666;
+  width: 35px;
 }
 
 .chart-dropdown-header {
@@ -377,4 +371,19 @@
 .chart-dropdown-header .chart-dropdown-input {
   display: block;
   width: 100%;
+}
+
+.chart-options {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: block;
+  background: #F1F1F1;
+  width: 200px;
+  border-left: 1px solid #D9D9D9;
+  border-top: 1px solid #D9D9D9;
+}
+
+.floating-chart:focus {
+  box-shadow: 0px 0px 10px #999;
 }
