@@ -24,8 +24,10 @@ const DocListGroup = (props) => {
   const docList = doc.docs.map(curDoc => {
     return (
       <li key={curDoc.id} onClick={() => onClick(curDoc.id)}>
-        {curDoc.name}
-        <span>{formatDate(new Date(curDoc.updated_at))}</span>
+        <span className="document-logo"></span>
+        <span className="document-name">{curDoc.name}</span>
+        <span className="document-owner">{curDoc.group_name}</span>
+        <span className="document-date">{formatDate(new Date(curDoc.updated_at))}</span>
       </li>
     );
   });

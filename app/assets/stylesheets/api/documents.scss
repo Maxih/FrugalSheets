@@ -56,14 +56,37 @@ body {
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
   color: #444;
-  display: block;
   padding: 15px;
-  padding-left: 47px;
   font-size: 14px;
   font-weight: 500;
-  background: #FFF image-url("api/spreadsheeticon.png") 15px center no-repeat;
-  background-size: 17px;
+  display: flex;
+  background: #FFF;
+}
 
+.document-logo {
+  background: image-url("api/spreadsheeticon.png") center center no-repeat;
+  background-size: 17px;
+  width: 30px;
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.document-name {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.document-date {
+  width: 100px;
+  text-align: center;
+  font-weight: normal;
+  color: #999;
+}
+
+.document-owner {
+  font-weight: normal;
+  color: #999;
 }
 
 .document-list li:hover {
@@ -76,14 +99,6 @@ ul.document-list {
   display: block;
   border: 1px solid #d9d9d9;
   border-bottom: none;
-}
-
-
-.document-list span {
-  float: right;
-  font-weight: normal;
-  color: #999;
-  margin-right: 100px;
 }
 
 .doc-header {
@@ -192,4 +207,9 @@ ul.document-list {
   display: block;
   font-size: 14px;
   color: #555;
+}
+
+.document-list-range {
+  display: inline-block;
+  flex: 1;
 }

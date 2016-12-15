@@ -4,6 +4,7 @@ import DocList from '../doc/doc_list';
 import * as Util from '../../utils/grid_utils';
 import UserBadge from '../user/user_badge';
 import DocSearch from '../doc/doc_search';
+import GroupContainer from '../group/group_container';
 
 export default class LandingPage extends React.Component {
   constructor(props) {
@@ -59,6 +60,7 @@ export default class LandingPage extends React.Component {
         </section>
         <section className="page-body">
           <DocList searchParam={this.props.searchParam} onClick={this.openDoc.bind(this)} documents={documents} />
+          <GroupContainer />
         </section>
       </section>
     );

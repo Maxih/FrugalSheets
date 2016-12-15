@@ -6,5 +6,7 @@ class Document < ApplicationRecord
   foreign_key: :author_id,
   class_name: :User
 
+  has_many :document_groups, dependent: :destroy
+  has_many :groups, through: :document_groups
+
 end
-#Document.create(name: "This is a test Document", author: User.find(2))

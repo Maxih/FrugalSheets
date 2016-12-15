@@ -8,7 +8,17 @@
 
 User.delete_all
 
-user = User.create!(email: "test", password: "password", firstname: "Max", lastname: "Hempfling")
+user = User.create!(email: "mackshempfling@gmail.com", password: "password", firstname: "Max", lastname: "Hempfling")
+user1 = User.create!(email: "bob@gmail.com", password: "password", firstname: "Bob", lastname: "Evans")
+
+
+Group.delete_all
+
+group = Group.create!(name: "Max's Sheets", owner: user)
+group1 = Group.create!(name: "Bob's Sheets", owner: user1)
+
+user.groups.push(group1);
+user1.groups.push(group);
 
 Document.delete_all
 # doc1 = Document.create(name: "Test Document 1", author: user, content: "{}")

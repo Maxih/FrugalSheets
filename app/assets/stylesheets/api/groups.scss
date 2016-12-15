@@ -1,0 +1,62 @@
+// Place all the styles related to the Api::GroupsController controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.group-wrapper {
+  display: inline-block;
+  width: 150px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  color: #444;
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+.group-list-title {
+  margin: 10px 0px;
+  display: block;
+  font-size: 14px;
+  color: #555;
+}
+
+.group-list {
+  border-radius: 2px;
+  display: block;
+}
+
+.group-list li {
+  display: block;
+  list-style-type: none;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 2px;
+  padding: 5px;
+  padding-left: 10px;
+  font-weight: normal;
+  color: #666;
+}
+.group-list li:hover {
+  cursor: pointer;
+}
+
+.group-list li.active-group {
+  color: #0f9d58;
+}
+
+.active-group-title {
+  outline: none;
+  display: inline-block;
+}
+
+.active-group-title:hover {
+  cursor: pointer;
+
+}
+
+.group-list-wrapper {
+  margin-bottom: 10px;
+}

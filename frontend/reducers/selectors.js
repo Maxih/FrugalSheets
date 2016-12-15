@@ -130,6 +130,18 @@ export function getActiveCell(state) {
   return state.doc.sheets[getActiveSheet(state)].workingArea.activeCell;
 }
 
+export function applyGroupFilter(docs, groupId) {
+  if (docs === undefined)
+    return [];
+
+  if (groupId < -1)
+    return docs;
+
+  return docs.filter((doc) => {
+    return doc.group_id === groupId;
+  });
+}
+
 export function applySearchParam(docs, searchParam) {
   if (docs === undefined)
     return [];

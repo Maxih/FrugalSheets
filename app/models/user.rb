@@ -7,6 +7,22 @@ class User < ApplicationRecord
 
 	after_initialize :ensure_session_token
 
+  has_many :authored_documents,
+    primary_key: :id,
+    foreign_key: :author_id,
+    class_name: :Document
+
+  has_many :owned_groups,
+    primary_key: :id,
+    foreign_key: :owner_id,
+    class_name: :Group
+
+
+  has_many :user_groups
+  has_many :groups, through: :user_groups
+  # has_many :documents, through: :groups
+  has_many :documents, -> { select("documents.id, documents.name, documents.updated_at, groups.id AS group_id, groups.name AS group_name")}, through: :groups
+
 	def password= password
 		self.password_digest = BCrypt::Password.create(password)
 		@password = password

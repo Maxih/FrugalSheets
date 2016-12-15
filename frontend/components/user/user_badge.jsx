@@ -19,7 +19,7 @@ export default class UserBadge extends React.Component {
   render() {
     const {currentUser} = this.props;
 
-    if(currentUser === null)
+    if(currentUser === null || currentUser === undefined)
       return (<span></span>);
 
 

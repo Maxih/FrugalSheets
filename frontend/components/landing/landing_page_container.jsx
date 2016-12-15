@@ -3,12 +3,12 @@ import LandingPage from './landing_page';
 import * as Action from '../../actions/session_actions';
 import {fetchDocuments, filterDocuments} from '../../actions/document_actions';
 import {createDocument, loadDocument} from '../../actions/sheet_actions';
-import {applySearchParam} from '../../reducers/selectors';
+import {applySearchParam, applyGroupFilter} from '../../reducers/selectors';
 
 const mapStateToProps = state => ({
   loggedIn: state.session.loggedIn,
   currentUser: state.session.currentUser,
-  documents: applySearchParam(state.documents.list, state.documents.searchParam),
+  documents: applySearchParam(applyGroupFilter(state.documents.list, state.groups.active), state.documents.searchParam),
   searchParam: state.documents.searchParam,
 });
 
