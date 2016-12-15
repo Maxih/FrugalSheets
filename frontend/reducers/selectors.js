@@ -3,12 +3,50 @@ import {
   parseCoord,
   numToChar,
   charToNum,
-  getFormulaRange
+  getFormulaRange,
+  curCell
 } from '../utils/grid_utils';
 
 import {
   Formula
 } from '../utils/formula_util';
+
+export function prepChartData(cells, chart) {
+  let dataRange = getFormulaRange(cells, chart.dataRange);
+  let titleRange = getFormulaRange(cells, chart.titleRange);
+
+  dataRange = dataRange.sort();
+  titleRange = titleRange.sort();
+
+  const chartData = dataRange.map((coord) => {
+    if(curCell(cells, coord).content[0] === "=")
+      return `${parseFormula(cells, cells[coord].content)}`;
+    else
+      return curCell(cells, coord).content;
+  });
+
+  const chartColors = [];
+  const chartBorders = [];
+
+  const chartTitles = titleRange.map((coord) => {
+    chartColors.push(cells[coord].style.backgroundColor || "#F1F1F1");
+    chartBorders.push(cells[coord].style.borderColor || "#D9D9D9");
+
+    if(cells[coord].content[0] === "=")
+      return `${parseFormula(cells, cells[coord].content)}`;
+    else
+      return cells[coord].content;
+  });
+
+  return {
+    background: chartColors,
+    borders: chartBorders,
+    data: chartData,
+    titles: chartTitles,
+    type: chart.chartType,
+    name: chart.name
+  }
+}
 
 
 export function parseFormula(cells, text) {
@@ -23,7 +61,7 @@ export function parseFormula(cells, text) {
     let varMap = {};
 
     coords.forEach((coord) => {
-      let cur = cells[coord].content;
+      let cur = curCell(cells, coord).content;
 
       if(cur[0] === "=")
         cur = parseFormula(cells, cur);
@@ -115,7 +153,7 @@ export function getWorkingArea(state) {
 }
 
 export function getCell(state, cellId) {
-  return state.doc.sheets[getActiveSheet(state)].cells[cellId];
+  return curCell(state.doc.sheets[getActiveSheet(state)].cells, cellId) || blankCell(cellId);
 }
 
 export function getActiveSheet(state) {
@@ -172,12 +210,4 @@ export function isHeaderActive(range, ownProps) {
   }
 
   return false;
-}
-
-export function headerSize(cells, ownProps) {
-  if (ownProps.col) {
-    return cells[`${ownProps.colId}1`].style.width;
-  } else {
-    return cells[`A${ownProps.rowId}`].style.height;
-  }
 }

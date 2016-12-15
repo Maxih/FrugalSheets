@@ -16,6 +16,8 @@ import {
   numToChar,
   charToNum,
   expandRange,
+  splitCoord,
+  curCell,
 } from '../utils/grid_utils';
 import {
   merge
@@ -35,6 +37,8 @@ function DocumentReducer(state = blankState(), action) {
     case Action.RESIZE_COL:
     case Action.RESIZE_ROW:
     case Action.UPDATE_RANGE_GROUPS:
+    case Action.ADD_CHART:
+    case Action.REMOVE_CHART:
       action.activeSheet = newState.activeSheet;
       newState.sheets = SheetsReducer(newState.sheets, action);
 
@@ -83,6 +87,8 @@ function SheetsReducer(state, action) {
     case Action.RESIZE_COL:
     case Action.RESIZE_ROW:
     case Action.UPDATE_RANGE_GROUPS:
+    case Action.ADD_CHART:
+    case Action.REMOVE_CHART:
       newState[action.activeSheet] = SheetReducer(newState[action.activeSheet], action);
       return newState;
 
@@ -148,6 +154,28 @@ function SheetReducer(state, action) {
       newState.workingArea = WorkingAreaReducer(newState.workingArea, action);
       return newState;
 
+    case Action.ADD_CHART:
+      newState.charts = Object.assign({}, newState.charts, {[action.cellId]: action.chart});
+
+      const split = splitCoord(action.cellId);
+
+      newState.colSizes = Object.assign({}, newState.colSizes, {[split.col]: 400})
+      newState.rowSizes = Object.assign({}, newState.rowSizes, {[split.row]: 400})
+
+      return newState;
+
+    case Action.REMOVE_CHART:
+      if(newState.charts[action.cellId]) {
+        newState.charts = Object.assign({}, newState.charts);
+        delete newState.charts[action.cellId];
+      }
+
+      const splitChartCoord = splitCoord(action.cellId);
+
+      newState.colSizes = Object.assign({}, newState.colSizes, {[splitChartCoord.col]: 100})
+      newState.rowSizes = Object.assign({}, newState.rowSizes, {[splitChartCoord.row]: 26})
+
+      return newState;
     default:
       return state;
   }
@@ -201,9 +229,10 @@ function WorkingAreaReducer(state, action) {
       return newState;
 
     case Action.SELECT_ROW:
-    newState.activeRange = `A${action.rowId}:${numToChar(action.cols)}${action.rowId}`;
-    newState.activeCell = `A${action.rowId}`;
-    return newState;
+      newState.activeRange = `A${action.rowId}:${numToChar(action.cols)}${action.rowId}`;
+      newState.activeCell = `A${action.rowId}`;
+      return newState;
+
 
     default:
       return state;
@@ -226,20 +255,16 @@ function CellReducer(state, action) {
 
   switch (action.type) {
     case Action.UPDATE_CELL:
-      newState[action.cell.id] = merge({}, newState[action.cell.id], action.cell, {shouldUpdate: !action.cell.shouldUpdate});
+      newState[action.cell.id] = merge({}, curCell(newState, action.cell.id), action.cell, {shouldUpdate: !action.cell.shouldUpdate});
       return newState;
     case Action.UPDATE_RANGE:
       const range = parseCoord(action.range);
       const cellMap = getCellsBetween(range.start, range.end);
 
       cellMap.forEach((cellId) => {
-        const newCell = merge({}, newState[cellId]);
-        const oldSize = {
-          height: newState[cellId].style.height,
-          width: newState[cellId].style.width
-        }
+        const newCell = merge({}, curCell(newState, cellId));
 
-        newCell.style = merge(newCell.style, action.cell.style, oldSize);
+        newCell.style = merge(newCell.style, action.cell.style);
         newCell.shouldUpdate = !newCell.shouldUpdate;
         newState[cellId] = newCell;
       });

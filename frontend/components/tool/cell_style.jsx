@@ -9,6 +9,7 @@ import ColorButton from './tool_box_buttons/color_button';
 import FontSizeButton from './tool_box_buttons/font_size_button';
 import FontFamilyButton from './tool_box_buttons/font_family_button';
 import SaveButtonContainer from './tool_box_buttons/save_button_container';
+import ChartButtonContainer from './tool_box_buttons/chart_button_container';
 
 
 export default class CellStyle extends React.Component {
@@ -86,6 +87,8 @@ export default class CellStyle extends React.Component {
         <ul className="style-group">
           <ColorButton color={this.props.cell.style} styleProperty="backgroundColor" changeStyle={this.changeBackground.bind(this)} className="style-type-paintbucket" />
         </ul>
+        <ChartButtonContainer cell={this.props.cell} />
+
       </div>
     );
   }

@@ -2,15 +2,15 @@
 
 .sheet-nav {
   display: block;
-  height: 50px;
   font-size: 0;
   border-top: 1px solid #AAA;
   background: #eee;
+
 }
 
 .sheet-nav ul {
-  margin: 0 0 0 50px;
-  padding: 0;
+  margin: 0 0 10px 50px;
+  padding: 0 0 10px 0;
 }
 
 .sheet-nav li.active-sheet {
@@ -26,12 +26,12 @@
   font-family: Arial;
   border: 1px solid #CCC;
   border-top: none;
-  padding: 0px 7px;
+  padding: 0px 9px;
   margin: -1px 0px 0px 0px;
   list-style-type: none;
   box-sizing: border-box;
-  height: 35px;
-  line-height: 35px;
+  height: 30px;
+  line-height: 30px;
   float: left;
   color: #AAA;
 }
@@ -108,13 +108,18 @@
   border-bottom: 1px solid #d9d9d9;
 }
 
+.style-bar {
+  margin-left: 50px;
+}
+
 .style-group {
   margin: 0;
   padding: 3px;
-  float: left;
   border-right: 1px solid #d9d9d9;
   height: 35px;
   box-sizing: border-box;
+  display: inline-block;
+  float: left;
 }
 
 .style-group-item {
@@ -126,6 +131,7 @@
   height: 26px;
   width: 26px;
   position: relative;
+  // opacity: .7;
 }
 
 .style-group-item:first-child {
@@ -141,6 +147,7 @@
   cursor: pointer;
   box-shadow: 0px 0px 1px #BBB;
   border: 1px solid #ccc;
+  // opacity: 1;
 }
 
 .style-group-item:hover .dropdown-arrow {
@@ -191,6 +198,11 @@
 
 .style-group-item.style-type-save {
   background: image-url("grid/savebutton.png") 5px center no-repeat;
+  background-size: auto 14px;
+}
+
+.style-group-item.style-type-chart {
+  background: image-url("grid/chart.png") 5px center no-repeat;
   background-size: auto 14px;
 }
 
@@ -262,4 +274,107 @@
 .fontsize-dropdown li:hover {
   cursor: pointer;
   background: #EEE;
+}
+
+.chart-canvas {
+  // pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+.chart-dropdown {
+  position: absolute;
+  z-index: 10;
+  background: #FFF;
+  top: 35px;
+  right: 0px;
+  border: 1px solid #D9D9D9;
+  box-shadow: 0px 0px 10px #999;
+}
+
+.chart-dropdown li {
+  list-style-type: none;
+  background: #FFF;
+  font-weight: normal;
+  display: block;
+  white-space: nowrap;
+  display: flex;
+  padding: 0;
+  color: #666;
+  padding: 10px;
+}
+
+.chart-dropdown-title {
+  display: inline-block;
+  flex: 1;
+  padding: 0px 20px 0px 10px;
+  text-align: right;
+}
+
+.chart-dropdown-input {
+  display: inline-block;
+  width: 50px;
+  box-sizing: border-box;
+}
+
+.chart-dropdown-wrapper {
+  font-family: Arial;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  line-height: 27px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.chart-dropdown-input input,
+.chart-dropdown-input select {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.chart-dropdown-input select {
+  text-transform: capitalize;
+}
+
+.chart-dropdown-submit {
+  width: 100%;
+  background: linear-gradient(#4d8ffd, #4787ee);
+  border: none;
+  box-sizing: border-box;
+  padding: 3px 10px;
+  color: #FFF;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 3px;
+  font-family: Arial;
+  outline: none;
+}
+
+.chart-dropdown-submit:hover {
+  background: #367be9;
+  cursor:pointer;
+}
+
+.chart-dropdown-submit.chart-dropdown-delete {
+  background: #F1F1F1;
+  border: 1px solid #D9D9D9;
+  margin-left: 10px;
+  color: #666;
+}
+
+.chart-dropdown-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.chart-dropdown-header .chart-dropdown-title {
+  display: block;
+  width: 100%;
+}
+
+.chart-dropdown-header .chart-dropdown-input {
+  display: block;
+  width: 100%;
 }

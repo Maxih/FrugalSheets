@@ -16,6 +16,19 @@ export const UPDATE_DOCUMENT_NAME = "UPDATE_DOCUMENT_NAME";
 export const UPDATE_RANGE_GROUPS = "UPDATE_RANGE_GROUPS";
 export const MOVE_ACTIVE_CELL = "MOVE_ACTIVE_CELL";
 export const MOVE_ACTIVE_RANGE = "MOVE_ACTIVE_RANGE";
+export const ADD_CHART = "ADD_CHART";
+export const REMOVE_CHART = "REMOVE_CHART";
+
+export const addChart = (cellId, chart) => ({
+  type: ADD_CHART,
+  chart: chart,
+  cellId: cellId
+});
+
+export const removeChart = (cellId) => ({
+  type: REMOVE_CHART,
+  cellId: cellId
+});
 
 export const updateCell = (cell) => ({
   type: UPDATE_CELL,

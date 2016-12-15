@@ -1,33 +1,39 @@
 import merge from 'lodash/merge';
-import {Formula} from './formula_util';
+import {
+  Formula
+} from './formula_util';
 
-export function toggleShouldUpdate(grid, row, col) {
-  grid[row][col].shouldUpdate = !grid[row][col].shouldUpdate;
-}
-
-export function getLinkedCells(grid, links) {
-  let linkKeys = Object.keys(links);
-  if (linkKeys === undefined)
-    return [];
-
-  let linked = [];
-  linkKeys.forEach((coord) => {
-
-    const parsed = parseCoord(coord);
-
-    if(!parsed)
-      return;
-
-    let curLinks = getCellsBetween(grid, parsed.start, parsed.end)
-    for(let i = 0; i < curLinks.length; i++) {
-      for(let j = 0; j < curLinks[0].length; j++) {
-        linked.push(curLinks[i][j]);
+export function mapChartData(data) {
+  return {
+    type: data.type,
+    data: {
+      labels: data.titles,
+      datasets: [{
+        label: data.name,
+        data: data.data,
+        backgroundColor: data.background,
+        borderColor: data.borders,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      legend: {
+        labels: {
+          boxWidth: data.type === 'pie' ? 20 : 0
+        }
+      },
+      layout: {
+        padding: 5
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
       }
     }
-
-  });
-
-  return linked;
+  }
 }
 
 export function expandRange(oldRange, newRange) {
@@ -58,14 +64,14 @@ export function expandRange(oldRange, newRange) {
 export function getFormulaRange(cells, coord) {
   const parsed = parseCoord(coord);
 
-  if(!parsed)
+  if (!parsed)
     return [];
 
   return getCellsBetween(parsed.start, parsed.end);
 }
 
 export function getCellsBetween(start, end) {
-  if(start === undefined || end === undefined)
+  if (start === undefined || end === undefined)
     return [];
 
   let upperBoundsCol = start.col > end.col ? start.col : end.col;
@@ -86,6 +92,16 @@ export function getCellsBetween(start, end) {
   return cells;
 }
 
+export function splitCoord(coord) {
+  const matcher = /([A-Z]+)([0-9]+)/g;
+  const matched = matcher.exec(coord);
+
+  return {
+    col: matched[1],
+    row: matched[2]
+  }
+}
+
 export function parseCoord(coord) {
   const matcher = /([a-zA-Z0-9]+!)?([A-Z]+)([0-9]+)(:([A-Z]+)([0-9]+))?/g;
   const matched = matcher.exec(coord);
@@ -104,29 +120,33 @@ export function parseCoord(coord) {
     end: startCoord
   }
 
-  if(matched[5] != undefined) {
+  if (matched[5] != undefined) {
     coords.end = {
       col: charToNum(matched[5]),
       row: parseInt(matched[6])
     }
   }
 
-  if(matched[1] != undefined) {
-    coords.sheet = matched[1].slice(0, matched[1].length-1);
+  if (matched[1] != undefined) {
+    coords.sheet = matched[1].slice(0, matched[1].length - 1);
   }
 
   return coords;
 }
 
+export function curCell(cells, cellId) {
+  return cells[cellId] || blankCell(cellId);
+}
+
 export function blankState(rows = 30, cols = 26) {
   const cells = {};
 
-  for(let i = 1; i <= rows; i++) {
-    for(let j = 1; j <= cols; j++) {
-      let id = `${numToChar(j)}${i}`;
-      cells[id] = blankCell(id);
-    }
-  }
+  // for (let i = 1; i <= rows; i++) {
+  //   for (let j = 1; j <= cols; j++) {
+  //     let id = `${numToChar(j)}${i}`;
+  //     cells[id] = blankCell(id);
+  //   }
+  // }
 
   const workingAreaDefaults = {
     activeCell: "A1",
@@ -148,6 +168,7 @@ export function blankState(rows = 30, cols = 26) {
         rowSizes: {},
         formulas: {},
         cells: cells,
+        charts: {},
         workingArea: workingAreaDefaults,
       }
     }
@@ -192,7 +213,7 @@ export function updateActiveRangeContent(oldRange, newRange) {
       const newCell = merge({}, oldRange[oldRow][oldCol]);
 
       // If new content is a formula, update referenced cells
-      if(newCell.content[0] === "=") {
+      if (newCell.content[0] === "=") {
         const formula = new Formula(newCell.content.slice(1));
         let varNames = Object.keys(formula.vars);
         let varMap = {};
@@ -371,6 +392,6 @@ export const compare = function(obj1, obj2) {
 };
 
 String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
+  var target = this;
+  return target.replace(new RegExp(search, 'g'), replacement);
 };

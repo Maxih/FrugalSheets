@@ -1,5 +1,5 @@
 import React from 'react';
-import {numToChar, between, blankSheet, parseCoord} from '../../utils/grid_utils';
+import {numToChar, between, blankSheet, parseCoord, curCell} from '../../utils/grid_utils';
 import GridRow from './grid_row';
 import GridHeader from './grid_header';
 import GridSelectionContainer from './grid_selection_container';
@@ -84,7 +84,7 @@ export default class Grid extends React.Component {
     if(node.id === "")
       return false;
 
-    const cell = this.props.cells[node.id];
+    const cell = curCell(this.props.cells, node.id);
 
     if(cell === undefined)
       return false;
@@ -113,7 +113,7 @@ export default class Grid extends React.Component {
     if(e.target.id === "")
       return false;
 
-    const cell = this.props.cells[e.target.id];
+    const cell = curCell(this.props.cells, e.target.id);
 
     if(cell === undefined)
       return false;

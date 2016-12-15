@@ -65,13 +65,29 @@ body {
 
 /* Grid Component */
 
+
+
+.doc-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 500px;
+  white-space: nowrap;
+  overflow-y: hidden;
+}
+
+.doc {
+  flex: 1 1 auto;
+  min-height: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
 .grid-wrapper {
-  display: block;
   position: relative;
   font-size: 0;
   background: #d9d9d9;
   overflow: scroll;
-  height: 500px;
 }
 
 .grid {
@@ -80,7 +96,6 @@ body {
   box-sizing: border-box;
   padding: 26px 0px 0px 50px;
   z-index: 5;
-  border-collapse: collapse
 }
 
 
@@ -158,7 +173,6 @@ body {
   overflow: hidden;
   white-space: nowrap;
   display: block;
-  max-height: 200px;
   height: 100%;
   padding: 5px;
   z-index: 6;
@@ -197,8 +211,9 @@ body {
   box-sizing: border-box;
   cursor: default;
   font-family: Arial;
-  padding: 2px;
+  padding: 0px;
   outline: none;
+  line-height: 26px;
 }
 
 .active-cell {
