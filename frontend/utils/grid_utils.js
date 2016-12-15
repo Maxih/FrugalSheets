@@ -138,7 +138,7 @@ export function curCell(cells, cellId) {
   return cells[cellId] || blankCell(cellId);
 }
 
-export function blankState(rows = 30, cols = 26) {
+export function blankState(rows = 50, cols = 26) {
   const cells = {};
 
   // for (let i = 1; i <= rows; i++) {
@@ -150,7 +150,7 @@ export function blankState(rows = 30, cols = 26) {
 
   const workingAreaDefaults = {
     activeCell: "A1",
-    activeRange: "",
+    activeRange: "A1:A1",
     duplicateRange: "",
     selecting: false,
     directional: false,

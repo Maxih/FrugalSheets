@@ -8,20 +8,26 @@ import {
   getWorkingArea,
   getCell,
   parseFormula,
+  getActiveSheet,
 } from '../../reducers/selectors';
 
 import GridCell from './grid_cell';
 
 const mapStateToProps = (state, ownProps) => {
   const workingArea = getWorkingArea(state);
-  const cell = getCell(state, ownProps.id);
+  const cell = state.doc.sheets[getActiveSheet(state)].cells[ownProps.id];
   const sheet = state.doc.sheets[state.doc.activeSheet];
-  const formula = state.doc.sheets[state.doc.activeSheet].formulas[ownProps.id];
-  const content = (formula === undefined ? cell.content : parseFormula(state.doc.sheets[state.doc.activeSheet].cells, formula));
+
+  let content = "";
+  if(cell) {
+    const formula = state.doc.sheets[state.doc.activeSheet].formulas[ownProps.id];
+    content = (formula === undefined ? cell.content : parseFormula(state.doc.sheets[state.doc.activeSheet].cells, formula));
+  }
+
   let chart = state.doc.sheets[state.doc.activeSheet].charts[ownProps.id];
 
   return {
-    cell: cell,
+    cell: cell || false,
     active: (ownProps.id === workingArea.activeCell),
     content: content,
     width: sheet.colSizes[ownProps.colId] || 100,

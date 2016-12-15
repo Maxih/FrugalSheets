@@ -10,10 +10,19 @@ export default class GridCell extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      cell: props.cell || Util.blankCell(props.id)
+    }
+
     // this.keyPress = this.keyPress.bind(this);
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({cell: props.cell || Util.blankCell(props.id)});
+  }
+
   shouldComponentUpdate(nextProps) {
+
     if(this.props.content != nextProps.content)
       return true;
 
@@ -84,10 +93,10 @@ export default class GridCell extends React.Component {
   render() {
     let content = this.props.content;
 
-    let style = merge({}, this.props.cell.style, {height: this.props.height, width: this.props.width});
+    let style = merge({}, this.state.cell.style, {height: this.props.height, width: this.props.width});
 
     if(this.props.chart) {
-      content = (<CellChartContainer cell={this.props.cell} />);
+      content = (<CellChartContainer cell={this.state.cell} />);
     } else {
       if(this.props.active) {
         content = (
@@ -97,7 +106,7 @@ export default class GridCell extends React.Component {
             <CellInputContainer
               styling={true}
               refName="cellRef"
-              cell={this.props.cell}
+              cell={this.state.cell}
               resizeRow={this.props.resizeRow}
               updateCell={this.props.updateCell} />
           </div>

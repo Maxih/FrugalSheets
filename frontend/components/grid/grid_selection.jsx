@@ -27,8 +27,9 @@ export default class GridSelection extends React.Component {
       height: this.props.dimensions.height
     }
 
-    if(style.width === 0 || style.height === 0)
+    if(!style.width || !style.height) {
       style.display = "none";
+    }
 
     let className = "selection active-selection";
 
