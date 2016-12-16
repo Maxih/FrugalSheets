@@ -16,6 +16,7 @@ export default class Grid extends React.Component {
     this.removeSelecting = this.removeSelecting.bind(this);
     this.mouseAction = this.mouseAction.bind(this);
     this.mouseOver = this.mouseOver.bind(this);
+    this.keyPress = this.keyPress.bind(this);
   }
 
   componentDidMount() {
@@ -126,6 +127,55 @@ export default class Grid extends React.Component {
     }
   }
 
+  keyPress(e) {
+    e.stopPropagation();
+
+    switch(e.keyCode) {
+      case 13: // enter
+        e.preventDefault();
+        if(e.shiftKey) // shift enter
+          this.props.moveActiveCell({row: -1, col: 0});
+        else
+          this.props.moveActiveCell({row: 1, col: 0});
+        break;
+      case 9: // tab
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveCell({row: 0, col: -1});
+        else
+          this.props.moveActiveCell({row: 0, col: 1});
+        break;
+      case 37:
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveRange({row: 0, col: -1});
+        else
+          this.props.moveActiveCell({row: 0, col: -1});
+        break;
+      case 38:
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveRange({row: -1, col: 0});
+        else
+          this.props.moveActiveCell({row: -1, col: 0});
+        break;
+      case 39:
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveRange({row: 0, col: 1});
+        else
+          this.props.moveActiveCell({row: 0, col: 1});
+        break;
+      case 40:
+        e.preventDefault();
+        if(e.shiftKey)
+          this.props.moveActiveRange({row: 1, col: 0});
+        else
+          this.props.moveActiveCell({row: 1, col: 0});
+        break;
+    }
+  }
+
   render() {
     const rows = [];
 
@@ -146,6 +196,8 @@ export default class Grid extends React.Component {
           <GridHeader row={this.rowHeads()} col={true} />
         </span>
         <section className="grid"
+          onKeyDown={this.keyPress}
+          tabIndex="1"
           onMouseDown={this.mouseAction}
           onMouseUp={this.mouseAction}
           onMouseOver={this.mouseOver}

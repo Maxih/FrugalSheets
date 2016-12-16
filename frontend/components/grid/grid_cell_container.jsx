@@ -1,8 +1,7 @@
 import {connect} from 'react-redux';
 import {
   updateCell,
-  moveActiveCell,
-  moveActiveRange,
+
 } from '../../actions/sheet_actions';
 import {
   getWorkingArea,
@@ -39,8 +38,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
   updateCell: (cell) => dispatch(updateCell(cell)),
 
-  // moveActiveCell: (delta) => dispatch(moveActiveCell(delta)),
-  // moveActiveRange: (delta) => dispatch(moveActiveRange(delta)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GridCell);

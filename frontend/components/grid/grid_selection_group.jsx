@@ -6,10 +6,7 @@ export default class GridSelectionGroup extends React.Component {
   constructor(props) {
     super(props);
 
-    this.colors = [
-      "#f7981d",
-      "#7e3794"
-    ];
+    this.colors = Util.darkerPalette();
   }
 
   render() {

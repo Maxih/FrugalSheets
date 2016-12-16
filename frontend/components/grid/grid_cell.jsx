@@ -13,7 +13,6 @@ export default class GridCell extends React.Component {
       cell: props.cell || Util.blankCell(props.id)
     }
 
-    // this.keyPress = this.keyPress.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -40,55 +39,6 @@ export default class GridCell extends React.Component {
     return className;
   }
 
-  // keyPress(e) {
-  //   e.stopPropagation();
-  //
-  //   switch(e.keyCode) {
-  //     case 13: // enter
-  //       e.preventDefault();
-  //       if(e.shiftKey) // shift enter
-  //         this.props.moveActiveCell({row: -1, col: 0});
-  //       else
-  //         this.props.moveActiveCell({row: 1, col: 0});
-  //       break;
-  //     case 9: // tab
-  //       e.preventDefault();
-  //       if(e.shiftKey)
-  //         this.props.moveActiveCell({row: 0, col: -1});
-  //       else
-  //         this.props.moveActiveCell({row: 0, col: 1});
-  //       break;
-  //     case 37:
-  //       e.preventDefault();
-  //       if(e.shiftKey)
-  //         this.props.moveActiveRange({row: 0, col: -1});
-  //       else
-  //         this.props.moveActiveCell({row: 0, col: -1});
-  //       break;
-  //     case 38:
-  //       e.preventDefault();
-  //       if(e.shiftKey)
-  //         this.props.moveActiveRange({row: -1, col: 0});
-  //       else
-  //         this.props.moveActiveCell({row: -1, col: 0});
-  //       break;
-  //     case 39:
-  //       e.preventDefault();
-  //       if(e.shiftKey)
-  //         this.props.moveActiveRange({row: 0, col: 1});
-  //       else
-  //         this.props.moveActiveCell({row: 0, col: 1});
-  //       break;
-  //     case 40:
-  //       e.preventDefault();
-  //       if(e.shiftKey)
-  //         this.props.moveActiveRange({row: 1, col: 0});
-  //       else
-  //         this.props.moveActiveCell({row: 1, col: 0});
-  //       break;
-  //   }
-  // }
-            // keyPress={this.keyPress}
   render() {
     let content = this.props.content;
 
@@ -98,6 +48,7 @@ export default class GridCell extends React.Component {
     if(this.props.active) {
       content = (
         <div
+
           className="active-cell-wrapper"
           >
           <CellInputContainer
@@ -117,7 +68,7 @@ export default class GridCell extends React.Component {
       <span
         className={this.generateCellClass()}
         id={this.props.id}
-        tabIndex="1"
+
         style={style}
         >
         {content}

@@ -12,8 +12,9 @@ class SessionForm extends React.Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.guestLogin = this.guestLogin.bind(this);
   }
-  
+
   handleSubmit(e) {
     e.preventDefault();
     const user = Object.assign({}, this.state);
@@ -36,6 +37,14 @@ class SessionForm extends React.Component {
     });
   }
 
+  guestLogin() {
+    const user = {
+      email: "mackshempfling@gmail.com",
+      password: "password"
+    }
+    this.props.processForm(user).then(() => this.props.router.push("/"));
+  }
+
   render() {
     const additionalProps = (
       <label>
@@ -52,6 +61,10 @@ class SessionForm extends React.Component {
       <Link href="/#/login" className="create-account">{"Already have an account? Sign in"}</Link>
     );
 
+    const guestLink = (
+      <button onClick={this.guestLogin}>Guest Login</button>
+    )
+
     return (
       <section className="login-page">
         <section className="login-form">
@@ -59,11 +72,13 @@ class SessionForm extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <input value={this.state.email} placeholder="Email" type="text" onChange={this.update("email")}/>
             <input value={this.state.password} placeholder="Password" type="password" onChange={this.update("password")}/>
-            {this.props.formType === "Sign Up" ? additionalProps : ""}
-            <button>{this.props.formType}</button>
+            {this.props.formType === "signup" ? additionalProps : ""}
+            <button>{this.props.formType === "login" ? "Login" : "Sign Up"}</button>
+            {this.props.formType === "login" ? guestLink : ""}
           </form>
+
         </section>
-        {this.props.formType === "Login" ? signupLink : loginLink}
+        {this.props.formType === "login" ? signupLink : loginLink}
       </section>
     );
   }

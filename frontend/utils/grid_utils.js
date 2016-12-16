@@ -3,6 +3,33 @@ import {
   Formula
 } from './formula_util';
 
+export function colorPalette() {
+  return [
+    "#9bdaf3",
+    "#ddcce2",
+    "#fec9b8",
+    "#f9d291",
+    "#a9dddd",
+    "#f7df8c",
+    "#f7c8de",
+    "#cee4a3",
+    "#00a0dc",
+    "#8d6cab",
+    "#ef6c5a",
+    "#e68523",
+    "#00aeb3",
+    "#f0c23b",
+    "#ee62a2",
+    "#7cb82f",
+  ];
+}
+
+export function darkerPalette() {
+  return colorPalette().map((color) => {
+    return LightenDarkenColor(color, -40);
+  });
+}
+
 export function mapChartData(data) {
   return {
     type: data.type,

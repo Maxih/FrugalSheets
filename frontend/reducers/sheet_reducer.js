@@ -42,6 +42,8 @@ function DocumentReducer(state = blankState(), action) {
     case Action.REMOVE_CHART:
     case Action.MOVE_CHART:
     case Action.SELECT_CHART:
+    case Action.MOVE_ACTIVE_CELL:
+    case Action.MOVE_ACTIVE_RANGE:
       action.activeSheet = newState.activeSheet;
       newState.sheets = SheetsReducer(newState.sheets, action);
 
@@ -94,6 +96,8 @@ function SheetsReducer(state, action) {
     case Action.REMOVE_CHART:
     case Action.MOVE_CHART:
     case Action.SELECT_CHART:
+    case Action.MOVE_ACTIVE_CELL:
+    case Action.MOVE_ACTIVE_RANGE:
       newState[action.activeSheet] = SheetReducer(newState[action.activeSheet], action);
       return newState;
 
@@ -149,6 +153,8 @@ function SheetReducer(state, action) {
 
     case Action.SELECT_COL:
     case Action.SELECT_ROW:
+    case Action.MOVE_ACTIVE_CELL:
+    case Action.MOVE_ACTIVE_RANGE:
       action.rows = newState.rows;
       action.cols = newState.cols;
 
@@ -244,7 +250,21 @@ function WorkingAreaReducer(state, action) {
       newState.activeCell = `A${action.rowId}`;
       return newState;
 
+    case Action.MOVE_ACTIVE_CELL:
+      const newCoord = parseCoord(newState.activeCell);
+      const newColId = newCoord.start.col + action.delta.col;
+      const newRowId = newCoord.start.row + action.delta.row;
+      const newCellCoord = `${numToChar(newColId)}${newRowId}`;
 
+      if(between(newColId, 1, action.cols) && between(newRowId, 1, action.rows)) {
+        newState.activeCell = newCellCoord;
+        newState.activeRange = `${newCellCoord}:${newCellCoord}`;
+      }
+
+      return newState;
+    case Action.MOVE_ACTIVE_RANGE:
+
+      return newState;
     default:
       return state;
   }

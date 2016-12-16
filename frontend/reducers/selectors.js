@@ -4,7 +4,9 @@ import {
   numToChar,
   charToNum,
   getFormulaRange,
-  curCell
+  curCell,
+  colorPalette,
+  darkerPalette,
 } from '../utils/grid_utils';
 
 import {
@@ -27,10 +29,12 @@ export function prepChartData(cells, chart) {
 
   const chartColors = [];
   const chartBorders = [];
+  const lightPal = colorPalette();
+  const darkPal = darkerPalette();
 
-  const chartTitles = titleRange.map((coord) => {
-    chartColors.push(curCell(cells, coord).style.backgroundColor || "#F1F1F1");
-    chartBorders.push(curCell(cells, coord).style.borderColor || "#D9D9D9");
+  const chartTitles = titleRange.map((coord, idx) => {
+    chartColors.push(curCell(cells, coord).style.backgroundColor || lightPal[idx]);
+    chartBorders.push(curCell(cells, coord).style.borderColor || darkPal[idx]);
 
     if(curCell(cells, coord).content[0] === "=")
       return `${parseFormula(cells, cells[coord].content)}`;

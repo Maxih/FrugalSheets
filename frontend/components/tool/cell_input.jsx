@@ -18,7 +18,7 @@ export default class CellInput extends React.Component {
   componentDidMount() {
     if(this.refs[this.props.refName]) {
       const node = ReactDOM.findDOMNode(this.refs[this.props.refName])
-      // node.focus();
+      node.focus();
       // autosize(node);
     }
   }

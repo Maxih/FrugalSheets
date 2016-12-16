@@ -3,7 +3,9 @@ import {
   receiveStartCell,
   receiveEndCell,
   tempEndCell,
-  updateRangeGroups
+  updateRangeGroups,
+  moveActiveCell,
+  moveActiveRange,
 } from '../../actions/sheet_actions';
 import {
   isCellActive,
@@ -37,6 +39,8 @@ const mapDispatchToProps = dispatch => ({
   receiveEndCell: (cell) => dispatch(receiveEndCell(cell)),
   updateRangeGroups: (groups) => dispatch(updateRangeGroups(groups)),
   tempEndCell: (cell) => dispatch(tempEndCell(cell)),
+  moveActiveCell: (delta) => dispatch(moveActiveCell(delta)),
+  moveActiveRange: (delta) => dispatch(moveActiveRange(delta)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);
