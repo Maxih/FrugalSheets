@@ -8,7 +8,7 @@ FrugalSheets is a web application inspired by Google Sheets build using Ruby on 
 - [ ] New account creation, login, and guest/demo login
 - [ ] Documents
 - [ ] Multiple Sheets per Document
-- [ ] Document Sharing/Collaboration
+- [ ] Charts
 - [ ] Formulas
 - [ ] Rich Text Editing
 - [ ] Production README [sample](docs/README.md)
@@ -42,10 +42,9 @@ the API.
 **Objective:** Documents loaded from the API can be edited with a Spreadsheet
 Component
 
-### Phase 4: Groups (1 day)
+### Phase 4: Sheets (1 day)
 
-**Objective:** Users can create Collaboration Groups who have permission to
-access the same Documents
+**Objective:** User can create many different sheets that retain their own information in charts.
 
 ### Phase 5: - Formulas (1 day)
 
