@@ -11,7 +11,7 @@ FrugalSheets is a web application inspired by Google Sheets build using Ruby on 
 - [ ] Document Sharing/Collaboration
 - [ ] Formulas
 - [ ] Rich Text Editing
-- [ ] Production README [sample](docs/production_readme.md)
+- [ ] Production README [sample](docs/README.md)
 
 ## Design Docs
 * [View Wireframes][wireframes]

@@ -38,8 +38,15 @@ export default class Group extends React.Component {
 
 
   render() {
-    if(this.state.loading)
-      return (<Loading />);
+
+    if(this.state.loading) {
+      return (
+        <section className="group-wrapper">
+          <Loading />
+        </section>
+      )
+    }
+
 
     return (
       <section className="group-wrapper">
