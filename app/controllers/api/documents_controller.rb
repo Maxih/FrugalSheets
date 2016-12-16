@@ -43,8 +43,9 @@ class Api::DocumentsController < ApplicationController
 
   def index
     if logged_in?
-      @documents = current_user.documents + current_user.authored_documents.select("documents.id, documents.name, documents.updated_at, 'me' AS group_name, -1 AS group_id")
-
+      @documents = current_user.documents.order(updated_at: :desc) + current_user.authored_documents.select("documents.id, documents.name, documents.updated_at, 'me' AS group_name, -1 AS group_id").order(updated_at: :desc)
+      @documents.sort! {|x, y| x.updated_at <=> y.updated_at}
+      
       render "api/documents/index"
     else
       render json: ["Insufficient permissions"], status: 401

@@ -20,6 +20,7 @@ export const ADD_CHART = "ADD_CHART";
 export const REMOVE_CHART = "REMOVE_CHART";
 export const MOVE_CHART = "MOVE_CHART";
 export const SELECT_CHART = "SELECT_CHART";
+export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
 
 
 export const addChart = (cellId, chart) => ({
@@ -95,6 +96,11 @@ export const receiveDocument = (doc) => ({
   type: RECEIVE_DOCUMENT,
   doc: doc
 });
+
+export const receiveErrors = (errors) => ({
+  type: RECEIVE_ERRORS,
+  errors: errors
+})
 
 export const updateDocumentName = (name) => ({
   type: UPDATE_DOCUMENT_NAME,

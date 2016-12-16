@@ -3,6 +3,8 @@ import GridContainer from '../grid/grid_container';
 import SheetNavContainer from '../grid/sheet_nav_container';
 import ToolBoxContainer from '../tool/tool_box_container';
 import DocHeaderContainer from './doc_header_container';
+import { Link, withRouter } from 'react-router';
+import Loading from '../loading';
 
 export default class Doc extends React.Component {
   constructor(props) {
@@ -15,13 +17,16 @@ export default class Doc extends React.Component {
 
   componentDidMount() {
     this.props.loadDocument(this.props.routeParams.documentId).then(
-      newDoc => this.setState({loading: false})
+      newDoc => this.setState({loading: false}),
+      errors => {
+        this.props.router.push("/");
+      }
     );
   }
 
   render() {
     if(this.state.loading)
-      return (<span>loading</span>);
+      return (<Loading />);
 
     return (
 

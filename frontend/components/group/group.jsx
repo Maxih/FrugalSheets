@@ -1,5 +1,7 @@
 import React from 'react';
 import GroupSelector from './group_selector';
+import Loading from '../loading';
+
 
 export default class Group extends React.Component {
   constructor(props) {
@@ -37,7 +39,7 @@ export default class Group extends React.Component {
 
   render() {
     if(this.state.loading)
-      return (<span>loading</span>);
+      return (<Loading />);
 
     return (
       <section className="group-wrapper">
