@@ -23,7 +23,8 @@
 
 .login-form h1 {
   padding: 0;
-  background: #CCC;
+  background: #e4e6e7 image-url('misc/profile.png') center 2px no-repeat;
+  background-size: 100px;
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -75,4 +76,14 @@
   text-decoration: none;
   font-size: 14px;
   display: inline-block;
+}
+
+.guest-button {
+  margin-top: 10px;
+}
+
+.error-list {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 12px;
 }

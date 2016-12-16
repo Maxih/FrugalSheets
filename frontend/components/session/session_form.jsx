@@ -8,7 +8,8 @@ class SessionForm extends React.Component {
         email: "",
         firstname: "",
         lastname: "",
-        password: ""
+        password: "",
+        errors: []
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,7 +19,9 @@ class SessionForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const user = Object.assign({}, this.state);
-    this.props.processForm(user).then(() => this.props.router.push("/"));
+    this.props.processForm(user).then(() => this.props.router.push("/"), (errors) => {
+      this.setState({errors: errors.errors});
+    });
   }
 
   componentDidUpdate() {
@@ -62,13 +65,20 @@ class SessionForm extends React.Component {
     );
 
     const guestLink = (
-      <button onClick={this.guestLogin}>Guest Login</button>
+      <button className="guest-button" onClick={this.guestLogin}>Guest Login</button>
     )
+
+    const errors = this.state.errors.map((error, idx) => {
+      return (
+        <li key={idx}>{error}</li>
+      )
+    });
 
     return (
       <section className="login-page">
         <section className="login-form">
           <h1>{this.props.formType}</h1>
+          <ul className="error-list">{this.state.errors}</ul>
           <form onSubmit={this.handleSubmit}>
             <input value={this.state.email} placeholder="Email" type="text" onChange={this.update("email")}/>
             <input value={this.state.password} placeholder="Password" type="password" onChange={this.update("password")}/>
