@@ -2,7 +2,7 @@ class Api::DocumentsController < ApplicationController
   def show
     @document = Document.find(params[:id])
 
-    if logged_in? && current_user == @document.author
+    if logged_in? && (current_user == @document.author || current_user.documents.where(id: @document.id))
       render "api/documents/show"
     else
       render json: ["Insufficient permissions"], status: 401
@@ -30,7 +30,7 @@ class Api::DocumentsController < ApplicationController
 
   def update
     @document = Document.find(params[:id].to_i)
-    if logged_in? && current_user == @document.author
+    if logged_in? && (current_user == @document.author || current_user.documents.where(id: @document.id))
       if @document.update(name: params[:name], content: params[:content])
         render "api/documents/show"
       else

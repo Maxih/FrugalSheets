@@ -16,7 +16,10 @@ export default function GroupReducer(state = defaults, action) {
         groups[group.id] = group;
       });
 
-      return merge({}, state, {list: groups});
+      const newGroups = Object.assign({}, state);
+      newGroups.list = groups;
+
+      return newGroups;
 
     case Action.SELECT_GROUP:
       return Object.assign({}, state, {active: action.groupId});
