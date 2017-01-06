@@ -43,6 +43,7 @@ export default class LandingPage extends React.Component {
       <section>
         <header className="page-header">
           <nav>
+            <div className="logo">Frugal Sheets</div>
             <DocSearch searchParam={this.props.searchParam} filterDocuments={this.props.filterDocuments} />
             <UserBadge logOut={this.logOut} currentUser={this.props.currentUser} />
           </nav>
